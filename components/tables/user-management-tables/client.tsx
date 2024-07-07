@@ -4,17 +4,20 @@ import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import { Employee } from '@/constants/data';
+import {  User } from '@/constants/data';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { columns } from './columns'; // Define columns specific to employees
+import { columns } from './columns';
 
 interface UserManagementClientProps {
-  data: Employee[];
+  data: User[];
 }
 
-export const UserManagementClient: React.FC<UserManagementClientProps> = ({ data }) => {
+
+
+export const UserManagementClient: React.FC<UserManagementClientProps> = ({ data = [] }) => {
   const router = useRouter();
+ 
 
   return (
     <>

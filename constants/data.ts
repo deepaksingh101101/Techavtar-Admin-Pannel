@@ -91,7 +91,6 @@ export const users: User[] = [
   }
 ];
 
-
 export type Employee = {
   id: number;
   first_name: string;
@@ -99,17 +98,18 @@ export type Employee = {
   email: string;
   phone: string;
   gender: string;
-  date_of_birth: string; // Consider using a proper date type if possible
+  date_of_birth: string; 
   street: string;
   city: string;
   state: string;
   country: string;
   zipcode: string;
-  longitude?: number; // Optional field
-  latitude?: number; // Optional field
+  longitude?: number; 
+  latitude?: number; 
   job: string;
-  profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
+  profile_picture?: string | null; 
 };
+
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
@@ -119,19 +119,19 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'User',
-    href: '/dashboard/user',
+    href: '/user',
     icon: 'user',
     label: 'User'
   },
   { 
     title: 'User Management',
-    href: '/dashboard/user-management',
+    href: '/user-management',
     icon: 'management', 
     label: 'User Management'
   },
   {
     title: 'Profile',
-    href: '/dashboard/profile',
+    href: '/profile',
     icon: 'profile',
     label: 'Profile'
   }
