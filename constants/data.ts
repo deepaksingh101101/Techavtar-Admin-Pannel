@@ -91,6 +91,7 @@ export const users: User[] = [
   }
 ];
 
+
 export type Employee = {
   id: number;
   first_name: string;
@@ -109,7 +110,6 @@ export type Employee = {
   job: string;
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
-
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
@@ -119,14 +119,20 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'User',
-    href: '/user',
+    href: '/dashboard/user',
     icon: 'user',
-    label: 'user'
+    label: 'User'
+  },
+  { 
+    title: 'User Management',
+    href: '/dashboard/user-management',
+    icon: 'management', 
+    label: 'User Management'
   },
   {
     title: 'Profile',
-    href: '/profile',
+    href: '/dashboard/profile',
     icon: 'profile',
-    label: 'profile'
+    label: 'Profile'
   }
 ];
