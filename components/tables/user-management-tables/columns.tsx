@@ -1,10 +1,11 @@
 'use client';
+
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
-import { User } from '@/constants/data';
+import { UserManagement } from '@/constants/user-management-data';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserManagement>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -25,20 +26,69 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'name',
-    header: 'NAME'
+    accessorKey: 'userId',
+    header: 'User ID'
   },
   {
-    accessorKey: 'company',
-    header: 'COMPANY'
+    accessorKey: 'firstName',
+    header: 'First Name'
   },
   {
-    accessorKey: 'role',
-    header: 'ROLE'
+    accessorKey: 'lastName',
+    header: 'Last Name'
   },
   {
-    accessorKey: 'status',
-    header: 'STATUS'
+    accessorKey: 'email',
+    header: 'Email'
+  },
+  {
+    accessorKey: 'phoneNumber',
+    header: 'Phone Number'
+  },
+  {
+    accessorKey: 'address',
+    header: 'Address',
+    cell: ({ row }) => (
+      <div>
+        {row.original.address.houseNumber}, {row.original.address.addressLine1}, {row.original.address.addressLine2}
+      </div>
+    )
+  },
+  {
+    accessorKey: 'subscriptionType',
+    header: 'Subscription Type'
+  },
+  {
+    accessorKey: 'deliveryFrequency',
+    header: 'Delivery Frequency'
+  },
+  {
+    accessorKey: 'paymentType',
+    header: 'Payment Type'
+  },
+  {
+    accessorKey: 'subscriptionStartDate',
+    header: 'Subscription Start Date'
+  },
+  {
+    accessorKey: 'subscriptionEndDate',
+    header: 'Subscription End Date'
+  },
+  {
+    accessorKey: 'accountStatus',
+    header: 'Account Status'
+  },
+  {
+    accessorKey: 'associatedEmployeeId',
+    header: 'Associated Employee ID'
+  },
+  {
+    accessorKey: 'lastUpdateDate',
+    header: 'Last Update Date'
+  },
+  {
+    accessorKey: 'createdDate',
+    header: 'Created Date'
   },
   {
     id: 'actions',

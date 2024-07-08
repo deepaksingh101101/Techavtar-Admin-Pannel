@@ -1,23 +1,38 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import {  User } from '@/constants/data';
+import { UserManagement, userManagementData } from '@/constants/user-management-data';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { columns } from './columns';
 
-interface UserManagementClientProps {
-  data: User[];
-}
-
-
-
-export const UserManagementClient: React.FC<UserManagementClientProps> = ({ data = [] }) => {
+export const UserManagementClient: React.FC = () => {
   const router = useRouter();
- 
+  const initialData: UserManagement[] = userManagementData;
+  const [data, setData] = useState<UserManagement[]>(initialData);
+
+  const handleSearch = (searchValue: string) => {
+    const filteredData = initialData.filter(item =>
+      item.firstName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setData(filteredData);
+  };
+
+  const handleSort = (sortBy: string, sortOrder: 'asc' | 'desc') => {
+    // Example: Sorting by first name
+    const sortedData = [...data].sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.firstName.localeCompare(b.firstName);
+      } else {
+        return b.firstName.localeCompare(a.firstName);
+      }
+    });
+    setData(sortedData);
+  };
 
   return (
     <>
@@ -34,7 +49,13 @@ export const UserManagementClient: React.FC<UserManagementClientProps> = ({ data
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data} />
+      <DataTable
+        searchKey="Name"
+        columns={columns}
+        data={data}
+        onSearch={handleSearch} 
+        onSort={handleSort} 
+      />
     </>
   );
 };
