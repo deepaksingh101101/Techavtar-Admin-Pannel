@@ -29,13 +29,15 @@ import {
   User2Icon,
   UserX2Icon,
   X,
-  Briefcase // this line is added
+  Briefcase, // this line is added
+  ShieldCheck
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
   dashboard: LayoutDashboardIcon,
+  createSubscription:ShieldCheck, 
   logo: Command,
   login: LogIn,
   close: X,

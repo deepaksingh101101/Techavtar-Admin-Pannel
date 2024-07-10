@@ -135,5 +135,11 @@ export const navItems: NavItem[] = [
     href: '/profile',
     icon: 'profile',
     label: 'Profile'
+  },
+  {
+    title: 'Subscription Management',
+    href: '/subscription-management',
+    icon: 'createSubscription',
+    label: 'create-subscription'
   }
 ];
