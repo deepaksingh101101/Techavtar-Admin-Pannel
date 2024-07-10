@@ -7,21 +7,23 @@ import { useEffect } from 'react';
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuth, loading } = useAuthContext() as IAuthContext;
   const { push } = useRouter();
-
+// not removed from if(isAuth) for access
   useEffect(() => {
     console.log('isAuth', isAuth);
-    if (!isAuth) {
+    if (isAuth) {
       push('/auth/login');
     }
   }, [loading, isAuth]);
 
-  if (loading) {
+// not added
+  if (!loading) {
     return <div>Loading...</div>;
   }
 
-  if (!isAuth) {
-    return null;
-  }
+  // commented
+  // if (!isAuth) {
+  //   return null;
+  // }
 
   return children;
 };

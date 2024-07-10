@@ -20,29 +20,29 @@ const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const fetchUser = useCallback(async () => {
-    try {
-      let token = Storage.getToken();
-      if (!token) {
-        router.push('/auth/login');
-        setIsAuth(false);
-      }
-      const res = await userService.getProfile();
-      if (res.data) {
-        setIsAuth(true);
-        setUser(res.data);
-        Storage.setToken(res.data.token);
-      }
-    } catch (err) {
-      Storage.clearToken();
-      router.push('/auth/login');
-    }
-    setLoading(false);
-  }, [router]);
+  // const fetchUser = useCallback(async () => {
+  //   try {
+  //     let token = Storage.getToken();
+  //     if (!token) {
+  //       router.push('/auth/login');
+  //       setIsAuth(false);
+  //     }
+  //     const res = await userService.getProfile();
+  //     if (res.data) {
+  //       setIsAuth(true);
+  //       setUser(res.data);
+  //       Storage.setToken(res.data.token);
+  //     }
+  //   } catch (err) {
+  //     Storage.clearToken();
+  //     router.push('/auth/login');
+  //   }
+  //   setLoading(false);
+  // }, [router]);
 
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  // useEffect(() => {
+  //   fetchUser();
+  // }, [fetchUser]);
 
   const logout = () => {
     setIsAuth(false);
