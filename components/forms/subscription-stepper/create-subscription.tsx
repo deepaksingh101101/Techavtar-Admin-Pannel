@@ -3,8 +3,9 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
+  AccordionTrigger,
 } from '@/components/ui/accordion';
+
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -24,18 +25,36 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { profileSchema, type ProfileFormValues } from '@/lib/form-schema';
+import { z } from 'zod';
+import { SubscriptionFormValues, subscriptionSchema, type ProfileFormValues } from '@/lib/form-schema';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertTriangleIcon, Trash, Trash2Icon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { Controller } from 'react-hook-form';
+import { MultiSelect } from '@/components/ui/MultiSelect';
 
 interface SubscriptionFormType {
   initialData: any | null;
   categories: any;
 }
+
+const subscriptionFormSchema = z.object({
+  subscriptionId: z.number().nonnegative().optional(),
+  userId: z.number().nonnegative().optional(),
+  subscriptionPlan: z.string().min(1, 'Subscription Plan is required'),
+  numberOfDeliveries: z.number().positive('Number of Deliveries must be greater than zero'),
+  deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
+  subscriptionStartDate: z.string().min(1, 'Subscription Start Date is required'),
+  subscriptionEndDate: z.string().min(1, 'Subscription End Date is required'),
+  paymentStatus: z.string().optional(),
+  subscriptionStatus: z.enum(['Active', 'Inactive']),
+  customizationOptions: z.string().optional(),
+  addons: z.string().optional(),
+});
 
 export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
   initialData,
@@ -45,8 +64,7 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imgLoading, setImgLoading] = useState(false);
-  const title = initialData ? 'Edit product' : 'Create Your Profile';
+  const title = initialData ? 'Edit Subscription' : 'Create New Subscription';
   const description = initialData
     ? 'Create a subscription.'
     : 'To create new subscription, fill some basic information.';
@@ -57,36 +75,24 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
   const [data, setData] = useState({});
   const delta = currentStep - previousStep;
 
-  const defaultValues = {
-    jobs: [
-      {
-        jobtitle: '',
-        employer: '',
-        startdate: '',
-        enddate: '',
-        jobcountry: '',
-        jobcity: ''
-      }
-    ]
-  };
-
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema),
-    defaultValues,
-    mode: 'onChange'
+  const form = useForm<SubscriptionFormValues>({
+    resolver: zodResolver(subscriptionFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      deliveryDays: []
+    }
   });
 
   const {
     control,
-    formState: { errors }
+    formState: { errors },
+    trigger,
+    handleSubmit,
+    setValue,
+    watch,
   } = form;
 
-  const { append, remove, fields } = useFieldArray({
-    control,
-    name: 'jobs'
-  });
-
-  const onSubmit = async (data: ProfileFormValues) => {
+  const onSubmit = async (data: SubscriptionFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -116,35 +122,35 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
     }
   };
 
-  const processForm: SubmitHandler<ProfileFormValues> = (data) => {
+  const processForm: SubmitHandler<SubscriptionFormValues> = (data) => {
     setData(data);
     // api call and reset
     // form.reset();
   };
 
-  type FieldName = keyof ProfileFormValues;
-
   const steps = [
     {
       id: 'Step 1',
-      name: 'Personal Information',
-      fields: ['firstname', 'lastname', 'email', 'contactno', 'country', 'city']
+      name: 'Subscription Details',
+      fields: [
+        'subscriptionId',
+        'userId',
+        'subscriptionPlan',
+        'numberOfDeliveries',
+        'deliveryDays',
+        'subscriptionStartDate',
+        'subscriptionEndDate',
+        'paymentStatus',
+        'subscriptionStatus'
+      ]
     },
     {
       id: 'Step 2',
-      name: 'Professional Informations',
-      // fields are mapping and flattening for the error to be trigger  for the dynamic fields
-      fields: fields
-        ?.map((_, index) => [
-          `jobs.${index}.jobtitle`,
-          `jobs.${index}.employer`,
-          `jobs.${index}.startdate`,
-          `jobs.${index}.enddate`,
-          `jobs.${index}.jobcountry`,
-          `jobs.${index}.jobcity`
-          // Add other field names as needed
-        ])
-        .flat()
+      name: 'Customization Options',
+      fields: [
+        'customizationOptions',
+        'addons'
+      ]
     },
     { id: 'Step 3', name: 'Complete' }
   ];
@@ -152,15 +158,13 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
   const next = async () => {
     const fields = steps[currentStep].fields;
 
-    const output = await form.trigger(fields as FieldName[], {
-      shouldFocus: true
-    });
+    const output = await trigger(fields);
 
     if (!output) return;
 
     if (currentStep < steps.length - 1) {
       if (currentStep === steps.length - 2) {
-        await form.handleSubmit(processForm)();
+        await handleSubmit(processForm)();
       }
       setPreviousStep(currentStep);
       setCurrentStep((step) => step + 1);
@@ -174,8 +178,17 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
     }
   };
 
-  const countries = [{ id: 'wow', name: 'india' }];
-  const cities = [{ id: '2', name: 'kerala' }];
+  const deliveryDaysOptions = [
+    { id: '1', name: 'Monday' },
+    { id: '2', name: 'Tuesday' },
+    { id: '3', name: 'Wednesday' },
+    { id: '4', name: 'Thursday' },
+    { id: '5', name: 'Friday' },
+    { id: '6', name: 'Saturday' },
+    { id: '7', name: 'Sunday' }
+  ];
+
+  const selectedDeliveryDays = watch('deliveryDays');
 
   return (
     <>
@@ -229,7 +242,7 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
       <Separator />
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(processForm)}
+          onSubmit={handleSubmit(processForm)}
           className="w-full space-y-8"
         >
           <div
@@ -241,67 +254,108 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
           >
             {currentStep === 0 && (
               <>
-                <FormField
+                {/* <FormField
                   control={form.control}
-                  name="firstname"
+                  name="subscriptionId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="John"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="lastname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Doe"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="johndoe@gmail.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="contactno"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Contact Number</FormLabel>
+                      <FormLabel>Subscription ID</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
-                          placeholder="Enter you contact number"
+                          disabled={loading}
+                          placeholder="Enter Subscription ID"
+                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+                {/* <FormField
+                  control={form.control}
+                  name="userId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>User ID</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          disabled={loading}
+                          placeholder="Enter User ID"
+                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+                <FormField
+                  control={form.control}
+                  name="subscriptionPlan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subscription Plan</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Subscription Plan"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="numberOfDeliveries"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Number of Deliveries</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter Number of Deliveries"
+                          disabled={loading}
+                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+     <Controller
+  control={form.control}
+  name="deliveryDays"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Delivery Days</FormLabel>
+      <FormControl>
+        <MultiSelect
+          value={field.value || []}
+          onChange={(value) => field.onChange(value)}
+          options={deliveryDaysOptions}
+          disabled={loading}
+          placeholder="Select Delivery Days"
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+                <FormField
+                  control={form.control}
+                  name="subscriptionStartDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subscription Start Date</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
                           disabled={loading}
                           {...field}
                         />
@@ -312,10 +366,27 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
                 />
                 <FormField
                   control={form.control}
-                  name="country"
+                  name="subscriptionEndDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Country</FormLabel>
+                      <FormLabel>Subscription End Date</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          disabled={loading}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="paymentStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Payment Status</FormLabel>
                       <Select
                         disabled={loading}
                         onValueChange={field.onChange}
@@ -326,17 +397,13 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
                           <SelectTrigger>
                             <SelectValue
                               defaultValue={field.value}
-                              placeholder="Select a country"
+                              placeholder="Select Payment Status"
                             />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {/* @ts-ignore  */}
-                          {countries.map((country) => (
-                            <SelectItem key={country.id} value={country.id}>
-                              {country.name}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="paid">Paid</SelectItem>
+                          <SelectItem value="unpaid">Unpaid</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -345,10 +412,10 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
                 />
                 <FormField
                   control={form.control}
-                  name="city"
+                  name="subscriptionStatus"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>City</FormLabel>
+                      <FormLabel>Subscription Status</FormLabel>
                       <Select
                         disabled={loading}
                         onValueChange={field.onChange}
@@ -359,17 +426,13 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
                           <SelectTrigger>
                             <SelectValue
                               defaultValue={field.value}
-                              placeholder="Select a city"
+                              placeholder="Select Subscription Status"
                             />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {/* @ts-ignore  */}
-                          {cities.map((city) => (
-                            <SelectItem key={city.id} value={city.id}>
-                              {city.name}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="Active">Active</SelectItem>
+                          <SelectItem value="Inactive">Inactive</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -380,217 +443,51 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
             )}
             {currentStep === 1 && (
               <>
-                {fields?.map((field, index) => (
-                  <Accordion
-                    type="single"
-                    collapsible
-                    defaultValue="item-1"
-                    key={field.id}
-                  >
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger
-                        className={cn(
-                          'relative !no-underline [&[data-state=closed]>button]:hidden [&[data-state=open]>.alert]:hidden',
-                          errors?.jobs?.[index] && 'text-red-700'
-                        )}
-                      >
-                        {`Work Experience ${index + 1}`}
-
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="absolute right-8"
-                          onClick={() => remove(index)}
-                        >
-                          <Trash2Icon className="h-4 w-4 " />
-                        </Button>
-                        {errors?.jobs?.[index] && (
-                          <span className="alert absolute right-8">
-                            <AlertTriangleIcon className="h-4 w-4   text-red-700" />
-                          </span>
-                        )}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div
-                          className={cn(
-                            'relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3'
-                          )}
-                        >
-                          <FormField
-                            control={form.control}
-                            name={`jobs.${index}.jobtitle`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Job title</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    disabled={loading}
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`jobs.${index}.employer`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Employer</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="text"
-                                    disabled={loading}
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`jobs.${index}.startdate`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Start date</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="date"
-                                    disabled={loading}
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`jobs.${index}.enddate`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>End date</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="date"
-                                    disabled={loading}
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`jobs.${index}.jobcountry`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Job country</FormLabel>
-                                <Select
-                                  disabled={loading}
-                                  onValueChange={field.onChange}
-                                  value={field.value}
-                                  defaultValue={field.value}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue
-                                        defaultValue={field.value}
-                                        placeholder="Select your job country"
-                                      />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {countries.map((country) => (
-                                      <SelectItem
-                                        key={country.id}
-                                        value={country.id}
-                                      >
-                                        {country.name}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`jobs.${index}.jobcity`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Job city</FormLabel>
-                                <Select
-                                  disabled={loading}
-                                  onValueChange={field.onChange}
-                                  value={field.value}
-                                  defaultValue={field.value}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue
-                                        defaultValue={field.value}
-                                        placeholder="Select your job city"
-                                      />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    {cities.map((city) => (
-                                      <SelectItem key={city.id} value={city.id}>
-                                        {city.name}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                ))}
-
-                <div className="mt-4 flex justify-center">
-                  <Button
-                    type="button"
-                    className="flex justify-center"
-                    size={'lg'}
-                    onClick={() =>
-                      append({
-                        jobtitle: '',
-                        employer: '',
-                        startdate: '',
-                        enddate: '',
-                        jobcountry: '',
-                        jobcity: ''
-                      })
-                    }
-                  >
-                    Add More
-                  </Button>
-                </div>
+                <FormField
+                  control={form.control}
+                  name="customizationOptions"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Customization Options</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Customization Options (comma separated)"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="addons"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Add-ons</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Add-ons (comma separated)"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </>
             )}
             {currentStep === 2 && (
               <div>
                 <h1>Completed</h1>
                 <pre className="whitespace-pre-wrap">
-                  {JSON.stringify(data)}
+                  {JSON.stringify(data, null, 2)}
                 </pre>
               </div>
             )}
           </div>
-
-          {/* <Button disabled={loading} className="ml-auto" type="submit">
-            {action}
-          </Button> */}
         </form>
       </Form>
       {/* Navigation */}

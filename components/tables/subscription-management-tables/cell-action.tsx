@@ -68,9 +68,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={handleRegisterNewSubscription}>
+          {/* <DropdownMenuItem onClick={handleRegisterNewSubscription}>
             <UserPlus className="mr-2 h-4 w-4" /> Create New Subscription
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem onClick={handleEditSubscription}>
             <Edit className="mr-2 h-4 w-4" /> Edit Subscription Details
           </DropdownMenuItem>
@@ -86,9 +86,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={handleUpgradeAndRenewals}>
             <UserCheck className="mr-2 h-4 w-4" /> Handle Upgrade and Renewal
           </DropdownMenuItem>
-          {/* <DropdownMenuItem onClick={() => setOpen(true)}>
+          <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete User
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
