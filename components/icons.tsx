@@ -30,8 +30,10 @@ import {
   UserX2Icon,
   X,
   Briefcase, // this line is added
-  ShieldCheck
+  ShieldCheck,
+  Package,
 } from 'lucide-react';
+
 
 export type Icon = LucideIcon;
 
@@ -82,5 +84,6 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
-  management: Briefcase //this line is added
+  management: Briefcase, //this line is added
+  order: Package //this line is added
 };
