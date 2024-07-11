@@ -147,5 +147,11 @@ export const navItems: NavItem[] = [
     href: '/order-management',
     icon: 'order',
     label: 'create-order'
+  },
+  {
+    title: 'Product Management',
+    href: '/product-management',
+    icon: 'product',
+    label: 'create-product'
   }
 ];

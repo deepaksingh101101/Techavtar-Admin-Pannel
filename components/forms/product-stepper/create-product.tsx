@@ -6,7 +6,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -27,53 +26,50 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { z } from 'zod';
+import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { cn } from '@/lib/utils';
 import { MultiSelect } from '@/components/ui/MultiSelect';
-import { Textarea } from '@/components/ui/textarea';
 
-interface OrderManagementFormType {
+interface ProductFormType {
   initialData: any | null;
 }
 
-const orderFormSchema = z.object({
-  orderId: z.number().nonnegative().optional(),
-  userId: z.number().nonnegative().optional(),
-  deliveryDate: z.string().min(1, 'Delivery Date is required'),
-  deliveryTimeSlot: z.string().min(1, 'Delivery Time Slot is required'),
-  deliveryStatus: z.enum(['Pending', 'Delivered', 'Cancelled']),
-  productsOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
-  totalWeight: z.number().positive('Total Weight must be greater than zero'),
-  // addons: z.array(z.string()).optional(),
-  paymentStatus: z.enum(['Paid', 'Unpaid', 'Pending']),
-  specialInstructions: z.string().optional(),
+const productFormSchema = z.object({
+  productId: z.number().nonnegative().optional(),
+  productName: z.string().min(1, 'Product Name is required'),
+  type: z.string().min(1, 'Type is required'),
+  group: z.string().min(1, 'Group is required'),
+  season: z.string().min(1, 'Season is required'),
+  priority: z.string().min(1, 'Priority is required'),
+  roster: z.string().min(1, 'Roster is required'),
+  veggieNameInHindi: z.string().min(1, 'Veggie Name in Hindi is required'),
+  unitQuantity: z.number().positive('Unit Quantity must be greater than zero'),
+  pieces: z.number().positive('Pieces must be greater than zero'),
+  addons: z.string().optional(),
 });
 
-export const CreateOrder: React.FC<OrderManagementFormType> = ({
-  initialData
-}) => {
+export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = initialData ? 'Edit Order' : 'Create New Product';
+  const title = initialData ? 'Edit Product' : 'Create New Product';
   const description = initialData
-    ? 'Edit the Product details.'
-    : 'To create a new Product, fill in the required information.';
+    ? 'Edit product details.'
+    : 'To create a new product, fill in the required information.';
   const toastMessage = initialData ? 'Product updated.' : 'Product created.';
   const action = initialData ? 'Save changes' : 'Create';
+  const [previousStep, setPreviousStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [data, setData] = useState({});
 
   const form = useForm({
-    resolver: zodResolver(orderFormSchema),
+    resolver: zodResolver(productFormSchema),
     mode: 'onChange',
-    defaultValues: {
-      productsOrdered: [],
-      addons: [],
-    }
   });
 
   const {
@@ -85,18 +81,17 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     watch,
   } = form;
 
-  const onSubmit: SubmitHandler<typeof orderFormSchema._type> = async (data) => {
-
+  const onSubmit: SubmitHandler<typeof productFormSchema._type> = async (data) => {
     try {
-      // setLoading(true);
+      setLoading(true);
       if (initialData) {
-        // await axios.post(`/api/orders/edit-order/${initialData._id}`, data);
+        // await axios.post(`/api/products/edit-product/${initialData._id}`, data);
       } else {
-        // const res = await axios.post(`/api/orders/create-order`, data);
-        // console.log("order", res);
+        // const res = await axios.post(`/api/products/create-product`, data);
+        // console.log("product", res);
       }
-      // router.refresh();
-      // router.push(`/dashboard/orders`);
+      router.refresh();
+      router.push(`/dashboard/products`);
     } catch (error: any) {
     } finally {
       setLoading(false);
@@ -106,9 +101,9 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      //   await axios.delete(`/api/${params.storeId}/orders/${params.orderId}`);
-      // router.refresh();
-      // router.push(`/${params.storeId}/orders`);
+      //   await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
+      router.refresh();
+      router.push(`/${params.storeId}/products`);
     } catch (error: any) {
     } finally {
       setLoading(false);
@@ -116,34 +111,36 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     }
   };
 
+  const processForm: SubmitHandler<typeof productFormSchema._type> = (data) => {
+    setData(data);
+  };
+
   const steps = [
     {
       id: 'Step 1',
-      name: 'Order Details',
+      name: 'Product Details',
       fields: [
-        'orderId',
-        'userId',
-        'deliveryDate',
-        'deliveryTimeSlot',
-        'deliveryStatus',
-        'productsOrdered',
-        'totalWeight',
-        'paymentStatus',
+        'productId',
+        'productName',
+        'type',
+        'group',
+        'season',
+        'priority',
+        'roster',
+        'veggieNameInHindi',
+        'unitQuantity',
+        'pieces'
       ]
     },
     {
       id: 'Step 2',
-      name: 'Add-ons and Instructions',
+      name: 'Add-ons',
       fields: [
-        'addons',
-        'specialInstructions'
+        'addons'
       ]
     },
     { id: 'Step 3', name: 'Complete' }
   ];
-
-  const [previousStep, setPreviousStep] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
 
   const next = async () => {
     const fields = steps[currentStep].fields;
@@ -154,7 +151,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
 
     if (currentStep < steps.length - 1) {
       if (currentStep === steps.length - 2) {
-        await handleSubmit(onSubmit)();
+        await handleSubmit(processForm)();
       }
       setPreviousStep(currentStep);
       setCurrentStep((step) => step + 1);
@@ -168,13 +165,6 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     }
   };
 
-
-  const orderedOptions = [
-    { id: '1', name: 'Veggie Bag Fruit Basket' },
-    { id: '2', name: 'Mixed Bag Flower Bouquet' },
-    { id: '3', name: 'Weekly Veggie Bag' },
-    { id: '4', name: 'Monthly Veggie Bag Fruit Basket' },
-  ];
   return (
     <>
       <div className="flex items-center justify-between">
@@ -227,7 +217,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
       <Separator />
       <Form {...form}>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(processForm)}
           className="w-full space-y-8"
         >
           <div
@@ -239,17 +229,17 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
           >
             {currentStep === 0 && (
               <>
-                {/* <FormField
+                <FormField
                   control={form.control}
-                  name="orderId"
+                  name="productId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Order ID</FormLabel>
+                      <FormLabel>Product ID</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           disabled={loading}
-                          placeholder="Enter Order ID"
+                          placeholder="Enter Product ID"
                           {...field}
                         />
                       </FormControl>
@@ -259,32 +249,134 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
                 />
                 <FormField
                   control={form.control}
-                  name="userId"
+                  name="productName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>User ID</FormLabel>
+                      <FormLabel>Product Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Product Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Type"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="group"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Group</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Group"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="season"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Season</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Season"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="priority"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Priority</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Priority"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="roster"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Roster</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Roster"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="veggieNameInHindi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Veggie Name in Hindi</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Veggie Name in Hindi"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="unitQuantity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Unit Quantity (gms)</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           disabled={loading}
-                          placeholder="Enter User ID"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
-                <FormField
-                  control={form.control}
-                  name="deliveryDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Delivery Date</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          disabled={loading}
+                          placeholder="Enter Unit Quantity"
                           {...field}
                         />
                       </FormControl>
@@ -294,137 +386,18 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
                 />
                 <FormField
                   control={form.control}
-                  name="deliveryTimeSlot"
+                  name="pieces"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Delivery Time Slot</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="time"
-                          disabled={loading}
-                          placeholder="Enter Delivery Time Slot"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="deliveryStatus"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Delivery Status</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              defaultValue={field.value}
-                              placeholder="Select Delivery Status"
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Pending">Pending</SelectItem>
-                          <SelectItem value="Delivered">Delivered</SelectItem>
-                          <SelectItem value="Cancelled">Cancelled</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* <FormField
-                  control={form.control}
-                  name="productsOrdered"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Products Ordered</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          disabled={loading}
-                          placeholder="Enter Products Ordered (comma separated)"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
-
-
-<Controller
-  control={form.control}
-  name="productsOrdered"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Product  Ordered</FormLabel>
-      <FormControl>
-        <MultiSelect
-          value={field.value || []}
-          onChange={(value) => field.onChange(value)}
-          options={orderedOptions}
-          disabled={loading}
-          placeholder="Select Ordered Options"
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
-                <FormField
-                  control={form.control}
-                  name="totalWeight"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Total Weight (kg)</FormLabel>
+                      <FormLabel>Pieces</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           disabled={loading}
-                          placeholder="Enter Total Weight"
-                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                          value={field.value || ''}
+                          placeholder="Enter Pieces"
+                          {...field}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="paymentStatus"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Payment Status</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              defaultValue={field.value}
-                              placeholder="Select Payment Status"
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Paid">Paid</SelectItem>
-                          <SelectItem value="Unpaid">Unpaid</SelectItem>
-                          <SelectItem value="Pending">Pending</SelectItem>
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -441,28 +414,8 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
                       <FormLabel>Add-ons</FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
                           disabled={loading}
                           placeholder="Enter Add-ons (comma separated)"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="specialInstructions"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Special Instructions</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          type="text"
-                          disabled={loading}
-                          rows={5}
-                          placeholder="Enter Special Instructions"
                           {...field}
                         />
                       </FormControl>
@@ -476,33 +429,15 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
               <div>
                 <h1>Completed</h1>
                 <pre className="whitespace-pre-wrap">
-                  {JSON.stringify(watch(), null, 2)}
+                  {JSON.stringify(data, null, 2)}
                 </pre>
               </div>
             )}
           </div>
         </form>
       </Form>
-      {initialData && (
-        <div className="mt-8 pt-5 border-t border-gray-200">
-          <div className="flex justify-between">
-            <Heading
-              title="Delete Order"
-              description="This action cannot be undone."
-            />
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={onDelete}
-              disabled={loading}
-            >
-              Delete Order
-            </Button>
-          </div>
-        </div>
-      )}
-
-<div className="mt-8 pt-5">
+      {/* Navigation */}
+      <div className="mt-8 pt-5">
         <div className="flex justify-between">
           <button
             type="button"
@@ -546,8 +481,34 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
               />
             </svg>
           </button>
+          {currentStep === steps.length - 1 && (
+            <Button
+              type="submit"
+              disabled={loading}
+            >
+              {action}
+            </Button>
+          )}
         </div>
       </div>
+      {initialData && (
+        <div className="mt-8 pt-5 border-t border-gray-200">
+          <div className="flex justify-between">
+            <Heading
+              title="Delete Product"
+              description="This action cannot be undone."
+            />
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={onDelete}
+              disabled={loading}
+            >
+              Delete Product
+            </Button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

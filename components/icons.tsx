@@ -32,6 +32,7 @@ import {
   Briefcase, // this line is added
   ShieldCheck,
   Package,
+  ShoppingBasket,
 } from 'lucide-react';
 
 
@@ -85,5 +86,6 @@ export const Icons = {
   twitter: Twitter,
   check: Check,
   management: Briefcase, //this line is added
-  order: Package //this line is added
+  order: Package, //this line is added
+  product: ShoppingBasket //this line is added
 };
