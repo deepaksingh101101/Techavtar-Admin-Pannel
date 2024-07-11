@@ -45,17 +45,17 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
         className="block cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="form-multiselect block w-full py-2 pl-3 pr-10 text-base leading-6 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm sm:leading-5">
+        <div className="form-multiselect block w-full py-2 pl-3 pr-10 text-base leading-6 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm sm:leading-5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:focus:ring-indigo-400 dark:focus:border-indigo-400">
           {value.length ? value.join(', ') : placeholder}
         </div>
       </div>
       {isOpen && (
-        <div className="absolute mt-1 w-full rounded-md bg-white shadow-lg z-10">
+        <div className="absolute mt-1 w-full rounded-md bg-white shadow-lg z-10 dark:bg-gray-800">
           <ul className="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm sm:leading-5">
             {options.map((option) => (
               <li
                 key={option.id}
-                className="cursor-default select-none relative py-2 pl-3 pr-9"
+                className="cursor-default select-none relative py-2 pl-3 pr-9 dark:hover:bg-gray-700 dark:text-white"
                 onClick={() => handleSelect(option.name)}
               >
                 <span
@@ -66,7 +66,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                   {option.name}
                 </span>
                 {value.includes(option.name) && (
-                  <span className="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
+                  <span className="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4 dark:text-indigo-400">
                     <svg
                       className="h-5 w-5"
                       xmlns="http://www.w3.org/2000/svg"
