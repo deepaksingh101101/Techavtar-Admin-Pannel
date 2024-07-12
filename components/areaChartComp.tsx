@@ -100,7 +100,7 @@ export function AreaChartComp() {
             tickFormatter={(value) => `${value}`}
           />
           <Tooltip formatter={(value) => `${value}`} />
-          <Area type="monotone" dataKey="Engagement" stroke="black" fill="#adfa1d" />
+          <Area type="monotone" dataKey="Engagement" stroke="black" fill="rgb(173,250,29)" />
         </AreaChart>
       </ResponsiveContainer>
     </div>

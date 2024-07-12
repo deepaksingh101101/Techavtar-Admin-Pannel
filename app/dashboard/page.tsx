@@ -8,6 +8,21 @@ import itemsImage from '@/public/assets/icons/items.png'
 import orderImage from '@/public/assets/icons/order.png'
 import shopImage from '@/public/assets/icons/shop.png'
 import customerImage from '@/public/assets/icons/customers.png'
+import potato from '@/public/assets/icons/potato.png'
+import tomato from '@/public/assets/icons/tomato.png'
+import cucumber from '@/public/assets/icons/cucumber.png'
+import onion from '@/public/assets/icons/onion.png'
+import pumpkin from '@/public/assets/icons/pumpkin.png'
+import shop1 from '@/public/assets/icons/shop1.png'
+import shop2 from '@/public/assets/icons/shop2.png'
+import shop3 from '@/public/assets/icons/shop3.png'
+import shop4 from '@/public/assets/icons/shop4.png'
+import shop5 from '@/public/assets/icons/shop5.png'
+import premium1 from '@/public/assets/icons/premium1.png'
+import premium2 from '@/public/assets/icons/premium2.png'
+import premium3 from '@/public/assets/icons/premuim3.png'
+import premium4 from '@/public/assets/icons/premuim4.png'
+import premium5 from '@/public/assets/icons/premuim5.png'
 import {
   Card,
   CardContent,
@@ -55,6 +70,71 @@ export default function page() {
     },
   ];
   
+
+  const salesData = [
+    { avatar: potato, name: 'Potato', email:"₹59/kg",  amount: '1999.00 KG' },
+    { avatar: tomato, name: 'Tomato',  email:"₹36/kg", amount: '390.00 KG' },
+    { avatar: cucumber, name: 'Cucumber', email:"₹34/kg",  amount: '299.00 KG' },
+    { avatar: onion, name: 'Onion', email:"₹20/kg",  amount: '99.00 KG' },
+    { avatar: pumpkin, name: 'Pumpkin', email:"₹24/kg", amount: '39.00 KG' }
+  ];
+
+ const subscriptionPlans = [
+  {
+    name: 'Basic Veggie Pack',
+    avatar: premium1,
+    amount: '₹500',
+    itemsIncluded: [
+      { itemName: 'Potato', quantity: '5 KG' },
+      { itemName: 'Tomato', quantity: '2 KG' }
+    ]
+  },
+  {
+    name: 'Family Veggie Pack',
+    amount: '₹1500',
+    avatar: premium2,
+    itemsIncluded: [
+      { itemName: 'Cucumber', quantity: '3 KG' },
+      { itemName: 'Onion', quantity: '5 KG' }
+    ]
+  },
+  // {
+  //   name: 'Premium Veggie Pack',
+  //   amount: '₹2500',
+  //   avatar: premium3,
+  //   itemsIncluded: [
+  //     { itemName: 'Onion', quantity: '10 KG' },
+  //     { itemName: 'Pumpkin', quantity: '2 KG' }
+  //   ]
+  // },
+  {
+    name: "Garden Herb Pack",
+    avatar: premium4,
+    amount: "₹800",
+    "itemsIncluded": [
+     { itemName: "Parsley", quantity: "200 Grams" },
+      { itemName: "Cilantro", quantity: "300 Grams" }
+    ]
+  },
+  {
+    name: "Root Harvest Pack",
+    avatar: premium5,
+    amount: "₹1200",
+    itemsIncluded: [
+      { itemName: "Carrot", quantity: "5 KG" },
+      { itemName: "Beetroot", quantity: "3 KG" },
+    ]
+  }
+];
+
+
+  const storeData = [
+    { avatar: shop1, name: 'Green Harvest Market', email: '200kg Today', amount: '+₹1,999.00' },
+    { avatar: shop2, name: 'Organic Greens Hub', email: '45kg Today', amount: '+₹299.00' },
+    { avatar: shop3, name: 'Farm Fresh Vegetables', email: '47kg Today', amount: '+₹99.00' },
+    { avatar: shop4, name: 'Veggie Delight Store', email: '20kg Today', amount: '+₹39.00' },
+    { avatar: shop5, name: 'Fresh Veggie Corner', email: '237kg Today', amount: '+₹39.00' },
+  ];
 
   return (
     <ProtectedRoute>
@@ -121,7 +201,50 @@ export default function page() {
         </Card>
       ))}
                 </div>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+                
+              </TabsContent>
+            </Tabs>
+          </div>
+          <div className="text-white-50 flex lg:flex-nowrap flex-wrap justify-between items-center">
+          <AreaChartComp/>
+          <DonutComp/>
+        </div>
+
+
+{/* <div className="">
+<OrderRecentClient  />
+
+</div> */}
+
+
+<div className="flex my-6 justify-between mx-3 lg:flex-nowrap flex-wrap ">
+<Card className="w-full me-3">
+                    <CardHeader>
+                      <CardTitle>Top Selling Items</CardTitle>
+                      <CardDescription>
+                        You have 265 top items this month.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                    <RecentSales sales={salesData} />
+                    </CardContent>
+                  </Card>
+                  <Card className="w-full me-3">
+                    <CardHeader>
+                      <CardTitle>Most Popular Store</CardTitle>
+                      <CardDescription>
+                        You have 265 popular shop.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                    <RecentSales sales={storeData} />
+                    </CardContent>
+                  </Card>
+                  
+                </div>
+
+
+                <div className="grid mx-3 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
                   <Card className="col-span-4">
                     <CardHeader>
                       <CardTitle>Overview</CardTitle>
@@ -132,31 +255,16 @@ export default function page() {
                   </Card>
                   <Card className="col-span-4 md:col-span-3">
                     <CardHeader>
-                      <CardTitle>Recent Sales</CardTitle>
+                      <CardTitle>Popular Subscription</CardTitle>
                       <CardDescription>
-                        You made 265 sales this month.
+                        You have 265 most popular Subscription  .
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <RecentSales />
+                    <RecentSales sales={subscriptionPlans} />
                     </CardContent>
                   </Card>
                 </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-          <div className="text-white-50 flex lg:flex-nowrap flex-wrap justify-between items-center">
-          <AreaChartComp/>
-          <DonutComp/>
-        </div>
-
-
-<div className="">
-<OrderRecentClient  />
-
-</div>
-
-
         </ScrollArea>
        
       </MainLayout>
