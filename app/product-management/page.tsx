@@ -9,7 +9,7 @@ const breadcrumbItems = [{ title: 'Product Management', link: '/dashboard/produc
 export default function ProductManagementPage() {
   return (
     <MainLayout meta={{ title: 'Product Management' }}>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className="flex-1 space-y-4 min-h-screen p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
         <ProductManagementClient  />
       </div>

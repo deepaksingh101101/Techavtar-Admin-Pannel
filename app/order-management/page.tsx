@@ -8,7 +8,7 @@ const breadcrumbItems = [{ title: 'Order Management', link: '/dashboard/order-ma
 export default function OrderManagementPage() {
   return (
     <MainLayout meta={{ title: 'Order Management' }}>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className="flex-1 space-y-4 min-h-screen p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
         <OrderManagementClient  />
       </div>

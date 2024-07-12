@@ -7,7 +7,7 @@ const breadcrumbItems = [{ title: 'Order', link: '/dashboard/order' }];
 export default function page() {
   return (
     <ScrollArea className="h-full">
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className="flex-1 space-y-4 min-h-screen p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
         <CreateOrder categories={[]} initialData={null} />
       </div>

@@ -6,7 +6,7 @@ const breadcrumbItems = [{ title: 'Subscription', link: '/dashboard/subscription
 export default function page() {
   return (
     <ScrollArea className="h-full">
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className=" min-h-screen p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
         <CreateSubscriptionOne categories={[]} initialData={null} />
       </div>

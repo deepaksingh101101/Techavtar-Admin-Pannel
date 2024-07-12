@@ -10,7 +10,7 @@ export default function Page() {
   ];
   return (
     <ScrollArea className="h-full">
-      <div className="flex-1 space-y-4 p-5">
+      <div className="flex-1 space-y-4 min-h-screen p-5">
         <BreadCrumb items={breadcrumbItems} />
         <ProductForm
           categories={[
