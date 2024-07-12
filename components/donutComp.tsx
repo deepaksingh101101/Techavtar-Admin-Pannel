@@ -9,32 +9,46 @@ const donutData = [
   { name: 'Canceled', value: 100 }
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#FFBB28', 'green', 'red'];
 
 export function DonutComp() {
+  // Calculate the total number of items
+  const totalItems = donutData.reduce((acc, item) => acc + item.value, 0);
+
   return (
-    <div className='w-[100%]'>
-      <h5 className='ms-8' >ORDER TRACKING STATS</h5>
+    <div className='w-full max-w-2xl mx-auto p-6  rounded-lg  relative'>
+      <h5 className='text-center text-2xl font-semibold text-white mb-6'>ORDER TRACKING STATS</h5>
       <ResponsiveContainer width="100%" height={350}>
         <PieChart>
           <Pie
             data={donutData}
             cx="50%"
             cy="50%"
-            innerRadius={60}
-            outerRadius={80}
+            innerRadius={70}
+            outerRadius={90}
             fill="#8884d8"
             paddingAngle={5}
             dataKey="value"
+            isAnimationActive={true}
+            animationBegin={0}
+            animationDuration={800}
+            animationEasing="ease-out"
           >
             {donutData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Legend />
-          <Tooltip />
+          <Legend layout="vertical" align="right" verticalAlign="middle" />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#333', borderColor: '#333', borderRadius: '5px' }}
+            itemStyle={{ color: '#fff' }}
+          />
         </PieChart>
       </ResponsiveContainer>
+      <div className='absolute top-[55%] left-[41%] transform -translate-x-1/2 -translate-y-1/2 text-center'>
+        <div className='text-2xl font-bold text-white'>{totalItems}</div>
+        <div className='text-sm font-medium text-white'>Total Items</div>
+      </div>
     </div>
   );
 }

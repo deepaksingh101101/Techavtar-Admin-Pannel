@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
 import { AreaChartComp } from '@/components/areaChartComp';
 import { DonutComp } from '@/components/donutComp';
+import { OrderRecentClient } from '@/components/tables/recent-order-tables/client';
 
 export default function page() {
 
@@ -148,6 +149,14 @@ export default function page() {
           <AreaChartComp/>
           <DonutComp/>
         </div>
+
+
+<div className="">
+<OrderRecentClient  />
+
+</div>
+
+
         </ScrollArea>
        
       </MainLayout>
