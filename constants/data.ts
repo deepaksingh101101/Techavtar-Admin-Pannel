@@ -153,5 +153,11 @@ export const navItems: NavItem[] = [
     href: '/product-management',
     icon: 'product',
     label: 'create-product'
+  },
+  {
+    title: 'Complaint Management',
+    href: '/complaint-management',
+    icon: 'complaint',
+    label: 'create-complaint'
   }
 ];

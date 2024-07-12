@@ -87,5 +87,6 @@ export const Icons = {
   check: Check,
   management: Briefcase, //this line is added
   order: Package, //this line is added
-  product: ShoppingBasket //this line is added
+  product: ShoppingBasket, //this line is added
+  complaint: ShoppingBasket //this line is added
 };
