@@ -124,10 +124,10 @@ export const navItems: NavItem[] = [
     icon: 'user',
     label: 'User'
   },
-  { 
+  {
     title: 'User Management',
     href: '/user-management',
-    icon: 'management', 
+    icon: 'management',
     label: 'User Management'
   },
   {
@@ -165,5 +165,37 @@ export const navItems: NavItem[] = [
     href: '/employee-management',
     icon: 'user',
     label: 'create-employee'
+  },
+  {
+    title: 'Settings',
+    href: '/settings-management',
+    icon: 'settings',
+    label: 'settings',
+    subItems: [
+      {
+        title: 'General Settings',
+        href: '/settings-management/general',
+        icon: 'general',
+        label: 'general-settings'
+      },
+      {
+        title: 'Payment Settings',
+        href: '/settings-management/payment',
+        icon: 'paymentSetting',
+        label: 'payment-settings'
+      },
+      {
+        title: 'Notification Settings',
+        href: '/settings-management/notifications',
+        icon: 'notificationSetting',
+        label: 'notification-settings'
+      },
+      {
+        title: 'API Settings',
+        href: '/settings-management/API',
+        icon: 'api',
+        label: 'api-settings'
+      }
+    ]
   }
 ];

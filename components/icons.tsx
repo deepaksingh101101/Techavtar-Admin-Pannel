@@ -33,6 +33,10 @@ import {
   ShieldCheck,
   Package,
   ShoppingBasket,
+  Cog,
+  BadgeDollarSign,
+  BellPlus,
+  ArrowBigUpDash,
 } from 'lucide-react';
 
 
@@ -88,5 +92,9 @@ export const Icons = {
   management: Briefcase, //this line is added
   order: Package, //this line is added
   product: ShoppingBasket, //this line is added
-  complaint: ShoppingBasket //this line is added
+  complaint: ShoppingBasket, //this line is added
+  general: Cog, //this line is added
+  paymentSetting: BadgeDollarSign, //this line is added
+  notificationSetting: BellPlus, //this line is added
+  api: ArrowBigUpDash //this line is added
 };

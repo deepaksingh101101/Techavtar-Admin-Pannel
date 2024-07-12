@@ -14,9 +14,15 @@ export interface NavItem {
   href?: string;
   disabled?: boolean;
   external?: boolean;
-  icon?: keyof typeof Icons;
+  icon?: keyof typeof Icons; // Ensure the icon is of the correct type
   label?: string;
   description?: string;
+  subItems?: {
+    title: string;
+    href?: string;
+    icon?: keyof typeof Icons;
+    label?: string;
+  }[]; // Corrected type for subItems
 }
 
 export interface NavItemWithChildren extends NavItem {
