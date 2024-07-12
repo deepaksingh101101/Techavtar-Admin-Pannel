@@ -159,5 +159,11 @@ export const navItems: NavItem[] = [
     href: '/complaint-management',
     icon: 'complaint',
     label: 'create-complaint'
+  },
+  {
+    title: 'Employee Management',
+    href: '/employee-management',
+    icon: 'user',
+    label: 'create-employee'
   }
 ];

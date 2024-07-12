@@ -229,7 +229,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
           >
             {currentStep === 0 && (
               <>
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="productId"
                   render={({ field }) => (
@@ -246,7 +246,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name="productName"
@@ -377,8 +377,9 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                           type="number"
                           disabled={loading}
                           placeholder="Enter Unit Quantity"
-                          {...field}
-                        />
+                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                          value={field.value || ''}
+                                               />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -395,7 +396,9 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                           type="number"
                           disabled={loading}
                           placeholder="Enter Pieces"
-                          {...field}
+                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                          value={field.value || ''}
+                       
                         />
                       </FormControl>
                       <FormMessage />
