@@ -19,6 +19,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
 import { AreaChartComp } from '@/components/areaChartComp';
+import { DonutComp } from '@/components/donutComp';
 
 export default function page() {
 
@@ -143,8 +144,9 @@ export default function page() {
               </TabsContent>
             </Tabs>
           </div>
-          <div className="text-white-50">
+          <div className="text-white-50 flex lg:flex-nowrap flex-wrap justify-between items-center">
           <AreaChartComp/>
+          <DonutComp/>
         </div>
         </ScrollArea>
        

@@ -54,7 +54,7 @@ export function AreaChartComp() {
   };
 
   return (
-    <div className='max-w-[60%]'>
+    <div className='w-[100%]'>
       <div className='ms-12' >
         <ul className="mb-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
           <button
