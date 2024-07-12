@@ -18,6 +18,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Image from 'next/image';
+import { AreaChartComp } from '@/components/areaChartComp';
 
 export default function page() {
 
@@ -142,7 +143,11 @@ export default function page() {
               </TabsContent>
             </Tabs>
           </div>
+          <div className="text-white-50">
+          <AreaChartComp/>
+        </div>
         </ScrollArea>
+       
       </MainLayout>
     </ProtectedRoute>
   );
