@@ -30,12 +30,12 @@ export default function page() {
               </div>
             </div>
             <Tabs defaultValue="overview" className="space-y-4">
-              <TabsList>
+              {/* <TabsList>
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="analytics" disabled>
                   Analytics
                 </TabsTrigger>
-              </TabsList>
+              </TabsList> */}
               <TabsContent value="overview" className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                   <Card>
@@ -57,9 +57,9 @@ export default function page() {
                       </svg>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">$45,231.89</div>
+                      <div className="text-2xl font-bold">₹45,231.89</div>
                       <p className="text-xs text-muted-foreground">
-                        +20.1% from last month
+                        +20.1% this month
                       </p>
                     </CardContent>
                   </Card>
@@ -86,7 +86,7 @@ export default function page() {
                     <CardContent>
                       <div className="text-2xl font-bold">+2350</div>
                       <p className="text-xs text-muted-foreground">
-                        +180.1% from last month
+                        +180.1% this month
                       </p>
                     </CardContent>
                   </Card>
@@ -112,7 +112,7 @@ export default function page() {
                     <CardContent>
                       <div className="text-2xl font-bold">+12,234</div>
                       <p className="text-xs text-muted-foreground">
-                        +19% from last month
+                        +19% from this month
                       </p>
                     </CardContent>
                   </Card>

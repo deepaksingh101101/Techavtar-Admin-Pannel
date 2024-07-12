@@ -37,6 +37,7 @@ import {
   BadgeDollarSign,
   BellPlus,
   ArrowBigUpDash,
+  BookOpen,
 } from 'lucide-react';
 
 
@@ -96,5 +97,6 @@ export const Icons = {
   general: Cog, //this line is added
   paymentSetting: BadgeDollarSign, //this line is added
   notificationSetting: BellPlus, //this line is added
-  api: ArrowBigUpDash //this line is added
+  api: ArrowBigUpDash, //this line is added
+  report: BookOpen //this line is added
 };

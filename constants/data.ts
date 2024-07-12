@@ -167,6 +167,12 @@ export const navItems: NavItem[] = [
     label: 'create-employee'
   },
   {
+    title: 'Report And Analytics',
+    href: '/report-management',
+    icon: 'report',
+    label: 'create-report'
+  },
+  {
     title: 'Settings',
     href: '/settings-management',
     icon: 'settings',
@@ -197,5 +203,6 @@ export const navItems: NavItem[] = [
         label: 'api-settings'
       }
     ]
-  }
+  },
+ 
 ];
