@@ -3,7 +3,7 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 const donutData = [
-  { name: 'Total Orders', value: 400 },
+  { name: 'Unassigned', value: 400 },
   { name: 'Shipped', value: 300 },
   { name: 'Delivered', value: 200 },
   { name: 'Canceled', value: 100 }
@@ -47,7 +47,7 @@ export function DonutComp() {
       </ResponsiveContainer>
       <div className='absolute top-[55%] left-[41%] transform -translate-x-1/2 -translate-y-1/2 text-center'>
         <div className='text-2xl font-bold text-white'>{totalItems}</div>
-        <div className='text-sm font-medium text-white'>Total Items</div>
+        <div className='text-sm font-medium text-white'>Total Orders</div>
       </div>
     </div>
   );

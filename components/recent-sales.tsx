@@ -15,10 +15,10 @@ interface RecentSalesProps {
 
 export function RecentSales({ sales }: RecentSalesProps) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-3">
       {sales.map((sale, index) => (
-        <div className="flex items-center" key={index}>
-          <Avatar className="h-9 w-9">
+        <div className="flex items-center p-3 transition-all duration-200 transform hover:scale-105 hover:bg-red-500" key={index}>
+        <Avatar className="h-9 w-9">
             {sale.avatar ? (
               <Image src={sale.avatar} alt="Avatar" />
             ) : (
@@ -27,8 +27,8 @@ export function RecentSales({ sales }: RecentSalesProps) {
               </AvatarFallback>
             )}
           </Avatar>
-          <div className="ml-4 space-y-1">
-            <p className="text-sm font-medium leading-none">{sale.name || 'Unnamed'}</p>
+          <div className="ml-4 space-y-1 ">
+          <p className="text-sm font-medium leading-none">{sale.name || 'Unnamed'}</p>
 {         sale?.email &&    <p className="text-sm text-muted-foreground">{sale.email || 'No email provided'}</p>
 }            {sale.itemsIncluded && sale.itemsIncluded.map((item) => (
               <p key={item.itemName} className="text-sm text-muted-foreground">
