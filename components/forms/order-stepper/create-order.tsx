@@ -58,11 +58,11 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = initialData ? 'Edit Order' : 'Create New Product';
+  const title = initialData ? 'Edit Order' : 'Create New Order';
   const description = initialData
-    ? 'Edit the Product details.'
-    : 'To create a new Product, fill in the required information.';
-  const toastMessage = initialData ? 'Product updated.' : 'Product created.';
+    ? 'Edit the Order details.'
+    : 'To create a new Order, fill in the required information.';
+  const toastMessage = initialData ? 'Order updated.' : 'Order created.';
   const action = initialData ? 'Save changes' : 'Create';
 
   const form = useForm({
