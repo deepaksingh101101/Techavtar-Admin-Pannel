@@ -38,11 +38,13 @@ const yearData = [
   { name: 'Dec', Engagement: Math.floor(Math.random() * 5000) + 1000 }
 ];
 
+type TabType = 'week' | 'month' | 'year';
+
 export function AreaChartComp() {
   const [data, setData] = useState(yearData);
   const [activeTab, setActiveTab] = useState('year');
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
     if (tab === 'week') {
       setData(weekData);
