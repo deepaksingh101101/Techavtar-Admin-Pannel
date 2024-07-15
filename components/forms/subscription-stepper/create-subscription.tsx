@@ -156,20 +156,19 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
   ];
 
   const next = async () => {
-    const fields = steps[currentStep].fields;
-
-    const output = await trigger(fields);
-
-    if (!output) return;
-
     if (currentStep < steps.length - 1) {
-      if (currentStep === steps.length - 2) {
-        await handleSubmit(processForm)();
+      const fields:any = steps[currentStep].fields;
+      if (fields) {
+        const output = await trigger(fields);
+        if (!output) return;
       }
-      setPreviousStep(currentStep);
-      setCurrentStep((step) => step + 1);
+  
+      setCurrentStep(step => step + 1);
+    } else {
+      // await handleSubmit(onSubmit)();
     }
   };
+  
 
   const prev = () => {
     if (currentStep > 0) {
