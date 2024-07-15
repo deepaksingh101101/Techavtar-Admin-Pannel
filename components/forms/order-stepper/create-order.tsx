@@ -41,9 +41,7 @@ interface OrderManagementFormType {
 }
 
 const orderFormSchema = z.object({
-  orderId: z.number().nonnegative().optional(),
-  userId: z.number().nonnegative().optional(),
-  deliveryDate: z.string().min(1, 'Delivery Date is required'),
+   deliveryDate: z.string().min(1, 'Delivery Date is required'),
   deliveryTimeSlot: z.string().min(1, 'Delivery Time Slot is required'),
   deliveryStatus: z.string(),
   productsOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
@@ -77,7 +75,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
       productsOrdered: [],
       totalWeight: 0,  // Handle properly in your input as you suggested
       paymentStatus: 'Pending',
-      addons: [],
+      addons: '',
       specialInstructions: ''
     }
   });

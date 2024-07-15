@@ -37,6 +37,7 @@ interface ProductFormType {
   initialData: any | null;
 }
 
+
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
@@ -51,7 +52,7 @@ const productFormSchema = z.object({
   addons: z.string().optional(),
 });
 
-type ProductFormSchemaType = z.infer<typeof productFormSchema>;
+export type ProductFormValues = z.infer<typeof productFormSchema>;
 
 export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) => {
   const params = useParams();
@@ -66,9 +67,9 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   const action = initialData ? 'Save changes' : 'Create';
   const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
-  const [data, setData] = useState<ProductFormSchemaType | null>(null);
+  const [data, setData] = useState({});
 
-  const form = useForm<ProductFormSchemaType>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     mode: 'onChange',
   });
@@ -82,7 +83,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     watch,
   } = form;
 
-  const onSubmit: SubmitHandler<ProductFormSchemaType> = async (data) => {
+  const onSubmit = async (data:ProductFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -112,7 +113,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     }
   };
 
-  const processForm: SubmitHandler<ProductFormSchemaType> = (data) => {
+  const processForm: SubmitHandler<ProductFormValues> = (data) => {
     setData(data);
   };
 
@@ -143,20 +144,27 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     { id: 'Step 3', name: 'Complete' }
   ];
 
-  const next = async () => {
-    if (currentStep < steps.length - 1) {
-      const fields:any = steps[currentStep].fields;
-      if (fields) {
-        const output = await trigger(fields);
-        if (!output) return;
-      }
   
-      setCurrentStep(step => step + 1);
-    } else {
-      // await handleSubmit(onSubmit)();
+  type FieldName = keyof ProductFormValues;
+
+  
+  const next = async () => {
+    const fields = steps[currentStep].fields;
+
+    const output = await form.trigger(fields as FieldName[], {
+      shouldFocus: true
+    });
+
+    if (!output) return;
+
+    if (currentStep < steps.length - 1) {
+      if (currentStep === steps.length - 2) {
+        await form.handleSubmit(processForm)();
+      }
+      setPreviousStep(currentStep);
+      setCurrentStep((step) => step + 1);
     }
   };
-  
 
   const prev = () => {
     if (currentStep > 0) {
