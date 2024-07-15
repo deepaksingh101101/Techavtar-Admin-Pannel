@@ -79,7 +79,7 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
     resolver: zodResolver(subscriptionFormSchema),
     mode: 'onChange',
     defaultValues: {
-      deliveryDays: undefined,
+      deliveryDays: [],
       paymentStatus:"unpaid"
     }
   });

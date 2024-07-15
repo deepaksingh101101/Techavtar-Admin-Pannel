@@ -45,7 +45,7 @@ export const subscriptionSchema = z.object({
   userId: z.number(),
   subscriptionPlan: z.string().min(3, { message: 'Subscription Plan must be at least 3 characters' }),
   numberOfDeliveries: z.number(),
-  deliveryDays: z.array(z.string().min(1, { message: 'Delivery day must be a valid string' })),
+  deliveryDays: z.array(z.string()).min(1,{message:"Delivery Days is Required"}),
   customizationOptions: z.array(z.string().min(1)).optional(),
   addons: z.array(z.string().min(1)).optional(),
   subscriptionStartDate: z.string().refine((value) => /^\d{4}-\d{2}-\d{2}$/.test(value), {
