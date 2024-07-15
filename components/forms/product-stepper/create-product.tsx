@@ -31,8 +31,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { MultiSelect } from '@/components/ui/MultiSelect';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 
 interface ProductFormType {
   initialData: any | null;
@@ -52,6 +51,8 @@ const productFormSchema = z.object({
   addons: z.string().optional(),
 });
 
+type ProductFormSchemaType = z.infer<typeof productFormSchema>;
+
 export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
@@ -65,9 +66,9 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   const action = initialData ? 'Save changes' : 'Create';
   const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<ProductFormSchemaType | null>(null);
 
-  const form = useForm({
+  const form = useForm<ProductFormSchemaType>({
     resolver: zodResolver(productFormSchema),
     mode: 'onChange',
   });
@@ -81,7 +82,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     watch,
   } = form;
 
-  const onSubmit: SubmitHandler<typeof productFormSchema._type> = async (data) => {
+  const onSubmit: SubmitHandler<ProductFormSchemaType> = async (data) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -111,7 +112,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     }
   };
 
-  const processForm: SubmitHandler<typeof productFormSchema._type> = (data) => {
+  const processForm: SubmitHandler<ProductFormSchemaType> = (data) => {
     setData(data);
   };
 
@@ -143,20 +144,19 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   ];
 
   const next = async () => {
-    const fields = steps[currentStep].fields;
-
-    const output = await trigger(fields);
-
-    if (!output) return;
-
     if (currentStep < steps.length - 1) {
-      if (currentStep === steps.length - 2) {
-        await handleSubmit(processForm)();
+      const fields:any = steps[currentStep].fields;
+      if (fields) {
+        const output = await trigger(fields);
+        if (!output) return;
       }
-      setPreviousStep(currentStep);
-      setCurrentStep((step) => step + 1);
+  
+      setCurrentStep(step => step + 1);
+    } else {
+      // await handleSubmit(onSubmit)();
     }
   };
+  
 
   const prev = () => {
     if (currentStep > 0) {
@@ -229,24 +229,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
           >
             {currentStep === 0 && (
               <>
-                {/* <FormField
-                  control={form.control}
-                  name="productId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product ID</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          disabled={loading}
-                          placeholder="Enter Product ID"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
                 <FormField
                   control={form.control}
                   name="productName"
@@ -379,7 +361,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                           placeholder="Enter Unit Quantity"
                           onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                           value={field.value || ''}
-                                               />
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -398,7 +380,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                           placeholder="Enter Pieces"
                           onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                           value={field.value || ''}
-                       
                         />
                       </FormControl>
                       <FormMessage />
@@ -488,6 +469,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
             <Button
               type="submit"
               disabled={loading}
+              onClick={handleSubmit(onSubmit)}
             >
               {action}
             </Button>
