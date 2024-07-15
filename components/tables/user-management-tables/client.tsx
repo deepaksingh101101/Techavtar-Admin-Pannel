@@ -39,7 +39,7 @@ export const UserManagementClient: React.FC = () => {
       <div className="flex items-start justify-between">
         <Heading
           title={`Users (${data.length})`}
-          description="Manage USers (Client side table functionalities.)"
+          description="Manage Users (Client side table functionalities.)"
         />
         <Button
           className="text-xs md:text-sm"
