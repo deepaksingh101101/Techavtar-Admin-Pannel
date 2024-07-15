@@ -46,13 +46,6 @@ export default function page() {
 
   
 
-  // const salesData: Sale[] = [
-  //   { avatar: potato, name: 'Potato', email: "₹59/kg", amount: '1999.00 KG' },
-  //   { avatar: tomato, name: 'Tomato', email: "₹36/kg", amount: '390.00 KG' },
-  //   { avatar: cucumber, name: 'Cucumber', email: "₹34/kg", amount: '299.00 KG' },
-  //   { avatar: onion, name: 'Onion', email: "₹20/kg", amount: '99.00 KG' },
-  //   { avatar: pumpkin, name: 'Pumpkin', email: "₹24/kg", amount: '39.00 KG' }
-  // ];
 
   
   // const subscriptionPlans: Sale[] = [
@@ -261,7 +254,7 @@ export default function page() {
 </div>
 
 
-{/* <div className="flex my-6 justify-between mx-3 lg:flex-nowrap flex-wrap ">
+<div className="flex my-6 justify-between mx-3 lg:flex-nowrap flex-wrap ">
 <Card className="w-full me-3">
                     <CardHeader>
                       <CardTitle>Top Selling Items</CardTitle>
@@ -308,7 +301,7 @@ export default function page() {
                     <RecentSales sales={subscriptionPlans} />
                     </CardContent>
                   </Card>
-                </div> */}
+                </div>
         </ScrollArea>
        
       </MainLayout>

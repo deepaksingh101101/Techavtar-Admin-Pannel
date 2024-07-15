@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Image from 'next/image';
+import { StaticImageData } from "next/image";
 
 interface Sale {
-  avatar?: string;
+  avatar?: StaticImageData;
   name?: string;
   email?: string;
   amount?: string;
