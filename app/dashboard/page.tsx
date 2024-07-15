@@ -32,12 +32,72 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { AreaChartComp } from '@/components/areaChartComp';
 import { DonutComp } from '@/components/donutComp';
 import { OrderRecentClient } from '@/components/tables/recent-order-tables/client';
 
+
+
+
 export default function page() {
+
+  interface RecentSalesProps {
+    sales: Sale[];
+  }
+
+  type Sale = {
+    avatar: StaticImageData;
+    name: string;
+    email: string; // or description if you have descriptions instead of emails
+    amount: string;
+  };
+  
+  
+
+  const salesData: Sale[] = [
+    { avatar: potato, name: 'Potato', email: "₹59/kg", amount: '1999.00 KG' },
+    { avatar: tomato, name: 'Tomato', email: "₹36/kg", amount: '390.00 KG' },
+    { avatar: cucumber, name: 'Cucumber', email: "₹34/kg", amount: '299.00 KG' },
+    { avatar: onion, name: 'Onion', email: "₹20/kg", amount: '99.00 KG' },
+    { avatar: pumpkin, name: 'Pumpkin', email: "₹24/kg", amount: '39.00 KG' }
+  ];
+  
+  const storeData: Sale[] = [
+    { avatar: shop1, name: 'Green Harvest Market', email: '200kg Today', amount: '+₹1,999.00' },
+    { avatar: shop2, name: 'Organic Greens Hub', email: '45kg Today', amount: '+₹299.00' },
+    { avatar: shop3, name: 'Farm Fresh Vegetables', email: '47kg Today', amount: '+₹99.00' },
+    { avatar: shop4, name: 'Veggie Delight Store', email: '20kg Today', amount: '+₹39.00' },
+    { avatar: shop5, name: 'Fresh Veggie Corner', email: '237kg Today', amount: '+₹39.00' },
+  ];
+  
+  const subscriptionPlans: Sale[] = [
+    {
+      avatar: premium1,
+      name: 'Basic Veggie Pack',
+      email: 'Includes: Potato - 5 KG, Tomato - 2 KG',
+      amount: '₹500',
+    },
+    {
+      avatar: premium2,
+      name: 'Family Veggie Pack',
+      email: 'Includes: Cucumber - 3 KG, Onion - 5 KG',
+      amount: '₹1500',
+    },
+    {
+      avatar: premium4,
+      name: 'Garden Herb Pack',
+      email: 'Includes: Parsley - 200 Grams, Cilantro - 300 Grams',
+      amount: '₹800',
+    },
+    {
+      avatar: premium5,
+      name: 'Root Harvest Pack',
+      email: 'Includes: Carrot - 5 KG, Beetroot - 3 KG',
+      amount: '₹1200',
+    }
+  ];
+  
 
   const cardData = [
     {
@@ -71,70 +131,70 @@ export default function page() {
   ];
   
 
-  const salesData = [
-    { avatar: potato, name: 'Potato', email:"₹59/kg",  amount: '1999.00 KG' },
-    { avatar: tomato, name: 'Tomato',  email:"₹36/kg", amount: '390.00 KG' },
-    { avatar: cucumber, name: 'Cucumber', email:"₹34/kg",  amount: '299.00 KG' },
-    { avatar: onion, name: 'Onion', email:"₹20/kg",  amount: '99.00 KG' },
-    { avatar: pumpkin, name: 'Pumpkin', email:"₹24/kg", amount: '39.00 KG' }
-  ];
+//   const salesData = [
+//     { avatar: potato, name: 'Potato', email:"₹59/kg",  amount: '1999.00 KG' },
+//     { avatar: tomato, name: 'Tomato',  email:"₹36/kg", amount: '390.00 KG' },
+//     { avatar: cucumber, name: 'Cucumber', email:"₹34/kg",  amount: '299.00 KG' },
+//     { avatar: onion, name: 'Onion', email:"₹20/kg",  amount: '99.00 KG' },
+//     { avatar: pumpkin, name: 'Pumpkin', email:"₹24/kg", amount: '39.00 KG' }
+//   ];
 
- const subscriptionPlans = [
-  {
-    name: 'Basic Veggie Pack',
-    avatar: premium1,
-    amount: '₹500',
-    itemsIncluded: [
-      { itemName: 'Potato', quantity: '5 KG' },
-      { itemName: 'Tomato', quantity: '2 KG' }
-    ]
-  },
-  {
-    name: 'Family Veggie Pack',
-    amount: '₹1500',
-    avatar: premium2,
-    itemsIncluded: [
-      { itemName: 'Cucumber', quantity: '3 KG' },
-      { itemName: 'Onion', quantity: '5 KG' }
-    ]
-  },
-  // {
-  //   name: 'Premium Veggie Pack',
-  //   amount: '₹2500',
-  //   avatar: premium3,
-  //   itemsIncluded: [
-  //     { itemName: 'Onion', quantity: '10 KG' },
-  //     { itemName: 'Pumpkin', quantity: '2 KG' }
-  //   ]
-  // },
-  {
-    name: "Garden Herb Pack",
-    avatar: premium4,
-    amount: "₹800",
-    "itemsIncluded": [
-     { itemName: "Parsley", quantity: "200 Grams" },
-      { itemName: "Cilantro", quantity: "300 Grams" }
-    ]
-  },
-  {
-    name: "Root Harvest Pack",
-    avatar: premium5,
-    amount: "₹1200",
-    itemsIncluded: [
-      { itemName: "Carrot", quantity: "5 KG" },
-      { itemName: "Beetroot", quantity: "3 KG" },
-    ]
-  }
-];
+//  const subscriptionPlans = [
+//   {
+//     name: 'Basic Veggie Pack',
+//     avatar: premium1,
+//     amount: '₹500',
+//     itemsIncluded: [
+//       { itemName: 'Potato', quantity: '5 KG' },
+//       { itemName: 'Tomato', quantity: '2 KG' }
+//     ]
+//   },
+//   {
+//     name: 'Family Veggie Pack',
+//     amount: '₹1500',
+//     avatar: premium2,
+//     itemsIncluded: [
+//       { itemName: 'Cucumber', quantity: '3 KG' },
+//       { itemName: 'Onion', quantity: '5 KG' }
+//     ]
+//   },
+//   // {
+//   //   name: 'Premium Veggie Pack',
+//   //   amount: '₹2500',
+//   //   avatar: premium3,
+//   //   itemsIncluded: [
+//   //     { itemName: 'Onion', quantity: '10 KG' },
+//   //     { itemName: 'Pumpkin', quantity: '2 KG' }
+//   //   ]
+//   // },
+//   {
+//     name: "Garden Herb Pack",
+//     avatar: premium4,
+//     amount: "₹800",
+//     "itemsIncluded": [
+//      { itemName: "Parsley", quantity: "200 Grams" },
+//       { itemName: "Cilantro", quantity: "300 Grams" }
+//     ]
+//   },
+//   {
+//     name: "Root Harvest Pack",
+//     avatar: premium5,
+//     amount: "₹1200",
+//     itemsIncluded: [
+//       { itemName: "Carrot", quantity: "5 KG" },
+//       { itemName: "Beetroot", quantity: "3 KG" },
+//     ]
+//   }
+// ];
 
 
-  const storeData = [
-    { avatar: shop1, name: 'Green Harvest Market', email: '200kg Today', amount: '+₹1,999.00' },
-    { avatar: shop2, name: 'Organic Greens Hub', email: '45kg Today', amount: '+₹299.00' },
-    { avatar: shop3, name: 'Farm Fresh Vegetables', email: '47kg Today', amount: '+₹99.00' },
-    { avatar: shop4, name: 'Veggie Delight Store', email: '20kg Today', amount: '+₹39.00' },
-    { avatar: shop5, name: 'Fresh Veggie Corner', email: '237kg Today', amount: '+₹39.00' },
-  ];
+//   const storeData = [
+//     { avatar: shop1, name: 'Green Harvest Market', email: '200kg Today', amount: '+₹1,999.00' },
+//     { avatar: shop2, name: 'Organic Greens Hub', email: '45kg Today', amount: '+₹299.00' },
+//     { avatar: shop3, name: 'Farm Fresh Vegetables', email: '47kg Today', amount: '+₹99.00' },
+//     { avatar: shop4, name: 'Veggie Delight Store', email: '20kg Today', amount: '+₹39.00' },
+//     { avatar: shop5, name: 'Fresh Veggie Corner', email: '237kg Today', amount: '+₹39.00' },
+//   ];
 
   return (
     <ProtectedRoute>
