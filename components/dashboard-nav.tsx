@@ -71,23 +71,24 @@ export function DashboardNav({
                     </div>
                   ) : (
                     <Link
-                      href={item.disabled ? '/' : item.href}
-                      className={cn(
-                        'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                        path === item.href ? 'bg-accent' : 'transparent',
-                        item.disabled && 'cursor-not-allowed opacity-80'
-                      )}
-                      onClick={() => {
-                        if (setOpen) setOpen(false);
-                      }}
-                    >
-                      <Icon className={`ml-3 size-5`} />
-                      {isMobileNav || (!isMinimized && !isMobileNav) ? (
-                        <span className="mr-2 truncate">{item.title}</span>
-                      ) : (
-                        ''
-                      )}
-                    </Link>
+                    href={item.disabled ? '/' : (item.href || '/')}
+                    className={cn(
+                      'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+                      path === item.href ? 'bg-accent' : 'transparent',
+                      item.disabled && 'cursor-not-allowed opacity-80'
+                    )}
+                    onClick={() => {
+                      if (setOpen) setOpen(false);
+                    }}
+                  >
+                    <Icon className={`ml-3 size-5`} />
+                    {isMobileNav || (!isMinimized && !isMobileNav) ? (
+                      <span className="mr-2 truncate">{item.title}</span>
+                    ) : (
+                      ''
+                    )}
+                  </Link>
+                  
                   )}
                 </TooltipTrigger>
                 <TooltipContent
@@ -106,24 +107,25 @@ export function DashboardNav({
                     return (
                       <Tooltip key={subIndex}>
                         <TooltipTrigger asChild>
-                          <Link
-                            href={subItem.disabled ? '/' : subItem.href}
-                            className={cn(
-                              'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                              path === subItem.href ? 'bg-accent' : 'transparent',
-                              subItem.disabled && 'cursor-not-allowed opacity-80'
-                            )}
-                            onClick={() => {
-                              if (setOpen) setOpen(false);
-                            }}
-                          >
-                            <SubIcon className={`ml-1 size-5`} />
-                            {isMobileNav || (!isMinimized && !isMobileNav) ? (
-                              <span className="mr-2 truncate">{subItem.title}</span>
-                            ) : (
-                              ''
-                            )}
-                          </Link>
+                        <Link
+  href={subItem.href ? '/' : (subItem.href || '/')} // Ensure href is never undefined
+  className={cn(
+    'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+    path === subItem.href ? 'bg-accent' : 'transparent', // Conditional styling based on the current path
+    subItem.href && 'cursor-not-allowed opacity-80' // Style for disabled item
+  )}
+  onClick={() => {
+    if (setOpen) setOpen(false); // Close the menu when a link is clicked, typically useful in mobile views
+  }}
+>
+  <SubIcon className={`ml-1 size-5`} /> 
+  {isMobileNav || (!isMinimized && !isMobileNav) ? (
+    <span className="mr-2 truncate">{subItem.title}</span> // Conditionally render the title based on nav state
+  ) : (
+    ''
+  )}
+</Link>
+
                         </TooltipTrigger>
                         <TooltipContent
                           align="center"
