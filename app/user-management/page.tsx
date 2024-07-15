@@ -11,7 +11,7 @@ export default function UserManagementPage() {
     <MainLayout meta={{ title: 'User Management' }}>
       <div className="flex-1 space-y-4  min-h-screen p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
-        <UserManagementClient data={users} />
+        <UserManagementClient />
       </div>
     </MainLayout>
   );
