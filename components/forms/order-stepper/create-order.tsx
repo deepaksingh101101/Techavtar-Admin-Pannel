@@ -45,11 +45,11 @@ const orderFormSchema = z.object({
   userId: z.number().nonnegative().optional(),
   deliveryDate: z.string().min(1, 'Delivery Date is required'),
   deliveryTimeSlot: z.string().min(1, 'Delivery Time Slot is required'),
-  deliveryStatus: z.enum(['Pending', 'Delivered', 'Cancelled']),
+  deliveryStatus: z.string(),
   productsOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
   totalWeight: z.number().positive('Total Weight must be greater than zero'),
-  // addons: z.array(z.string()).optional(),
-  paymentStatus: z.enum(['Paid', 'Unpaid', 'Pending']),
+  addons: z.array(z.string()).optional(),
+  paymentStatus: z.string(),
   specialInstructions: z.string().optional(),
 });
 
@@ -71,21 +71,33 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     resolver: zodResolver(orderFormSchema),
     mode: 'onChange',
     defaultValues: {
+      deliveryDate: '',
+      deliveryTimeSlot: '',
+      deliveryStatus: 'Pending',  // Ensure this matches one of the specific string literals
       productsOrdered: [],
+      totalWeight: 0,  // Handle properly in your input as you suggested
+      paymentStatus: 'Pending',
       addons: [],
+      specialInstructions: ''
     }
   });
+  
+  
 
-  const {
-    control,
-    formState: { errors },
-    trigger,
-    handleSubmit,
-    setValue,
-    watch,
-  } = form;
+  // const {
+  //   control,
+  //   formState: { errors },
+  //   trigger,
+  //   handleSubmit,
+  //   setValue,
+  //   watch,
+  // } = form;
 
-  const onSubmit: SubmitHandler<typeof orderFormSchema._type> = async (data) => {
+  const { control,  trigger,watch,
+    handleSubmit, formState: { errors } } = form;
+
+
+    const onSubmit: SubmitHandler<typeof orderFormSchema._type> = async (data) => {
 
     try {
       // setLoading(true);
@@ -323,7 +335,7 @@ const steps: Step[] = [
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="deliveryStatus"
                   render={({ field }) => (
@@ -352,7 +364,39 @@ const steps: Step[] = [
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
+
+<FormField
+  control={form.control}
+  name="deliveryStatus"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Delivery Status</FormLabel>
+      <Select
+        disabled={loading}
+        onValueChange={field.onChange}
+        value={field.value as "Pending" | "Delivered" | "Cancelled"}  // Explicit casting
+        defaultValue={field.value}
+      >
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue
+              defaultValue={field.value}
+              placeholder="Select Delivery Status"
+            />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          <SelectItem value="Pending">Pending</SelectItem>
+          <SelectItem value="Delivered">Delivered</SelectItem>
+          <SelectItem value="Cancelled">Cancelled</SelectItem>
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
                 {/* <FormField
                   control={form.control}
                   name="productsOrdered"
@@ -472,7 +516,6 @@ const steps: Step[] = [
                       <FormLabel>Special Instructions</FormLabel>
                       <FormControl>
                         <Textarea
-                          type="text"
                           disabled={loading}
                           rows={5}
                           placeholder="Enter Special Instructions"
