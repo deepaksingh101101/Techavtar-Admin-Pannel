@@ -6,7 +6,7 @@ import { RecentSales } from '@/components/recent-sales';
 import { Button } from '@/components/ui/button';
 import itemsImage from '@/public/assets/icons/items.png'
 import orderImage from '@/public/assets/icons/order.png'
-import shopImage from '@/public/assets/icons/shop.png'
+import shopImage from '@/public/assets/icons/premuim3.png'
 import customerImage from '@/public/assets/icons/customers.png'
 import potato from '@/public/assets/icons/potato.png'
 import tomato from '@/public/assets/icons/tomato.png'
@@ -93,9 +93,9 @@ export default function page() {
     },
     {
       id: 3,
-      title: 'Grocery Stores',
-      count: '224',
-      description: '0 Stores connected today',
+      title: 'Total Plans',
+      count: '24',
+      description: '0 Plans Created today',
       imageSrc: shopImage,
     },
     {
@@ -268,9 +268,9 @@ export default function page() {
                   </Card>
                   <Card className="w-full me-3">
                     <CardHeader>
-                      <CardTitle>Most Popular Store</CardTitle>
+                      <CardTitle>Recommended Store</CardTitle>
                       <CardDescription>
-                        You have 265 popular shop.
+                        We have 265 Recommended shop.
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
