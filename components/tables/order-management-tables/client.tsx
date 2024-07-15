@@ -52,7 +52,7 @@ export const OrderManagementClient: React.FC = () => {
       </div>
       <Separator />
       <DataTable
-        searchKey="deliveryStatus"
+        searchKey="productsOrdered"
         columns={columns}
         data={data}
         // onSearch={handleSearch} 

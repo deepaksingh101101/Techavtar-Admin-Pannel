@@ -1,64 +1,81 @@
-'use client';
-
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  useReactTable
+  useReactTable,
+  getSortedRowModel,
 } from '@tanstack/react-table';
-
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from '@/components/ui/table';
 import { Input } from './input';
 import { Button } from './button';
 import { ScrollArea, ScrollBar } from './scroll-area';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
+  onSearch?: (value: string) => void;
+  onSort?: (columnId: string, descending: boolean) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  searchKey,
+  onSearch,
 }: DataTableProps<TData, TValue>) {
+  const [filterInput, setFilterInput] = useState('');
+
   const table = useReactTable({
     data,
     columns,
+    state: {
+      globalFilter: filterInput,
+    },
+    onGlobalFilterChange: setFilterInput,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel()
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    manualSorting: true,
   });
 
-  /* this can be used to get the selectedrows 
-  console.log("value", table.getFilteredSelectedRowModel()); */
+  const handleSearchChange = (e:any) => {
+    const value = e.target.value;
+    setFilterInput(value);
+  };
 
   return (
     <>
+      <Input
+        value={filterInput}
+        onChange={handleSearchChange}
+        placeholder={`Search by ${searchKey}`}
+        className="mb-4"
+      />
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -81,10 +98,7 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>

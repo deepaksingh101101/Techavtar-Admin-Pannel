@@ -56,7 +56,7 @@ export const ProductManagementClient: React.FC = () => {
         searchKey="productName"
         columns={columns}
         data={data}
-        // onSearch={handleSearch} 
+        onSearch={handleSearch} 
         // onSort={handleSort} 
       />
     </>

@@ -55,8 +55,7 @@ export const SubscriptionManagementClient: React.FC = () => {
         searchKey="subscriptionPlan"
         columns={columns}
         data={data}
-        // onSearch={handleSearch} 
-        // onSort={handleSort} 
+        onSearch={handleSearch} 
       />
     </>
   );

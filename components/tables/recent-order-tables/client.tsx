@@ -37,6 +37,7 @@ export const OrderRecentClient: React.FC = () => {
         searchKey="deliveryStatus"
         columns={columns}
         data={data}
+        
       />
     </>
   );
