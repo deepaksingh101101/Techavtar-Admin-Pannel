@@ -116,50 +116,60 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     }
   };
 
-  const steps = [
-    {
-      id: 'Step 1',
-      name: 'Order Details',
-      fields: [
-        'orderId',
-        'userId',
-        'deliveryDate',
-        'deliveryTimeSlot',
-        'deliveryStatus',
-        'productsOrdered',
-        'totalWeight',
-        'paymentStatus',
-      ]
-    },
-    {
-      id: 'Step 2',
-      name: 'Add-ons and Instructions',
-      fields: [
-        'addons',
-        'specialInstructions'
-      ]
-    },
-    { id: 'Step 3', name: 'Complete' }
-  ];
+
+  type FormFields = 'orderId' | 'userId' | 'deliveryDate' | 'deliveryTimeSlot' | 'deliveryStatus' | 'productsOrdered' | 'totalWeight' | 'paymentStatus' | 'addons' | 'specialInstructions';
+
+interface Step {
+  id: string;
+  name: string;
+  fields?: FormFields[]; // Optional because the last step doesn't have fields
+}
+
+
+
+const steps: Step[] = [
+  {
+    id: 'Step 1',
+    name: 'Order Details',
+    fields: [
+      'orderId',
+      'userId',
+      'deliveryDate',
+      'deliveryTimeSlot',
+      'deliveryStatus',
+      'productsOrdered',
+      'totalWeight',
+      'paymentStatus',
+    ]
+  },
+  {
+    id: 'Step 2',
+    name: 'Add-ons and Instructions',
+    fields: [
+      'addons',
+      'specialInstructions'
+    ]
+  },
+  { id: 'Step 3', name: 'Complete' } // No fields needed here
+];
 
   const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
 
   const next = async () => {
-    const fields = steps[currentStep].fields;
-
-    const output = await trigger(fields);
-
-    if (!output) return;
-
     if (currentStep < steps.length - 1) {
-      if (currentStep === steps.length - 2) {
-        await handleSubmit(onSubmit)();
+      const fields:any = steps[currentStep].fields;
+      if (fields) {
+        const output = await trigger(fields);
+        if (!output) return;
       }
-      setPreviousStep(currentStep);
-      setCurrentStep((step) => step + 1);
+  
+      setCurrentStep(step => step + 1);
+    } else {
+      // await handleSubmit(onSubmit)();
     }
   };
+  
 
   const prev = () => {
     if (currentStep > 0) {
@@ -167,6 +177,9 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
       setCurrentStep((step) => step - 1);
     }
   };
+
+
+  
 
 
   const orderedOptions = [
