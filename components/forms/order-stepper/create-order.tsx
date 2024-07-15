@@ -48,7 +48,7 @@ const orderFormSchema = z.object({
   deliveryStatus: z.string(),
   productsOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
   totalWeight: z.number().positive('Total Weight must be greater than zero'),
-  addons: z.array(z.string()).optional(),
+  addons: z.string().optional(),
   paymentStatus: z.string(),
   specialInstructions: z.string().optional(),
 });
