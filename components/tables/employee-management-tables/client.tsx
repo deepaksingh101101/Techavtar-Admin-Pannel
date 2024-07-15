@@ -56,8 +56,8 @@ export const EmployeeManagementClient: React.FC = () => {
         searchKey="fullName"
         columns={columns}
         data={data}
-        onSearch={handleSearch} 
-        onSort={handleSort} 
+        // onSearch={handleSearch} 
+        // onSort={handleSort} 
       />
     </>
   );

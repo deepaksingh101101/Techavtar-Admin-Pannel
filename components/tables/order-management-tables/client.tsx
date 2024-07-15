@@ -55,8 +55,8 @@ export const OrderManagementClient: React.FC = () => {
         searchKey="deliveryStatus"
         columns={columns}
         data={data}
-        onSearch={handleSearch} 
-        onSort={handleSort} 
+        // onSearch={handleSearch} 
+        // onSort={handleSort} 
       />
     </>
   );

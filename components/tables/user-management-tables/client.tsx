@@ -53,8 +53,8 @@ export const UserManagementClient: React.FC = () => {
         searchKey="Name"
         columns={columns}
         data={data}
-        onSearch={handleSearch} 
-        onSort={handleSort} 
+        // onSearch={handleSearch} 
+        // onSort={handleSort} 
       />
     </>
   );

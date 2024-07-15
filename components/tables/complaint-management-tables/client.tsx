@@ -56,8 +56,8 @@ export const ComplaintManagementClient: React.FC = () => {
         searchKey="description"
         columns={columns}
         data={data}
-        onSearch={handleSearch} 
-        onSort={handleSort} 
+        // onSearch={handleSearch} 
+        // onSort={handleSort} 
       />
     </>
   );
