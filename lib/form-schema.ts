@@ -54,7 +54,7 @@ export const subscriptionSchema = z.object({
   subscriptionEndDate: z.string().refine((value) => /^\d{4}-\d{2}-\d{2}$/.test(value), {
     message: 'Subscription end date should be in the format YYYY-MM-DD'
   }),
-  paymentStatus: z.string().optional(),
+  paymentStatus: z.string(),
   subscriptionStatus: z.enum(['Active', 'Inactive'])
 });
 

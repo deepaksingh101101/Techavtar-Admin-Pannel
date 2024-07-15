@@ -79,7 +79,8 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
     resolver: zodResolver(subscriptionFormSchema),
     mode: 'onChange',
     defaultValues: {
-      deliveryDays: []
+      deliveryDays: undefined,
+      paymentStatus:"unpaid"
     }
   });
 
@@ -155,20 +156,40 @@ export const CreateSubscriptionOne: React.FC<SubscriptionFormType> = ({
     { id: 'Step 3', name: 'Complete' }
   ];
 
-  const next = async () => {
-    if (currentStep < steps.length - 1) {
-      const fields:any = steps[currentStep].fields;
-      if (fields) {
-        const output = await trigger(fields);
-        if (!output) return;
-      }
+  // const next = async () => {
+  //   if (currentStep < steps.length - 1) {
+  //     const fields:any = steps[currentStep].fields;
+  //     if (fields) {
+  //       const output = await trigger(fields);
+  //       if (!output) return;
+  //     }
   
-      setCurrentStep(step => step + 1);
-    } else {
-      // await handleSubmit(onSubmit)();
+  //     setCurrentStep(step => step + 1);
+  //   } else {
+  //     // await handleSubmit(onSubmit)();
+  //   }
+  // };
+  
+
+  type FieldName = keyof SubscriptionFormValues;
+
+  const next = async () => {
+    const fields = steps[currentStep].fields;
+
+    const output = await form.trigger(fields as FieldName[], {
+      shouldFocus: true
+    });
+
+    if (!output) return;
+
+    if (currentStep < steps.length - 1) {
+      if (currentStep === steps.length - 2) {
+        await form.handleSubmit(processForm)();
+      }
+      setPreviousStep(currentStep);
+      setCurrentStep((step) => step + 1);
     }
   };
-  
 
   const prev = () => {
     if (currentStep > 0) {
