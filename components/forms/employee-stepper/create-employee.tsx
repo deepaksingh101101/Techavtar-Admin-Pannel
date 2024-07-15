@@ -49,11 +49,11 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
     try {
       setLoading(true);
       if (initialData) {
-        // Update existing employee
+        // Update existing employee logic here
       } else {
-        // Create new employee
+        // Create new employee logic here
       }
-      // Refresh or redirect after submission
+      // Refresh or redirect after submission logic here
     } catch (error) {
       console.error(error);
     } finally {
@@ -68,19 +68,6 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* <FormField
-              control={control}
-              name="employeeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Employee ID</FormLabel>
-                  <FormControl>
-                    <Input type="number" disabled={loading} placeholder="Enter Employee ID" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors.employeeId?.message}</FormMessage>
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={control}
               name="fullName"
@@ -90,7 +77,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="text" disabled={loading} placeholder="Enter Full Name" {...field} />
                   </FormControl>
-                  <FormMessage>{errors.fullName?.message}</FormMessage>
+                  <FormMessage>{errors.fullName?.message ? String(errors.fullName.message) : ''}</FormMessage>
                 </FormItem>
               )}
             />
@@ -103,7 +90,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="text" disabled={loading} placeholder="Enter Role" {...field} />
                   </FormControl>
-                  <FormMessage>{errors.role?.message}</FormMessage>
+                  <FormMessage>{errors.role?.message ? String(errors.role.message) : ''}</FormMessage>
                 </FormItem>
               )}
             />
@@ -116,7 +103,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="email" disabled={loading} placeholder="Enter Email" {...field} />
                   </FormControl>
-                  <FormMessage>{errors.contactInformation?.email?.message}</FormMessage>
+                  <FormMessage>{errors.contactInformation?.email?.message ? String(errors.contactInformation.email.message) : ''}</FormMessage>
                 </FormItem>
               )}
             />
@@ -129,7 +116,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="text" disabled={loading} placeholder="Enter Phone" {...field} />
                   </FormControl>
-                  <FormMessage>{errors.contactInformation?.phone?.message}</FormMessage>
+                  <FormMessage>{errors.contactInformation?.phone?.message ? String(errors.contactInformation.phone.message) : ''}</FormMessage>
                 </FormItem>
               )}
             />
@@ -143,12 +130,12 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                     <MultiSelect
                       value={field.value || []}
                       onChange={(value) => field.onChange(value)}
-                      options={userOptions}
+                      options={userOptions.map(option => ({ value: option.id, label: option.name }))}
                       disabled={loading}
                       placeholder="Select Assigned Users"
                     />
                   </FormControl>
-                  <FormMessage>{errors.assignedUsers?.message}</FormMessage>
+                  <FormMessage>{errors.assignedUsers?.message ? String(errors.assignedUsers.message) : ''}</FormMessage>
                 </FormItem>
               )}
             />
