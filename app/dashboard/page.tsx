@@ -268,9 +268,9 @@ export default function page() {
                   </Card>
                   <Card className="w-full me-3">
                     <CardHeader>
-                      <CardTitle>Recommended Store</CardTitle>
+                      <CardTitle>Recommended Supplier</CardTitle>
                       <CardDescription>
-                        We have 265 Recommended shop.
+                        We have 265 Recommended Supplier.
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
