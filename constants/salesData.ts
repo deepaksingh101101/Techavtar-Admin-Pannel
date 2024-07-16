@@ -4,6 +4,11 @@ import shop2 from '@/public/assets/icons/shop2.png'
 import shop3 from '@/public/assets/icons/shop3.png'
 import shop4 from '@/public/assets/icons/shop4.png'
 import shop5 from '@/public/assets/icons/shop5.png'
+import potato from '@/public/assets/icons/potato.png'
+import tomato from '@/public/assets/icons/tomato.png'
+import cucumber from '@/public/assets/icons/cucumber.png'
+import onion from '@/public/assets/icons/onion.png'
+import pumpkin from '@/public/assets/icons/pumpkin.png'
 // Define the Sale interface
 export interface Sale {
     avatar: StaticImageData;  // Use the correct type for your image data
@@ -46,3 +51,12 @@ export interface Sale {
     }
   ];
   
+
+
+   export const vegData: Sale[] = [
+    { avatar: potato, name: 'Potato', email:"₹59/kg",  amount: '1999.00 KG' },
+    { avatar: tomato, name: 'Tomato',  email:"₹36/kg", amount: '390.00 KG' },
+    { avatar: cucumber, name: 'Cucumber', email:"₹34/kg",  amount: '299.00 KG' },
+    { avatar: onion, name: 'Onion', email:"₹20/kg",  amount: '99.00 KG' },
+    { avatar: pumpkin, name: 'Pumpkin', email:"₹24/kg", amount: '39.00 KG' }
+  ];

@@ -8,11 +8,7 @@ import itemsImage from '@/public/assets/icons/items.png'
 import orderImage from '@/public/assets/icons/order.png'
 import shopImage from '@/public/assets/icons/premuim3.png'
 import customerImage from '@/public/assets/icons/customers.png'
-import potato from '@/public/assets/icons/potato.png'
-import tomato from '@/public/assets/icons/tomato.png'
-import cucumber from '@/public/assets/icons/cucumber.png'
-import onion from '@/public/assets/icons/onion.png'
-import pumpkin from '@/public/assets/icons/pumpkin.png'
+
 import shop1 from '@/public/assets/icons/shop1.png'
 import shop2 from '@/public/assets/icons/shop2.png'
 import shop3 from '@/public/assets/icons/shop3.png'
@@ -36,7 +32,7 @@ import Image from 'next/image';
 import { AreaChartComp } from '@/components/areaChartComp';
 import { DonutComp } from '@/components/donutComp';
 import { OrderRecentClient } from '@/components/tables/recent-order-tables/client';
-import { Sale, salesData } from '@/constants/salesData';
+import { Sale, salesData, vegData } from '@/constants/salesData';
 
 
 
@@ -263,7 +259,7 @@ export default function page() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                    <RecentSales sales={salesData} />
+                    <RecentSales sales={vegData} />
                     </CardContent>
                   </Card>
                   <Card className="w-full me-3">
