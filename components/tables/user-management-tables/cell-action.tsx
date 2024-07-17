@@ -24,7 +24,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
 
   const onConfirm = async () => {
-    // Your confirm logic here
+    //  confirm logic here
   };
 
   const handleRegisterNewUser = () => {
@@ -61,9 +61,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={handleRegisterNewUser}>
-            <UserPlus className="mr-2 h-4 w-4" /> Register New User
-          </DropdownMenuItem>
+         
           <DropdownMenuItem onClick={handleEditUser}>
             <Edit className="mr-2 h-4 w-4" /> Edit User Details
           </DropdownMenuItem>
@@ -74,7 +72,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <UserCheck className="mr-2 h-4 w-4" /> Assign Employee
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete User
+            <Trash className="mr-2 h-4 w-4" /> Deactivate Subscription
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
