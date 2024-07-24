@@ -6,6 +6,7 @@ import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { UserManagement, userManagementData } from '@/constants/user-management-data';
+
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { columns } from './columns';
@@ -17,7 +18,7 @@ export const UserManagementClient: React.FC = () => {
 
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.firstName.toLowerCase().includes(searchValue.toLowerCase())
+      item.subscriptionType.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
@@ -26,9 +27,9 @@ export const UserManagementClient: React.FC = () => {
     // Example: Sorting by first name
     const sortedData = [...data].sort((a, b) => {
       if (sortOrder === 'asc') {
-        return a.firstName.localeCompare(b.firstName);
+        return a.subscriptionType.localeCompare(b.subscriptionType);
       } else {
-        return b.firstName.localeCompare(a.firstName);
+        return b.subscriptionType.localeCompare(a.subscriptionType);
       }
     });
     setData(sortedData);
@@ -43,7 +44,7 @@ export const UserManagementClient: React.FC = () => {
         />
         <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/dashboard/user-management/new`)}
+          onClick={() => router.push(`/usermanagement`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
@@ -53,8 +54,7 @@ export const UserManagementClient: React.FC = () => {
         searchKey="Name"
         columns={columns}
         data={data}
-        // onSearch={handleSearch} 
-        // onSort={handleSort} 
+        onSearch={handleSearch} 
       />
     </>
   );

@@ -76,7 +76,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <UserCheck className="mr-2 h-4 w-4" /> Update Product Availability
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete User
+            <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
