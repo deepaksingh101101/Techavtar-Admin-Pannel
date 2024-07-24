@@ -128,27 +128,35 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     {
       id: 'Step 1',
       name: 'Personal Information',
-      fields: ['firstname', 'lastname', 'email', 'contactno', 'country', 'city']
+      fields: ['firstname', 'lastname', 'email', 'contactno','houseNumber', 'city', 'state', 'zipcode']
     },
+    // {
+    //   id: 'Step 2',
+    //   name: 'Assign Employee',
+    //   fields: fields
+    //     ?.map((_, index) => [
+    //       `jobs.${index}.jobtitle`,
+    //       `jobs.${index}.employer`,
+    //       `jobs.${index}.startdate`,
+    //       `jobs.${index}.enddate`,
+    //       `jobs.${index}.jobcountry`,
+    //       `jobs.${index}.jobcity`
+    //     ])
+    //     .flat()
+    // },
     {
       id: 'Step 2',
-      name: 'Professional Informations',
-      // fields are mapping and flattening for the error to be trigger  for the dynamic fields
-      fields: fields
-        ?.map((_, index) => [
-          `jobs.${index}.jobtitle`,
-          `jobs.${index}.employer`,
-          `jobs.${index}.startdate`,
-          `jobs.${index}.enddate`,
-          `jobs.${index}.jobcountry`,
-          `jobs.${index}.jobcity`
-          // Add other field names as needed
-        ])
-        .flat()
+      name: 'Assign Employee',
+      fields: ['assignedEmployee']
     },
     { id: 'Step 3', name: 'Complete' }
   ];
 
+  const employees = [
+    { id: 'employee1', name: 'John Doe' },
+    { id: 'employee2', name: 'Jane Smith' },
+    // Add more employees as needed
+  ];
   const next = async () => {
     const fields = steps[currentStep].fields;
 
@@ -310,7 +318,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="country"
                   render={({ field }) => (
@@ -331,7 +339,6 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {/* @ts-ignore  */}
                           {countries.map((country) => (
                             <SelectItem key={country.id} value={country.id}>
                               {country.name}
@@ -342,7 +349,63 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                       <FormMessage />
                     </FormItem>
                   )}
+                /> */}
+
+<FormField
+                  control={form.control}
+                  name="houseNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>House Number</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="House Number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
+
+
+<FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>State</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="State"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+<FormField
+                  control={form.control}
+                  name="zipcode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Zip Code</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Zipcode"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="city"
@@ -378,7 +441,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 />
               </>
             )}
-            {currentStep === 1 && (
+            {/* {currentStep === 1 && (
               <>
                 {fields?.map((field, index) => (
                   <Accordion
@@ -577,7 +640,58 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   </Button>
                 </div>
               </>
-            )}
+            )} */}
+
+
+{currentStep === 1 && (
+        <>
+          <Accordion type="single" collapsible defaultValue="item-1">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                Assign Employee
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3">
+                  <FormField
+                    control={form.control}
+                    name="assignedEmployee"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Assign Employee</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                defaultValue={field.value}
+                                placeholder="Select an employee"
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {employees.map((employee) => (
+                              <SelectItem key={employee.id} value={employee.id}>
+                                {employee.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </>
+      )}
+
+
             {currentStep === 2 && (
               <div>
                 <h1>Completed</h1>
