@@ -58,7 +58,7 @@ export function DashboardNav({
                       className={cn(
                         'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
                         path === item.href ? 'bg-accent' : 'transparent',
-                        item.disabled && 'cursor-not-allowed opacity-80',
+                        item.disabled && ' opacity-80',
                         'cursor-pointer'
                       )}
                     >
@@ -75,7 +75,7 @@ export function DashboardNav({
                     className={cn(
                       'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
                       path === item.href ? 'bg-accent' : 'transparent',
-                      item.disabled && 'cursor-not-allowed opacity-80'
+                      item.disabled && ' opacity-80'
                     )}
                     onClick={() => {
                       if (setOpen) setOpen(false);
@@ -112,7 +112,7 @@ export function DashboardNav({
   className={cn(
     'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
     path === subItem.href ? 'bg-accent' : 'transparent', // Conditional styling based on the current path
-    subItem.href && 'cursor-not-allowed opacity-80' // Style for disabled item
+    subItem.href && ' opacity-80' // Style for disabled item
   )}
   onClick={() => {
     if (setOpen) setOpen(false); // Close the menu when a link is clicked, typically useful in mobile views
