@@ -12,8 +12,7 @@ export const CellAction: React.FC<{ data: Subscription }> = ({ data }) => {
 
   return (
     <div className="flex space-x-2">
-      <Button onClick={handleEdit}>Edit</Button>
-      <Button onClick={handleDelete}>Delete</Button>
+     
     </div>
   );
 };

@@ -138,7 +138,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Subscription',
-    href: '/dashboard/subscription',
+    href: '/subscription',
     icon: 'createSubscription',
     label: 'subscription'
   },

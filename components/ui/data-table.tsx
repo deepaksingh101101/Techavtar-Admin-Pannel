@@ -1,3 +1,5 @@
+'use client';
+
 import {
   ColumnDef,
   flexRender,
@@ -5,15 +7,9 @@ import {
   getFilteredRowModel,
   useReactTable,
   getSortedRowModel,
-} from '@tanstack/react-table';
-import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+} from '@tanstack/react-table';
+import { Table as UiTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from './input';
 import { Button } from './button';
 import { ScrollArea, ScrollBar } from './scroll-area';
@@ -24,7 +20,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchKey: string;
   onSearch?: (value: string) => void;
-  onSort?: (columnId: string, descending: boolean) => void;
+  meta: {
+    updateData: (rowIndex: number, columnId: string, value: any) => void;
+    updateColumnData: (columnId: string, value: any) => void;
+  };
 }
 
 export function DataTable<TData, TValue>({
@@ -32,6 +31,7 @@ export function DataTable<TData, TValue>({
   data,
   searchKey,
   onSearch,
+  meta,
 }: DataTableProps<TData, TValue>) {
   const [filterInput, setFilterInput] = useState('');
 
@@ -46,11 +46,15 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     manualSorting: true,
+    meta,
   });
 
-  const handleSearchChange = (e:any) => {
+  const handleSearchChange = (e: any) => {
     const value = e.target.value;
     setFilterInput(value);
+    if (onSearch) {
+      onSearch(value);
+    }
   };
 
   return (
@@ -62,7 +66,7 @@ export function DataTable<TData, TValue>({
         className="mb-4"
       />
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
-        <Table className="relative">
+        <UiTable className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -70,10 +74,7 @@ export function DataTable<TData, TValue>({
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
@@ -82,17 +83,9 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
@@ -104,29 +97,18 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </UiTable>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
+          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
             Previous
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
+          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
             Next
           </Button>
         </div>

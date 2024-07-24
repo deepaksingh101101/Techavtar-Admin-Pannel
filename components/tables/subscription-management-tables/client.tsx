@@ -40,7 +40,7 @@ export const SubscriptionManagementClient: React.FC = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Subscription (${data.length})`}
+          title={`Manage Subscription (${data.length})`}
           description="Manage Subscription (Client side table functionalities.)"
         />
         <Button
