@@ -71,7 +71,7 @@ export function DashboardNav({
                     </div>
                   ) : (
                     <Link
-                    href={item.disabled ? '/' : (item.href || '/')}
+                    href={item.disabled ? '/' : (item.href )}
                     className={cn(
                       'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
                       path === item.href ? 'bg-accent' : 'transparent',
@@ -108,7 +108,7 @@ export function DashboardNav({
                       <Tooltip key={subIndex}>
                         <TooltipTrigger asChild>
                         <Link
-  href={subItem.href ? '/' : (subItem.href || '/')} // Ensure href is never undefined
+  href={subItem?.href } // Ensure href is never undefined
   className={cn(
     'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
     path === subItem.href ? 'bg-accent' : 'transparent', // Conditional styling based on the current path

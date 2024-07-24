@@ -29,7 +29,7 @@ import {
   User2Icon,
   UserX2Icon,
   X,
-  Briefcase, // this line is added
+  Briefcase, 
   ShieldCheck,
   Package,
   ShoppingBasket,
@@ -38,6 +38,16 @@ import {
   BellPlus,
   ArrowBigUpDash,
   BookOpen,
+  FileCheck,
+  ClipboardList,
+  ClipboardCheck,
+  PackageSearch,
+  DollarSign,
+  Activity,
+  Calendar,
+  BarChart2,
+  TrendingDown,
+  TrendingUp,
 } from 'lucide-react';
 
 
@@ -71,6 +81,7 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  manageSubscription: Briefcase,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
@@ -98,5 +109,15 @@ export const Icons = {
   paymentSetting: BadgeDollarSign, //this line is added
   notificationSetting: BellPlus, //this line is added
   api: ArrowBigUpDash, //this line is added
-  report: BookOpen //this line is added
+  report: BookOpen, //this line is added
+  accountStatement: FileCheck, // new line
+  invoiceSummary: ClipboardList, // new line
+  salesReport: ClipboardCheck, // new line
+  billSummary: FileCheck, // new line
+  productStock: PackageSearch, // new line
+  cashFlow: DollarSign, // new line
+  transaction: Activity, // new line
+  incomeSummary: Calendar, // new line
+  expenseSummary: BarChart2, // new line
+  incomeVsExpense: BarChart2, // new line
 };

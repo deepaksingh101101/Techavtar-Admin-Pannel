@@ -93,7 +93,7 @@ export default function page() {
     },
     {
       id: 3,
-      title: 'Total Plans',
+      title: 'Total Subscription',
       count: '24',
       description: '0 Plans Created today',
       imageSrc: shopImage,
