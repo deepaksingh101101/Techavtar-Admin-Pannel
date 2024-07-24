@@ -118,27 +118,27 @@ export const navItems: NavItem[] = [
     icon: 'dashboard',
     label: 'Dashboard'
   },
-  {
-    title: 'User',
-    href: '/user',
-    icon: 'user',
-    label: 'User'
-  },
+  // {
+  //   title: 'User',
+  //   href: '/user',
+  //   icon: 'user',
+  //   label: 'User'
+  // },
   {
     title: 'User Management',
     href: '/user-management',
     icon: 'management',
     label: 'User Management'
   },
-  {
-    title: 'Profile',
-    href: '/profile',
-    icon: 'profile',
-    label: 'Profile'
-  },
+  // {
+  //   title: 'Profile',
+  //   href: '/profile',
+  //   icon: 'profile',
+  //   label: 'Profile'
+  // },
   {
     title: 'Subscription',
-    href: '/subscription',
+    href: '/subscriptions',
     icon: 'createSubscription',
     label: 'subscription'
   },
