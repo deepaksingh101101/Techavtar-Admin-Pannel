@@ -67,7 +67,7 @@ export const SubscriptionClient: React.FC = () => {
       </div>
       <Separator />
       <DataTable
-        searchKey="subType"
+        searchKey="subscription Type"
         columns={columns}
         data={data}
         onSearch={handleSearch}
