@@ -57,7 +57,7 @@ export function DashboardNav({
                       onClick={() => handleExpand(item.href || '')}
                       className={cn(
                         'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                        path === item.href ? 'bg-green-500 text-white' : 'transparent',
+                        path === item.href ? 'bg-accent' : 'transparent',
                         item.disabled && ' opacity-80',
                         'cursor-pointer'
                       )}
@@ -74,7 +74,7 @@ export function DashboardNav({
                       href={item.disabled ? '/' : item.href || '/'}
                       className={cn(
                         'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                        path === item.href ? 'bg-green-500 text-white' : 'transparent',
+                        path === item.href ? 'bg-accent' : 'transparent',
                         item.disabled && ' opacity-80'
                       )}
                       onClick={() => {
@@ -111,8 +111,8 @@ export function DashboardNav({
                               href={subItem.href}
                               className={cn(
                                 'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                                path === subItem.href ? 'bg-green-500 text-white' : 'transparent',
-                                ' opacity-80'
+                                path === subItem.href ? 'bg-accent' : 'transparent',
+                                 ' opacity-80'
                               )}
                               onClick={() => {
                                 if (setOpen) setOpen(false);
