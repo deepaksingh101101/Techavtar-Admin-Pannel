@@ -40,7 +40,7 @@ export const SubscriptionClient: React.FC = () => {
 
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.subType.toLowerCase().includes(searchValue.toLowerCase())
+      item.subscriptionType.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
@@ -60,20 +60,20 @@ export const SubscriptionClient: React.FC = () => {
         />
         <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/subscription`)}
+          onClick={() => router.push(`/subscription-form`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
       <Separator />
       <DataTable
-        searchKey="subscription Type"
+        searchKey="subscriptionType"
         columns={columns}
         data={data}
         onSearch={handleSearch}
-        onSave={handleSave}
         meta={{ updateData, updateColumnData }}
       />
+      <Button onClick={handleSave}>Save Changes</Button>
     </>
   );
 };

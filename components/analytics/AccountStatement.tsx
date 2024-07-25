@@ -20,7 +20,15 @@ export const AccountStatement: React.FC = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [entriesPerPage, setEntriesPerPage] = useState(10);
-  const [tableData, setTableData] = useState([]);
+
+
+  interface TableData {
+    date: string;
+    amount: string;
+    description: string;
+  }
+  const [tableData, setTableData] = useState<TableData[]>([]);
+
 
   useEffect(() => {
     const currentMonth = new Date().toISOString().slice(0, 7);
@@ -35,7 +43,7 @@ export const AccountStatement: React.FC = () => {
     setDuration(calculatedDuration);
 
     // Dummy data
-    const dummyData = [
+    const dummyData: TableData[] = [
       { date: '2023-01-01', amount: '$1000', description: 'Sample description 1' },
       { date: '2023-02-01', amount: '$2000', description: 'Sample description 2' },
       { date: '2023-03-01', amount: '$1500', description: 'Sample description 3' },
@@ -47,8 +55,9 @@ export const AccountStatement: React.FC = () => {
       { date: '2023-09-01', amount: '$5000', description: 'Sample description 9' },
       { date: '2023-10-01', amount: '$5500', description: 'Sample description 10' },
     ];
-
+    
     setTableData(dummyData);
+
     setShowSummary(true);
   };
 
@@ -205,7 +214,7 @@ export const AccountStatement: React.FC = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="3" className="p-4 text-center">No entries found</td>
+                        <td colSpan={3} className="p-4 text-center">No entries found</td>
                       </tr>
                     )}
                   </tbody>

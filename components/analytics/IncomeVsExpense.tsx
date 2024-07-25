@@ -1,20 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { FaDownload, FaSearch, FaTrash } from 'react-icons/fa';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const Button = ({ children, onClick, className }) => (
+interface ButtonProps {
+  children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => (
   <button onClick={onClick} className={`${className} text-yellow-400 p-2 rounded-md`}>
     {children}
   </button>
 );
-
 const data = {
   labels: [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -36,7 +41,7 @@ const data = {
   ],
 };
 
-const options = {
+const options:ChartOptions<'line'> = {
   responsive: true,
   plugins: {
     legend: {

@@ -5,8 +5,15 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { FaFileExport, FaSearch, FaTrash } from 'react-icons/fa';
 
-const Button = ({ children, onClick, className }) => (
-  <button onClick={onClick} className={`${className} text-yellow-400 p-2 rounded-md`}>
+
+type ButtonProps = {
+  children: React.ReactNode;
+  className: string;
+  onClick?: () => void;
+};
+
+const Button: React.FC<ButtonProps> = ({ children, className, onClick }) => (
+  <button className={`${className} text-yellow-400 p-2 rounded-md`} onClick={onClick}>
     {children}
   </button>
 );
