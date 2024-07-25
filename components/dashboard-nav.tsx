@@ -112,7 +112,7 @@ export function DashboardNav({
                               className={cn(
                                 'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
                                 path === subItem.href ? 'bg-accent' : 'transparent',
-                                subItem.disabled && ' opacity-80'
+                                 ' opacity-80'
                               )}
                               onClick={() => {
                                 if (setOpen) setOpen(false);
