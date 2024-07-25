@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { useSidebar } from '@/hooks/useSidebar';
-import { setCookie, getCookie } from '@/utils/cookies';
+import { setLocalStorageItem, getLocalStorageItem } from '@/utils/localStorage';
 import {
   Tooltip,
   TooltipContent,
@@ -28,12 +28,12 @@ export function DashboardNav({
 }: DashboardNavProps) {
   const path = usePathname();
   const { isMinimized } = useSidebar();
+  const defaultActiveItem = '/dashboard'; // Set your default active item path here
   const [expandedItems, setExpandedItems] = useState<string[]>(() => {
-    const cookie = getCookie('expandedItems');
-    return cookie ? JSON.parse(cookie) : [];
+    return getLocalStorageItem<string[]>('expandedItems') || [];
   });
   const [activeItem, setActiveItem] = useState<string>(() => {
-    return getCookie('activeItem') || '';
+    return getLocalStorageItem<string>('activeItem') || defaultActiveItem;
   });
 
   const handleExpand = (href: string) => {
@@ -44,23 +44,25 @@ export function DashboardNav({
       newExpandedItems = [...expandedItems, href];
     }
     setExpandedItems(newExpandedItems);
-    setCookie('expandedItems', JSON.stringify(newExpandedItems), 7);
+    setLocalStorageItem('expandedItems', newExpandedItems);
   };
 
   const handleClick = (href: string) => {
     setActiveItem(href);
-    setCookie('activeItem', href, 7);
+    setLocalStorageItem('activeItem', href);
     if (setOpen) setOpen(false);
   };
 
   useEffect(() => {
-    const expandedCookie = getCookie('expandedItems');
-    if (expandedCookie) {
-      setExpandedItems(JSON.parse(expandedCookie));
+    const storedExpandedItems = getLocalStorageItem<string[]>('expandedItems');
+    if (storedExpandedItems) {
+      setExpandedItems(storedExpandedItems);
     }
-    const activeCookie = getCookie('activeItem');
-    if (activeCookie) {
-      setActiveItem(activeCookie);
+    const storedActiveItem = getLocalStorageItem<string>('activeItem');
+    if (storedActiveItem) {
+      setActiveItem(storedActiveItem);
+    } else {
+      setActiveItem(defaultActiveItem); // Set the default active item if no stored item exists
     }
   }, []);
 
