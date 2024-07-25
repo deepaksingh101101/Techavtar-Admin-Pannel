@@ -20,7 +20,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchKey: string;
   onSearch?: (value: string) => void;
-  meta: {
+  meta?: {
     updateData: (rowIndex: number, columnId: string, value: any) => void;
     updateColumnData: (columnId: string, value: any) => void;
   };
