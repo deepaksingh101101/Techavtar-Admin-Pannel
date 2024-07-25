@@ -46,7 +46,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imgLoading, setImgLoading] = useState(false);
-  const title = initialData ? 'Edit USer' : 'Create User';
+  const title = initialData ? 'Edit User' : 'Create User';
   const description = initialData
     ? 'Edit a product.'
     : 'To create new user, we first need some basic information about user.';
