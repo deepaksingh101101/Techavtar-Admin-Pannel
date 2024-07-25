@@ -46,8 +46,8 @@ export function DonutComp() {
         </PieChart>
       </ResponsiveContainer>
       <div className='absolute top-[55%] left-[41%] transform -translate-x-1/2 -translate-y-1/2 text-center'>
-        <div className='text-2xl font-bold text-white'>{totalItems}</div>
-        <div className='text-sm font-medium text-white'>Total Orders</div>
+        <div className='text-2xl font-bold tracking-tight'>{totalItems}</div>
+        <div className='text-sm font-medium tracking-tight'>Total Orders</div>
       </div>
     </div>
   );

@@ -36,6 +36,16 @@ export const SubscriptionManagementClient: React.FC = () => {
     setData(sortedData);
   };
 
+  const filters = [
+    {
+      label: 'Subscription Status',
+      subOptions: ['Active', 'In Active', 'All Subscription'],
+    },
+    {
+      label: 'Subscription Plan',
+      subOptions: ['Trial', 'Weekly', 'Monthly', 'Fortnightly', 'Bi Weekly'],
+    },
+  ];
   return (
     <>
       <div className="flex items-start justify-between">
@@ -56,6 +66,7 @@ export const SubscriptionManagementClient: React.FC = () => {
         columns={columns}
         data={data}
         onSearch={handleSearch} 
+        filters={filters}
       />
     </>
   );

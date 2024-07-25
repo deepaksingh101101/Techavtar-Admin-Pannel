@@ -16,6 +16,20 @@ export const UserManagementClient: React.FC = () => {
   const initialData: UserManagement[] = userManagementData;
   const [data, setData] = useState<UserManagement[]>(initialData);
 
+  const filters = [
+    {
+      label: 'Account Status',
+      subOptions: ['Active', 'In Active', 'All Users'],
+    },
+    {
+      label: 'Payment Type',
+      subOptions: ['Credit/Debit', 'UPI', 'Net Banking'],
+    },
+    {
+      label: 'Subscription Type',
+      subOptions: ['Trial', 'Weekly', 'Monthly', 'Fortnightly', 'Bi Weekly'],
+    },
+  ];
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
       item.subscriptionType.toLowerCase().includes(searchValue.toLowerCase())
@@ -55,7 +69,9 @@ export const UserManagementClient: React.FC = () => {
         columns={columns}
         data={data}
         onSearch={handleSearch} 
+        filters={filters}
       />
+      
     </>
   );
 };

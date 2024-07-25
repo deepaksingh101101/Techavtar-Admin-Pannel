@@ -55,7 +55,7 @@ export const OrderManagementData: OrderManagement[] = [
     deliveryTimeSlot: '2pm - 4pm',
     deliveryStatus: 'Pending',
     productsOrdered: ['Monthly Veggie Bag', 'Fruit Basket'],
-    totalWeight: 12,
+    totalWeight: 5,
     addons: ['Extra bananas'],
     paymentStatus: 'Paid',
     specialInstructions: 'Ring the bell twice.'
