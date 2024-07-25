@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Trash, Download, FileText } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -21,7 +21,7 @@ export const BillSummary: React.FC = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [entriesPerPage, setEntriesPerPage] = useState(10);
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<TableData[]>([]);
   const [totalBills, setTotalBills] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalDue, setTotalDue] = useState(0);
@@ -33,16 +33,29 @@ export const BillSummary: React.FC = () => {
     setEndMonth(currentMonth);
   }, []);
 
+  type TableData = {
+    bill: string;
+    date: string;
+    customer: string;
+    category: string;
+    status: string;
+    paidAmount: number;
+    dueAmount: number;
+    paymentDate: string;
+    amount: number;
+  };
+
+
   const handleSearch = () => {
     const startDate = new Date(startMonth);
     const endDate = new Date(endMonth);
     const calculatedDuration = `${startMonth} to ${endMonth}`;
     setDuration(calculatedDuration);
 
-    const dummyData = [
+    
+    const dummyData: TableData[] = [
       { bill: 'BILL001', date: '2023-01-01', customer: 'Customer 1', category: 'Supplies', status: 'Paid', paidAmount: 800, dueAmount: 200, paymentDate: '2023-01-05', amount: 1000 },
       { bill: 'BILL002', date: '2023-02-01', customer: 'Customer 2', category: 'Utilities', status: 'Unpaid', paidAmount: 0, dueAmount: 2000, paymentDate: '', amount: 2000 },
-      // Add more dummy data as needed
     ];
 
     setTableData(dummyData);
@@ -72,7 +85,7 @@ export const BillSummary: React.FC = () => {
   };
 
   const filteredTableData = tableData.filter((data) =>
-    data.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    data.customer?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const graphData = {
@@ -88,19 +101,18 @@ export const BillSummary: React.FC = () => {
     ],
   };
 
-  const graphOptions = {
+  const graphOptions: ChartOptions<'line'> = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: 'top', // This should be one of the allowed values: 'center', 'top', 'left', 'right', 'bottom', 'chartArea'
       },
       title: {
         display: true,
-        text: 'Bill Summary',
+        text: 'Chart Title',
       },
     },
   };
-
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex items-start justify-between">
@@ -271,7 +283,7 @@ export const BillSummary: React.FC = () => {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="9" className="p-4 text-center">No entries found</td>
+                            <td colSpan={9} className="p-4 text-center">No entries found</td>
                           </tr>
                         )}
                       </tbody>
