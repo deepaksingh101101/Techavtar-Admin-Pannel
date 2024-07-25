@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { useSidebar } from '@/hooks/useSidebar';
+import { setCookie, getCookie } from '@/utils/cookies';
 import {
   Tooltip,
   TooltipContent,
@@ -27,15 +28,28 @@ export function DashboardNav({
 }: DashboardNavProps) {
   const path = usePathname();
   const { isMinimized } = useSidebar();
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [expandedItems, setExpandedItems] = useState<string[]>(() => {
+    const cookie = getCookie('expandedItems');
+    return cookie ? JSON.parse(cookie) : [];
+  });
 
   const handleExpand = (href: string) => {
+    let newExpandedItems;
     if (expandedItems.includes(href)) {
-      setExpandedItems(expandedItems.filter(item => item !== href));
+      newExpandedItems = expandedItems.filter(item => item !== href);
     } else {
-      setExpandedItems([...expandedItems, href]);
+      newExpandedItems = [...expandedItems, href];
     }
+    setExpandedItems(newExpandedItems);
+    setCookie('expandedItems', JSON.stringify(newExpandedItems), 7);
   };
+
+  useEffect(() => {
+    const cookie = getCookie('expandedItems');
+    if (cookie) {
+      setExpandedItems(JSON.parse(cookie));
+    }
+  }, []);
 
   if (!items?.length) {
     return null;
@@ -112,7 +126,7 @@ export function DashboardNav({
                               className={cn(
                                 'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
                                 path === subItem.href ? 'bg-accent' : 'transparent',
-                                 ' opacity-80'
+                                ' opacity-80'
                               )}
                               onClick={() => {
                                 if (setOpen) setOpen(false);
