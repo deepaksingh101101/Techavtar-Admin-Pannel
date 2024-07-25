@@ -11,6 +11,7 @@ import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { columns } from './columns';
 import { OrderManagement, OrderManagementData } from '@/constants/order-management-data';
+import { DataTableRecent } from '@/components/ui/data-tableRecent';
 
 export const OrderRecentClient: React.FC = () => {
   const router = useRouter();
@@ -33,10 +34,11 @@ export const OrderRecentClient: React.FC = () => {
         </Button> */}
       </div>
       <Separator />
-      <DataTable
+      <DataTableRecent
         searchKey="deliveryStatus"
         columns={columns}
         data={data}
+
         
       />
     </>

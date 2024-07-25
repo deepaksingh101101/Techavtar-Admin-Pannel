@@ -9,38 +9,29 @@ import {
   getSortedRowModel,
   Table,
 } from '@tanstack/react-table';
-
 import { Table as UiTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from './input';
 import { Button } from './button';
 import { ScrollArea, ScrollBar } from './scroll-area';
 import { useState } from 'react';
-import { Plus, ChevronDown, ChevronRight } from 'lucide-react';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent } from './dropdown-menu';
-
-interface FilterOption {
-  label: string;
-  subOptions: string[];
-}
+import { Plus } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey?: string;
   onSearch?: (value: string) => void;
-  filters?: FilterOption[];
   meta?: {
     updateData: (rowIndex: number, columnId: string, value: any) => void;
     updateColumnData: (columnId: string, value: any) => void;
   };
 }
 
-export function DataTable<TData, TValue>({
+export function DataTableRecent<TData, TValue>({
   columns,
   data,
   searchKey,
   onSearch,
-  filters,
   meta,
 }: DataTableProps<TData, TValue>) {
   const [filterInput, setFilterInput] = useState('');
@@ -69,35 +60,24 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex justify-end">
-        <Input
-          value={filterInput}
-          onChange={handleSearchChange}
-          placeholder={`Search by ${searchKey}`}
-          className="mb-4 max-w-64"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button style={{ background: "#04894d", color: 'white' }} className="text-xs md:text-sm ms-4">
-              Filter <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-50">
-            {filters?.map((filter) => (
-              <DropdownMenuSub key={filter.label}>
-                <DropdownMenuSubTrigger>
-                  {filter.label} 
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className="w-48">
-                  {filter.subOptions.map((subOption) => (
-                    <DropdownMenuItem key={subOption}>{subOption}</DropdownMenuItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+    {/* 04894d */}
+    <div className="flex justify-end">
+
+    {/* <Input
+        value={filterInput}
+        onChange={handleSearchChange}
+        placeholder={`Search by ${searchKey}`}
+        className="mb-4 max-w-64 hidden"
+      /> */}
+       {/* <Button
+       style={{background:"#04894d",color:'white'}}
+          className="text-xs md:text-sm ms-4 "
+        >
+         Filter
+        </Button> */}
+    </div>
+      
+
 
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
         <UiTable className="relative">

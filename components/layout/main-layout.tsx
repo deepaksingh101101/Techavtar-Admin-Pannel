@@ -13,13 +13,13 @@ export default function MainLayout({
   const { title } = meta;
   return (
     <>
-      <title>{title}</title>
+      <title style={{color:"red"}} >{title}</title>
       <Providers>
         <Toaster />
         <Header />
         <div className="flex h-screen overflow-hidden">
           <Sidebar />
-          <main className="flex-1 overflow-hidden pt-16">{children}</main>
+          <main className="flex-1 overflow-auto pt-16">{children}</main>
         </div>
       </Providers>
     </>

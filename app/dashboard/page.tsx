@@ -172,7 +172,7 @@ export default function page() {
   return (
     <ProtectedRoute>
       <MainLayout meta={{ title: 'Dashboard' }}>
-        <ScrollArea className="h-full">
+        {/* <ScrollArea className="h-full"> */}
           <div className="flex-1 min space-y-4 p-4 pt-6 md:p-8">
             <div className="flex items-center justify-between space-y-2">
               <h2 className="text-3xl font-bold tracking-tight">
@@ -244,7 +244,7 @@ export default function page() {
         </div>
 
 
-<div className="">
+<div className="px-5">
 <OrderRecentClient  />
 
 </div>
@@ -298,7 +298,7 @@ export default function page() {
                     </CardContent>
                   </Card>
                 </div>
-        </ScrollArea>
+        {/* </ScrollArea> */}
        
       </MainLayout>
     </ProtectedRoute>

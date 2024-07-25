@@ -15,6 +15,7 @@ interface ProductsClientProps {
 export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
   const router = useRouter();
 
+
   return (
     <>
       <div className="flex items-start justify-between">
@@ -30,7 +31,7 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data} />
-    </>
+      <DataTable searchKey="name" columns={columns} data={data}/>;
+      </>
   );
 };
