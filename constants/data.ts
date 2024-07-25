@@ -221,24 +221,24 @@ export const navItems: NavItem[] = [
         icon: 'transaction',
         label: 'transaction'
       },
-      // {
-      //   title: 'Income Summary',
-      //   href: '/report-management/income-summary',
-      //   icon: 'incomeSummary',
-      //   label: 'income-summary'
-      // },
+      {
+        title: 'Income Summary',
+        href: '/report-management/income-summary',
+        icon: 'incomeSummary',
+        label: 'income-summary'
+      },
       // {
       //   title: 'Expense Summary',
       //   href: '/report-management/expense-summary',
       //   icon: 'expenseSummary',
       //   label: 'expense-summary'
       // },
-      {
-        title: 'Income vs Expense',
-        href: '/report-management/income-vs-expense',
-        icon: 'incomeVsExpense',
-        label: 'income-vs-expense'
-      },
+      // {
+      //   title: 'Income vs Expense',
+      //   href: '/report-management/income-vs-expense',
+      //   icon: 'incomeVsExpense',
+      //   label: 'income-vs-expense'
+      // },
       {
         title: 'Tax Summary',
         href: '/report-management/tax-summary',
