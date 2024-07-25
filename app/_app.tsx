@@ -5,6 +5,7 @@ import { AppProps } from 'next/app';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Providers>
+      
       <MainLayout meta={{ title: 'Admin' }}>
         <Component {...pageProps} />
       </MainLayout>
