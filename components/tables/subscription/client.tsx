@@ -67,13 +67,13 @@ export const SubscriptionClient: React.FC = () => {
       </div>
       <Separator />
       <DataTable
-        searchKey="subscription Type"
+        searchKey="subscriptionType"
         columns={columns}
         data={data}
         onSearch={handleSearch}
-        onSave={handleSave}
         meta={{ updateData, updateColumnData }}
       />
+      <Button onClick={handleSave}>Save Changes</Button>
     </>
   );
 };

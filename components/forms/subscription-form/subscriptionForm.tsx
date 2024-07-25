@@ -38,9 +38,11 @@ interface SubscriptionFormType {
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.enum(['Trial', 'Monthly', 'Quarterly', 'Semi-Annual', 'Annually']),
-  frequency: z.enum(['Weekly', 'Biweekly']),
+  frequency: z.enum(['Daily', 'Weekly', 'Monthly', 'Fortnightly', 'Biweekly']),
   price: z.number().positive('Price must be greater than zero')
 });
+
+type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
 
 export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
   initialData
@@ -53,19 +55,19 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     : 'To create a new subscription, fill in the basic information below.';
   const action = initialData ? 'Save changes' : 'Create';
 
-  const form = useForm({
+  const form = useForm<SubscriptionFormValues>({
     resolver: zodResolver(subscriptionFormSchema),
     mode: 'onChange',
     defaultValues: {
       subscriptionType: 'Trial',
       frequency: 'Weekly',
-      price: ''
+      price: 0
     }
   });
 
   const { handleSubmit, control, formState: { errors } } = form;
 
-  const onSubmit: SubmitHandler<typeof subscriptionFormSchema> = async (data) => {
+  const onSubmit: SubmitHandler<SubscriptionFormValues> = async (data) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -135,7 +137,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                  <SelectItem value="Daily">Daily</SelectItem>
+                    <SelectItem value="Daily">Daily</SelectItem>
                     <SelectItem value="Weekly">Weekly</SelectItem>
                     <SelectItem value="Monthly">Monthly</SelectItem>
                     <SelectItem value="Fortnightly">Fortnightly</SelectItem>

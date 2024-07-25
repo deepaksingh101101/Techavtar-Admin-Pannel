@@ -30,8 +30,8 @@ const TableComponent = () => {
   const [data, setData] = useState<Subscription[]>([
     {
       subscriptionType: '',
-      noOfBag: '',
-      price: '',
+      frequency: '',
+      price: 0,
      
     },
   ]);
