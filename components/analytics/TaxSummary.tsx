@@ -1,24 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Trash, Download } from 'lucide-react';
 
+interface TableData {
+  month: string;
+  income: string;
+  expense: string;
+}
+
 export const TaxSummary: React.FC = () => {
   const [year, setYear] = useState('2024');
   const [report, setReport] = useState('Tax Summary');
   const [duration, setDuration] = useState('Jan-2024 to Dec-2024');
   const [searchTerm, setSearchTerm] = useState('');
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<TableData[]>([]);
   const [showSummary, setShowSummary] = useState(false);
 
   const handleSearch = () => {
     // Fetch or calculate the table data here
-    const dummyData = [
-      { month: 'January', income: 'Income tax not found', expense: '' },
+    const dummyData: TableData[] = [
+      { month: 'January', income: 'Income tax not found', expense: 'Expense tax not found' },
       // Add more dummy data as needed
     ];
     setTableData(dummyData);
@@ -41,7 +47,6 @@ export const TaxSummary: React.FC = () => {
         <div className="flex space-x-2">
           <Button variant="outline">
             <Download className="mr-2" />
-           
           </Button>
         </div>
       </div>
@@ -67,11 +72,9 @@ export const TaxSummary: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <Button onClick={handleSearch} variant="outline" className="bg-yellow-500 text-black">
                   <Search className="mr-2" />
-                
                 </Button>
                 <Button onClick={handleDelete} variant="destructive" className="bg-red-500 text-white">
                   <Trash className="mr-2" />
-                 
                 </Button>
               </div>
             </div>
@@ -132,7 +135,7 @@ export const TaxSummary: React.FC = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="13" className="p-4 text-center">Income tax not found</td>
+                        <td colSpan={13} className="p-4 text-center">Income tax not found</td>
                       </tr>
                     )}
                   </tbody>
@@ -176,7 +179,7 @@ export const TaxSummary: React.FC = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="13" className="p-4 text-center">Expense tax not found</td>
+                        <td colSpan={13} className="p-4 text-center">Expense tax not found</td>
                       </tr>
                     )}
                   </tbody>

@@ -1,11 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { FaFileExport, FaDownload, FaSearch, FaTrash } from 'react-icons/fa';
+import { Button as UIButton } from '@/components/ui/button'; // Renamed imported Button to UIButton
 
-const Button = ({ children, onClick, className }) => (
+interface ButtonProps {
+  children: ReactNode;
+  onClick: () => void;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => (
   <button onClick={onClick} className={`${className} text-yellow-400 p-2 rounded-md`}>
     {children}
   </button>
@@ -44,12 +51,12 @@ export const Transaction: React.FC = () => {
           description="Detailed transaction report"
         />
         <div className="flex space-x-2">
-          <Button className="bg-gray-800">
+          <UIButton className="bg-gray-800" onClick={() => { /* handle export logic */ }}>
             <FaFileExport />
-          </Button>
-          <Button className="bg-gray-800">
+          </UIButton>
+          <UIButton className="bg-gray-800" onClick={() => { /* handle download logic */ }}>
             <FaDownload />
-          </Button>
+          </UIButton>
         </div>
       </div>
       <Separator />
@@ -154,7 +161,7 @@ export const Transaction: React.FC = () => {
             </thead>
             <tbody>
               <tr>
-                <td colSpan="6" className="text-center py-4">No entries found</td>
+                <td colSpan={6} className="text-center py-4">No entries found</td>
               </tr>
             </tbody>
           </table>
