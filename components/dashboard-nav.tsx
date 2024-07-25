@@ -29,11 +29,11 @@ export function DashboardNav({
   const { isMinimized } = useSidebar();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
-  const handleExpand = (href: string) => {
-    if (expandedItems.includes(href)) {
-      setExpandedItems(expandedItems.filter(item => item !== href));
+  const handleExpand = (label: string) => {
+    if (expandedItems.includes(label)) {
+      setExpandedItems(expandedItems.filter(item => item !== label));
     } else {
-      setExpandedItems([...expandedItems, href]);
+      setExpandedItems([...expandedItems, label]);
     }
   };
 
@@ -46,7 +46,7 @@ export function DashboardNav({
       <TooltipProvider>
         {items.map((item, index) => {
           const Icon = Icons[item.icon || 'arrowRight'];
-          const isExpanded = expandedItems.includes(item.href || '');
+          const isExpanded = expandedItems.includes(item.label || '');
 
           return (
             <div key={index}>
@@ -54,7 +54,7 @@ export function DashboardNav({
                 <TooltipTrigger asChild>
                   {item.subItems ? (
                     <div
-                      onClick={() => handleExpand(item.href || '')}
+                      onClick={() => handleExpand(item.label || '')}
                       className={cn(
                         'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
                         path === item.href ? 'bg-accent' : 'transparent',
