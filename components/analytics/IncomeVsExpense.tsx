@@ -153,7 +153,7 @@ export const IncomeVsExpense: React.FC = () => {
             <tbody>
               <tr>
                 <td className="px-4 py-2 font-semibold">Income :</td>
-                <td colSpan="13"></td>
+                <td colSpan={13}></td>
               </tr>
               <tr>
                 <td className="px-4 py-2">Revenue</td>
@@ -189,7 +189,7 @@ export const IncomeVsExpense: React.FC = () => {
               </tr>
               <tr>
                 <td className="px-4 py-2 font-semibold">Expense :</td>
-                <td colSpan="13"></td>
+                <td colSpan={13}></td>
               </tr>
               <tr>
                 <td className="px-4 py-2">Payment</td>
@@ -225,7 +225,7 @@ export const IncomeVsExpense: React.FC = () => {
               </tr>
               <tr>
                 <td className="px-4 py-2 font-semibold">Profit = Income - Expense</td>
-                <td colSpan="13"></td>
+                <td colSpan={13}></td>
               </tr>
               <tr>
                 <td className="px-4 py-2">Profit</td>

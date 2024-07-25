@@ -1,10 +1,16 @@
 'use client';
 
+import React, { ReactNode, MouseEventHandler } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import { FaFileExport, FaFilter } from 'react-icons/fa';
+import { FaFileExport } from 'react-icons/fa';
 
-const Button = ({ children, onClick }) => (
+interface ButtonProps {
+  children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onClick }) => (
   <button onClick={onClick} className="bg-gray-800 text-gray-400 p-2 rounded-md">
     {children}
   </button>
@@ -15,12 +21,11 @@ export const ProductStock: React.FC = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Product Stock`}
+          title="Product Stock"
           description="Detailed product stock report"
         />
         <div className="flex space-x-2">
-          
-          <Button>
+          <Button onClick={() => { /* handle export logic */ }}>
             <FaFileExport />
           </Button>
         </div>
@@ -59,7 +64,7 @@ export const ProductStock: React.FC = () => {
             </thead>
             <tbody>
               <tr>
-                <td colSpan="5" className="text-center py-4">No entries found</td>
+                <td colSpan={5} className="text-center py-4">No entries found</td>
               </tr>
             </tbody>
           </table>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -8,9 +8,22 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Search, Trash, Download, FileText } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+interface TableData {
+  invoice: string;
+  date: string;
+  customer: string;
+  category: string;
+  status: string;
+  paidAmount: number;
+  dueAmount: number;
+  paymentDate: string;
+  amount: number;
+  description?: string;
+}
 
 export const InvoiceSummary: React.FC = () => {
   const [startMonth, setStartMonth] = useState('');
@@ -22,7 +35,7 @@ export const InvoiceSummary: React.FC = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [entriesPerPage, setEntriesPerPage] = useState(10);
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<TableData[]>([]);
   const [totalInvoice, setTotalInvoice] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalDue, setTotalDue] = useState(0);
@@ -35,12 +48,10 @@ export const InvoiceSummary: React.FC = () => {
   }, []);
 
   const handleSearch = () => {
-    const startDate = new Date(startMonth);
-    const endDate = new Date(endMonth);
     const calculatedDuration = `${startMonth} to ${endMonth}`;
     setDuration(calculatedDuration);
 
-    const dummyData = [
+    const dummyData: TableData[] = [
       { invoice: 'INV001', date: '2023-01-01', customer: 'Customer 1', category: 'Sales', status: 'Paid', paidAmount: 800, dueAmount: 200, paymentDate: '2023-01-05', amount: 1000 },
       { invoice: 'INV002', date: '2023-02-01', customer: 'Customer 2', category: 'Services', status: 'Unpaid', paidAmount: 0, dueAmount: 2000, paymentDate: '', amount: 2000 },
       // Add more dummy data as needed
@@ -83,13 +94,13 @@ export const InvoiceSummary: React.FC = () => {
         label: 'Invoices',
         data: [0, 0.5, 0.8, 0.4, 1.2, 0.9, 0.3, 0.6, 0.4, 0.7, 0.9, 1.0],
         borderColor: 'green',
-        backgroundColor: 'green',
+        backgroundColor: 'rgba(0, 128, 0, 0.5)',
         fill: false,
       },
     ],
   };
 
-  const graphOptions = {
+  const graphOptions: ChartOptions<'line'> = {
     responsive: true,
     plugins: {
       legend: {
@@ -112,11 +123,9 @@ export const InvoiceSummary: React.FC = () => {
         <div className="flex space-x-2">
           <Button variant="outline">
             <FileText className="mr-2" />
-           
           </Button>
           <Button variant="outline">
             <Download className="mr-2" />
-          
           </Button>
         </div>
       </div>
@@ -176,11 +185,9 @@ export const InvoiceSummary: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <Button onClick={handleSearch} variant="outline" className="bg-yellow-500 text-black">
                   <Search className="mr-2" />
-                
                 </Button>
                 <Button onClick={handleDelete} variant="destructive" className="bg-red-500 text-white">
                   <Trash className="mr-2" />
-                
                 </Button>
               </div>
             </div>
@@ -272,7 +279,7 @@ export const InvoiceSummary: React.FC = () => {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="9" className="p-4 text-center">No entries found</td>
+                            <td colSpan={9} className="p-4 text-center">No entries found</td>
                           </tr>
                         )}
                       </tbody>
