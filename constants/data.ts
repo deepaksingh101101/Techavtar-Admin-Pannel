@@ -209,30 +209,30 @@ export const navItems: NavItem[] = [
         icon: 'productStock',
         label: 'product-stock'
       },
-      {
-        title: 'Cash Flow',
-        href: '/report-management/cash-flow',
-        icon: 'cashFlow',
-        label: 'cash-flow'
-      },
+      // {
+      //   title: 'Cash Flow',
+      //   href: '/report-management/cash-flow',
+      //   icon: 'cashFlow',
+      //   label: 'cash-flow'
+      // },
       {
         title: 'Transaction',
         href: '/report-management/transaction',
         icon: 'transaction',
         label: 'transaction'
       },
-      {
-        title: 'Income Summary',
-        href: '/report-management/income-summary',
-        icon: 'incomeSummary',
-        label: 'income-summary'
-      },
-      {
-        title: 'Expense Summary',
-        href: '/report-management/expense-summary',
-        icon: 'expenseSummary',
-        label: 'expense-summary'
-      },
+      // {
+      //   title: 'Income Summary',
+      //   href: '/report-management/income-summary',
+      //   icon: 'incomeSummary',
+      //   label: 'income-summary'
+      // },
+      // {
+      //   title: 'Expense Summary',
+      //   href: '/report-management/expense-summary',
+      //   icon: 'expenseSummary',
+      //   label: 'expense-summary'
+      // },
       {
         title: 'Income vs Expense',
         href: '/report-management/income-vs-expense',
