@@ -290,7 +290,7 @@ export default function page() {
                     <CardHeader>
                       <CardTitle>Popular Subscription</CardTitle>
                       <CardDescription>
-                        You have 265 most popular Subscription  .
+                        You have 5 most popular Subscription  .
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
