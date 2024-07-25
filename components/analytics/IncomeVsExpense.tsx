@@ -1,20 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { FaDownload, FaSearch, FaTrash } from 'react-icons/fa';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const Button = ({ children, onClick, className }) => (
+interface ButtonProps {
+  children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => (
   <button onClick={onClick} className={`${className} text-yellow-400 p-2 rounded-md`}>
     {children}
   </button>
 );
-
 const data = {
   labels: [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -36,7 +41,7 @@ const data = {
   ],
 };
 
-const options = {
+const options:ChartOptions<'line'> = {
   responsive: true,
   plugins: {
     legend: {
@@ -153,7 +158,7 @@ export const IncomeVsExpense: React.FC = () => {
             <tbody>
               <tr>
                 <td className="px-4 py-2 font-semibold">Income :</td>
-                <td colSpan="13"></td>
+                <td colSpan={13}></td>
               </tr>
               <tr>
                 <td className="px-4 py-2">Revenue</td>
@@ -189,7 +194,7 @@ export const IncomeVsExpense: React.FC = () => {
               </tr>
               <tr>
                 <td className="px-4 py-2 font-semibold">Expense :</td>
-                <td colSpan="13"></td>
+                <td colSpan={13}></td>
               </tr>
               <tr>
                 <td className="px-4 py-2">Payment</td>
@@ -225,7 +230,7 @@ export const IncomeVsExpense: React.FC = () => {
               </tr>
               <tr>
                 <td className="px-4 py-2 font-semibold">Profit = Income - Expense</td>
-                <td colSpan="13"></td>
+                <td colSpan={13}></td>
               </tr>
               <tr>
                 <td className="px-4 py-2">Profit</td>
