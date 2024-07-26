@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
 const weekData = [
+  // Add your weekly data here
   { name: 'Mon', Engagement: Math.floor(Math.random() * 100) + 20 },
   { name: 'Tue', Engagement: Math.floor(Math.random() * 100) + 20 },
   { name: 'Wed', Engagement: Math.floor(Math.random() * 100) + 20 },
@@ -14,6 +15,7 @@ const weekData = [
 ];
 
 const monthData = [
+  // Add your monthly data here
   { name: 'Week 1', Engagement: Math.floor(Math.random() * 1000) + 200 },
   { name: 'Week 2', Engagement: Math.floor(Math.random() * 1000) + 200 },
   { name: 'Week 3', Engagement: Math.floor(Math.random() * 1000) + 200 },
@@ -21,6 +23,7 @@ const monthData = [
 ];
 
 const yearData = [
+  // Add your yearly data here
   { name: 'Jan', Engagement: Math.floor(Math.random() * 5000) + 1000 },
   { name: 'Feb', Engagement: Math.floor(Math.random() * 5000) + 1000 },
   { name: 'Mar', Engagement: Math.floor(Math.random() * 5000) + 1000 },
@@ -40,11 +43,9 @@ type TabType = 'week' | 'month' | 'year';
 export function AreaChartComp() {
   const [data, setData] = useState(yearData);
   const [activeTab, setActiveTab] = useState('year');
-  const [fillColor, setFillColor] = useState(getRandomColor());
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
-    setFillColor(getRandomColor());
     if (tab === 'week') {
       setData(weekData);
     } else if (tab === 'month') {
@@ -56,7 +57,7 @@ export function AreaChartComp() {
 
   return (
     <div className='w-[100%]'>
-      <div className='ms-12'>
+      <div className='ms-12' >
         <ul className="mb-5 flex list-none flex-row flex-wrap border-b-0 ps-0" role="tablist" data-twe-nav-ref>
           <button
             className={`my-2 block border-x-0 border-b-2 border-t-0 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:bg-neutral-100 focus:isolate dark:text-white/50 dark:hover:bg-neutral-700/60 ${activeTab === 'week' ? 'border-white' : 'border-transparent'}`}
@@ -101,18 +102,9 @@ export function AreaChartComp() {
             tickFormatter={(value) => `${value}`}
           />
           <Tooltip formatter={(value) => `${value}`} />
-          <Area type="monotone" dataKey="Engagement" stroke="black" fill={fillColor} />
+          <Area type="monotone" dataKey="Engagement" stroke="black" fill="rgb(173,250,29)" />
         </AreaChart>
       </ResponsiveContainer>
     </div>
   );
 }
-
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};

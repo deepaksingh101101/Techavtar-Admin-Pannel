@@ -95,12 +95,15 @@ export const AccountStatement: React.FC = () => {
         </div>
       </div>
       <Separator />
+
+
+      
       <div className="flex flex-col space-y-4 mt-4">
-        <div className="flex items-center space-x-4 bg-gray-800 p-4 rounded-lg">
+        <div className="flex items-center space-x-4 p-4 rounded-lg">
           <div className="flex-grow"></div>
           <div>
             <label htmlFor="startMonth" className="block text-sm font-medium text-gray-400">Start Month</label>
-            <input
+            <Input
               type="month"
               id="startMonth"
               className="bg-gray-800 text-gray-400 text-sm border border-gray-700 rounded-md px-2 py-1 w-full"

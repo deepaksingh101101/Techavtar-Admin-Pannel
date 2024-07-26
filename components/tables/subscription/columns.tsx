@@ -33,10 +33,20 @@ export const columns: ColumnDef<Subscription>[] = [
   {
     accessorKey: 'frequency',
     header: 'Frequency',
+    cell: ({ row }) => (
+      <div className="">
+        {row.original.frequency}
+      </div>
+    )
   },
   {
     accessorKey: 'price',
     header: 'Price',
+    cell: ({ row }) => (
+      <div className="">
+        {row.original.price}
+      </div>
+    )
   },
   {
     accessorKey: 'offers',

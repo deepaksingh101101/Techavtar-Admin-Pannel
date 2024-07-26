@@ -45,7 +45,7 @@ export const OrderManagementData: OrderManagement[] = [
     productsOrdered: ['Weekly Veggie Bag'],
     totalWeight: 5,
     addons: [],
-    paymentStatus: 'Pending',
+    paymentStatus: 'Unpaid',
     specialInstructions: 'Deliver to the back gate.'
   },
   {

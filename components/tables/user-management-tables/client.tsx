@@ -30,6 +30,7 @@ export const UserManagementClient: React.FC = () => {
       subOptions: ['Trial', 'Weekly', 'Monthly', 'Fortnightly', 'Bi Weekly'],
     },
   ];
+
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
       item.firstName.toLowerCase().includes(searchValue.toLowerCase())
@@ -70,6 +71,7 @@ export const UserManagementClient: React.FC = () => {
         data={data}
         onSearch={handleSearch} 
         filters={filters}
+  
       />
       
     </>

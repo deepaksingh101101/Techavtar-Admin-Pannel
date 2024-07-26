@@ -2,6 +2,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import { OrderManagement } from '@/constants/order-management-data';
+import { Check, X, Calendar, Clock } from 'lucide-react';
 
 export const columns: ColumnDef<OrderManagement>[] = [
   {
@@ -29,19 +30,50 @@ export const columns: ColumnDef<OrderManagement>[] = [
   },
   {
     accessorKey: 'userId',
-    header: 'User ID'
+    header: 'User ID',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.userId}
+      </div>
+    )
   },
   {
     accessorKey: 'deliveryDate',
-    header: 'Delivery Date'
+    header: 'Delivery Date',
+    cell: ({ row }) => (
+        <div className="flex items-center mt-1">
+          <Calendar className="text-blue-500 mr-2" width={16} height={16} />
+          <span className="text-[12px]">{row.original.deliveryDate}</span>
+        </div>
+     
+    )
   },
   {
     accessorKey: 'deliveryTimeSlot',
-    header: 'Delivery Time Slot'
+    header: 'Delivery Time Slot',
+    cell: ({ row }) => (
+      <div className="flex items-center mt-1">
+        <Clock className="text-blue-500 mr-2" width={16} height={16} />
+        <span className="text-[12px]">{row.original.deliveryTimeSlot}</span>
+      </div>
+   
+  )
   },
   {
     accessorKey: 'deliveryStatus',
-    header: 'Delivery Status'
+    header: 'Delivery Status',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.deliveryStatus === 'Delivered' ? 'bg-green-400' :
+          row.original.deliveryStatus === 'Pending' ? 'bg-yellow-400' :
+          'bg-red-400'
+        }`}
+      >
+        <span className='text-black bold'>{row.original.deliveryStatus}</span>
+      </div>
+    )
   },
   {
     accessorKey: 'productsOrdered',
@@ -56,7 +88,12 @@ export const columns: ColumnDef<OrderManagement>[] = [
   },
   {
     accessorKey: 'totalWeight',
-    header: 'Total Weight (kg)'
+    header: 'Total Weight (kg)',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.totalWeight}
+      </div>
+    )
   },
   {
     accessorKey: 'addons',
@@ -71,7 +108,22 @@ export const columns: ColumnDef<OrderManagement>[] = [
   },
   {
     accessorKey: 'paymentStatus',
-    header: 'Payment Status'
+    header: 'Payment Status',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.paymentStatus === 'Paid' ? 'bg-green-400' : 'bg-red-400'
+        }`}
+      >
+        {row.original.paymentStatus === 'Paid' ? (
+          <Check width={16} height={16} className="text-green-500 mr-2" />
+        ) : (
+          <X width={16} height={16} className="text-red-900 mr-2" />
+        )}
+        <span className='text-black bold'>{row.original.paymentStatus}</span>
+      </div>
+    )
   },
   {
     accessorKey: 'specialInstructions',

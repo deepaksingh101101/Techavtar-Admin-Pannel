@@ -4,6 +4,10 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ProductManagement } from '@/constants/product-management-data';
+import Image from 'next/image'; // Import Image component
+
+import vegetable from '@/public/assets/vegetables_862860.png'; 
+import fruit from '@/public/assets/strawberry_13643533.png'; 
 
 export const columns: ColumnDef<ProductManagement>[] = [
   {
@@ -22,7 +26,7 @@ export const columns: ColumnDef<ProductManagement>[] = [
         aria-label="Select row"
       />
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false
   },
   {
@@ -35,7 +39,18 @@ export const columns: ColumnDef<ProductManagement>[] = [
   },
   {
     accessorKey: 'type',
-    header: 'Type'
+    header: 'Type',
+    cell: ({ row }) => (
+      <div className="flex items-center me-9">
+        {row.original.type === 'Vegetable' && (
+          <Image src={vegetable} alt="Vegetable" width={20} height={20} />
+        )}
+        {row.original.type === 'Fruit' && (
+          <Image src={fruit} alt="Fruit" width={20} height={20} />
+        )}
+        <span className="ml-2">{row.original.type}</span>
+      </div>
+    )
   },
   {
     accessorKey: 'group',
@@ -55,11 +70,22 @@ export const columns: ColumnDef<ProductManagement>[] = [
   },
   {
     accessorKey: 'veggieNameInHindi',
-    header: 'Veggie Name in Hindi'
+    header: 'Veggie Name in Hindi',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.veggieNameInHindi}
+      </div>
+    )
   },
   {
     accessorKey: 'unitQuantity',
-    header: 'Unit Quantity (gms)'
+    header: 'Unit Quantity',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.unitQuantity}
+      </div>
+    )
+    
   },
   {
     accessorKey: 'pieces',
