@@ -147,7 +147,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     {
       id: 'Step 2',
       name: 'Assign Employee',
-      fields: ['assignedEmployee']
+      fields: ['assignedEmployee','paymentType']
     },
     { id: 'Step 3', name: 'Complete' }
   ];
@@ -155,6 +155,12 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   const employees = [
     { id: 'employee1', name: 'John Doe' },
     { id: 'employee2', name: 'Jane Smith' },
+    // Add more employees as needed
+  ];
+  const payment = [
+    { id: '1', name: 'Credit/Debit' },
+    { id: '2', name: 'UPI' },
+    { id: '3', name: 'Net Banking' },
     // Add more employees as needed
   ];
   const next = async () => {
@@ -685,10 +691,54 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="paymentType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Payment Type</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                defaultValue={field.value}
+                                placeholder="Select an Payment Type"
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {payment.map((pay) => (
+                              <SelectItem key={pay.id} value={pay.id}>
+                                {pay.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
+               
               </AccordionContent>
             </AccordionItem>
+            {/* <AccordionItem value="item-2">
+              <AccordionTrigger>
+                Payment Type
+              </AccordionTrigger>
+              <AccordionContent>
+                
+              </AccordionContent>
+            </AccordionItem> */}
           </Accordion>
+
+
+          
         </>
       )}
 

@@ -17,6 +17,7 @@ export const profileSchema = z.object({
   // state: z.string().min(1, { message: 'Please Enter Sate' }),
   address2: z.string().min(1, { message: 'Please Enter Address 2' }),
   assignedEmployee: z.string().min(1, { message: 'Please select an employee' }),
+  paymentType: z.string().min(1, { message: 'Please select an Payment Type' }),
   // jobs array is for the dynamic fields
   jobs: z.array(
     z.object({
