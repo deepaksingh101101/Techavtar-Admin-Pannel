@@ -30,12 +30,8 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'User ID'
   },
   {
-    accessorKey: 'firstName',
-    header: 'First Name'
-  },
-  {
-    accessorKey: 'lastName',
-    header: 'Last Name'
+    accessorKey: 'Name',
+    header: ' Name'
   },
   {
     accessorKey: 'email',

@@ -36,20 +36,12 @@ export function DashboardNav({
     return getLocalStorageItem<string>('activeItem') || defaultActiveItem;
   });
 
-<<<<<<< HEAD
-  const handleExpand = (label: string) => {
-    if (expandedItems.includes(label)) {
-      setExpandedItems(expandedItems.filter(item => item !== label));
-    } else {
-      setExpandedItems([...expandedItems, label]);
-=======
   const handleExpand = (href: string) => {
     let newExpandedItems;
     if (expandedItems.includes(href)) {
       newExpandedItems = expandedItems.filter(item => item !== href);
     } else {
       newExpandedItems = [...expandedItems, href];
->>>>>>> main
     }
     setExpandedItems(newExpandedItems);
     setLocalStorageItem('expandedItems', newExpandedItems);
@@ -83,12 +75,8 @@ export function DashboardNav({
       <TooltipProvider>
         {items.map((item, index) => {
           const Icon = Icons[item.icon || 'arrowRight'];
-<<<<<<< HEAD
-          const isExpanded = expandedItems.includes(item.label || '');
-=======
           const isExpanded = expandedItems.includes(item.href || '');
           const isActive = activeItem === item.href;
->>>>>>> main
 
           return (
             <div key={index}>
@@ -96,7 +84,7 @@ export function DashboardNav({
                 <TooltipTrigger asChild>
                   {item.subItems ? (
                     <div
-                      onClick={() => handleExpand(item.label || '')}
+                      onClick={() => handleExpand(item.href || '')}
                       className={cn(
                         'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-[#029740] hover:text-white',
                         path === item.href ? 'bg-accent' : 'transparent',
@@ -105,7 +93,7 @@ export function DashboardNav({
                         isActive ? 'bg-green-500' : ''
                       )}
                     >
-                      <Icon className={`ml-3 size-5`} />
+                      <Icon className="ml-3 size-5" />
                       {isMobileNav || (!isMinimized && !isMobileNav) ? (
                         <span className="mr-2 truncate">{item.title}</span>
                       ) : (
@@ -123,7 +111,7 @@ export function DashboardNav({
                       )}
                       onClick={() => handleClick(item.href || '/')}
                     >
-                      <Icon className={`ml-3 size-5`} />
+                      <Icon className="ml-3 size-5" />
                       {isMobileNav || (!isMinimized && !isMobileNav) ? (
                         <span className="mr-2 truncate">{item.title}</span>
                       ) : (
@@ -160,7 +148,9 @@ export function DashboardNav({
                               )}
                               onClick={() => handleClick(subItem?.href || "")}
                             >
-                              <SubIcon className={`ml-1 size-5`} />
+                             
+                              <SubIcon className="ml-3 size-5" />
+
                               {isMobileNav || (!isMinimized && !isMobileNav) ? (
                                 <span className="mr-2 truncate">{subItem.title}</span>
                               ) : (
@@ -173,7 +163,9 @@ export function DashboardNav({
                                 'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium  cursor-not-allowed',
                               )}
                             >
-                              <SubIcon className={`ml-1 size-5`} />
+                             
+                              <SubIcon className="ml-3 size-5" />
+
                               {isMobileNav || (!isMinimized && !isMobileNav) ? (
                                 <span className="mr-2 truncate">{subItem.title}</span>
                               ) : (
@@ -199,6 +191,6 @@ export function DashboardNav({
           );
         })}
       </TooltipProvider>
-    </nav>
-  );
+    </nav>
+  );
 }

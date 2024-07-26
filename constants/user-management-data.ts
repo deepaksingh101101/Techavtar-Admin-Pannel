@@ -2,8 +2,7 @@ import { NavItem } from '@/types';
 
 export type UserManagement = {
   userId: number;
-  firstName: string;
-  lastName: string;
+  Name: string;
   email: string;
   phoneNumber: string;
   address: {
@@ -25,8 +24,7 @@ export type UserManagement = {
 export const userManagementData: UserManagement[] = [
   {
     userId: 1,
-    firstName: 'John',
-    lastName: 'Doe',
+    Name: 'John Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -46,8 +44,7 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 2,
-    firstName: 'Ridhi',
-    lastName: 'Doe',
+    Name: 'Ridhi Mishra',
     email: 'john.doe@example.com',
     phoneNumber: '11111111',
     address: {
@@ -67,8 +64,7 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 3,
-    firstName: 'Shivam',
-    lastName: 'Kumar',
+    Name: 'Shivam Kumar',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -88,8 +84,7 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 4,
-    firstName: 'John',
-    lastName: 'Doe',
+    Name: 'John Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -109,8 +104,7 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 5,
-    firstName: 'John',
-    lastName: 'Doe',
+    Name: 'John Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -130,8 +124,7 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 6,
-    firstName: 'John',
-    lastName: 'Doe',
+    Name: 'John Doe',   
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {

@@ -39,7 +39,8 @@ interface SubscriptionFormType {
 const subscriptionFormSchema = z.object({
   subscriptionType: z.enum(['Trial', 'Monthly', 'Quarterly', 'Semi-Annual', 'Annually']),
   frequency: z.enum(['Daily', 'Weekly', 'Monthly', 'Fortnightly', 'Biweekly']),
-  price: z.number().positive('Price must be greater than zero')
+  price: z.number().positive('Price must be greater than zero'),
+  offers: z.enum(['25% off', '31% off', '36% off', '44% off', '6% off', '11% off'])
 });
 
 type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
@@ -61,7 +62,8 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     defaultValues: {
       subscriptionType: 'Trial',
       frequency: 'Weekly',
-      price: 0
+      price: 0,
+      offers: '25% off'
     }
   });
 
@@ -162,6 +164,35 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="offers"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Offers</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Offer" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="25% off">25% off</SelectItem>
+                    <SelectItem value="31% off">31% off</SelectItem>
+                    <SelectItem value="36% off">36% off</SelectItem>
+                    <SelectItem value="44% off">44% off</SelectItem>
+                    <SelectItem value="6% off">6% off</SelectItem>
+                    <SelectItem value="11% off">11% off</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
