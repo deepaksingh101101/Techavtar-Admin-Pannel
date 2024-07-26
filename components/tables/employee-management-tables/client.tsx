@@ -36,7 +36,13 @@ export const EmployeeManagementClient: React.FC = () => {
     });
     setData(sortedData);
   };
-
+  const filters = [
+    {
+      label: 'Role ',
+      subOptions: ['Manager', 'Support Staff','Technician','Customer Service'],
+    }
+  
+  ];
   return (
     <>
       <div className="flex items-start justify-between">
@@ -57,6 +63,7 @@ export const EmployeeManagementClient: React.FC = () => {
         columns={columns}
         data={data}
         onSearch={handleSearch} 
+        filters={filters}
         // onSort={handleSort} 
       />
     </>
