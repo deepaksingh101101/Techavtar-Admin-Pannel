@@ -13,9 +13,9 @@ export const profileSchema = z.object({
   contactno: z.coerce.number(),
   country: z.string().min(1, { message: 'Please select a category' }),
   city: z.string().min(1, { message: 'Please select a category' }),
-  houseNumber: z.string().min(1, { message: 'Please Enter House Number' }),
-  state: z.string().min(1, { message: 'Please Enter Sate' }),
-  zipcode: z.string().min(1, { message: 'Please Enter Zip Code' }),
+  address1: z.string().min(1, { message: 'Please Enter Address 1' }),
+  // state: z.string().min(1, { message: 'Please Enter Sate' }),
+  address2: z.string().min(1, { message: 'Please Enter Address 2' }),
   assignedEmployee: z.string().min(1, { message: 'Please select an employee' }),
   // jobs array is for the dynamic fields
   jobs: z.array(

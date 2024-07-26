@@ -9,6 +9,9 @@ import tomato from '@/public/assets/icons/tomato.png'
 import cucumber from '@/public/assets/icons/cucumber.png'
 import onion from '@/public/assets/icons/onion.png'
 import pumpkin from '@/public/assets/icons/pumpkin.png'
+import user1 from '@/public/assets/icons/user1.jpg'
+import user2 from '@/public/assets/icons/user2.png'
+import user3 from '@/public/assets/icons/user3.jpg'
 // Define the Sale interface
 export interface Sale {
     avatar: StaticImageData;  // Use the correct type for your image data
@@ -20,34 +23,34 @@ export interface Sale {
   // Array of Sale data
   export const salesData: Sale[] = [
     {
-      avatar: shop1, // Placeholder, replace with actual path or variable holding the avatar image
-      name: 'Green Harvest Market',
-      email: '200kg Today',
-      amount: '+₹1,999.00'
+      avatar: user1, // Placeholder, replace with actual path or variable holding the avatar image
+      name: 'John Doe',
+      email: 'Last Purchase Today',
+      amount: '71 Times'
     },
     {
-      avatar: shop2,
-      name: 'Organic Greens Hub',
-      email: '45kg Today',
-      amount: '+₹299.00'
+      avatar: user2,
+      name: 'Deepak Singh',
+      email: 'Last Purchase Yesterday',
+      amount: '23 Times'
     },
     {
-      avatar: shop3,
-      name: 'Farm Fresh Vegetables',
-      email: '47kg Today',
-      amount: '+₹99.00'
+      avatar: user3,
+      name: 'Shivam Kumar',
+      email: 'Last Purchase Today',
+      amount: '18 Times'
     },
     {
-      avatar: shop4,
-      name: 'Veggie Delight Store',
-      email: '20kg Today',
-      amount: '+₹39.00'
+      avatar: user2,
+      name: 'Arya Singh',
+      email: 'Last Purchase YesterDay',
+      amount: '10 Times'
     },
     {
-      avatar: shop5,
-      name: 'Fresh Veggie Corner',
-      email: '237kg Today',
-      amount: '+₹39.00'
+      avatar: user1,
+      name: 'Kartik Singh',
+      email: 'Last Purchase 7 Days Ago',
+      amount: '10 Times'
     }
   ];
   

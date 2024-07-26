@@ -128,7 +128,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     {
       id: 'Step 1',
       name: 'Personal Information',
-      fields: ['firstname', 'lastname', 'email', 'contactno','houseNumber', 'city', 'state', 'zipcode']
+      fields: ['firstname', 'lastname', 'email', 'contactno','address1', 'address2']
     },
     // {
     //   id: 'Step 2',
@@ -353,14 +353,14 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
 
 <FormField
                   control={form.control}
-                  name="houseNumber"
+                  name="address1"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>House Number</FormLabel>
+                      <FormLabel>Address Line 1</FormLabel>
                       <FormControl>
                         <Input
                           disabled={loading}
-                          placeholder="House Number"
+                          placeholder="Address Line 1"
                           {...field}
                         />
                       </FormControl>
@@ -370,7 +370,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 />
 
 
-<FormField
+{/* <FormField
                   control={form.control}
                   name="state"
                   render={({ field }) => (
@@ -386,18 +386,18 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
 <FormField
                   control={form.control}
-                  name="zipcode"
+                  name="address2"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Zip Code</FormLabel>
+                      <FormLabel>Address Line 2</FormLabel>
                       <FormControl>
                         <Input
                           disabled={loading}
-                          placeholder="Enter Zipcode"
+                          placeholder="Address Line 2"
                           {...field}
                         />
                       </FormControl>
@@ -406,7 +406,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   )}
                 />
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="city"
                   render={({ field }) => (
@@ -427,7 +427,6 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {/* @ts-ignore  */}
                           {cities.map((city) => (
                             <SelectItem key={city.id} value={city.id}>
                               {city.name}
@@ -438,7 +437,9 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
+                
+
               </>
             )}
             {/* {currentStep === 1 && (

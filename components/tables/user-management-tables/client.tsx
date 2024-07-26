@@ -58,7 +58,7 @@ export const UserManagementClient: React.FC = () => {
         />
         <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/user-management`)}
+          onClick={() => router.push(`/profile`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
