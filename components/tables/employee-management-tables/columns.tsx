@@ -4,6 +4,18 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import { EmployeeManagement } from '@/constants/employee-management-data';
+import { Mail, Phone } from 'lucide-react';
+
+
+// Function to generate a random color in hex format
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 export const columns: ColumnDef<EmployeeManagement>[] = [
   {
@@ -30,8 +42,20 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
     header: 'Employee ID'
   },
   {
-    accessorKey: 'fullName',
-    header: 'Full Name'
+    accessorKey: 'firstName',
+    header: 'Full Name',
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <div 
+          className="flex items-center justify-center w-8 h-8 rounded-full mr-2"
+          style={{ backgroundColor: getRandomColor(), color: 'white' }}
+        >
+          {row.original.fullName.charAt(0)}
+        </div>
+        <span>{row.original.fullName}</span>
+      </div>
+    ),
+    enableSorting: true,
   },
   {
     accessorKey: 'role',
@@ -50,11 +74,23 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
   },
   {
     accessorKey: 'contactInformation.email',
-    header: 'Email'
+    header: 'Email',
+    cell: ({ row }) => (
+        <div className="flex items-center mt-1">
+          <Mail className="text-blue-500 mr-2" width={10} height={10} />
+          <span className="">{row.original.contactInformation.email}</span>
+      </div>
+    )
   },
   {
     accessorKey: 'contactInformation.phone',
-    header: 'Phone'
+    header: 'Phone',
+    cell: ({ row }) => (
+      <div className="flex items-center mt-1">
+        <Phone className="text-green-500 mr-2" width={10} height={10} />
+        <span className="">{row.original.contactInformation.phone}</span>
+    </div>
+  )
   },
   {
     id: 'actions',

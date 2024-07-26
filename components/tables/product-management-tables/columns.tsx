@@ -62,7 +62,20 @@ export const columns: ColumnDef<ProductManagement>[] = [
   },
   {
     accessorKey: 'priority',
-    header: 'Priority'
+    header: 'Priority',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.priority === 'High' ? 'bg-red-400' :
+          row.original.priority === 'Low' ? 'bg-yellow-400' :
+          row.original.priority === 'Medium' ? 'bg-green-400' :
+          'bg-red-400'
+        }`}
+      >
+        <span className='text-black bold'>{row.original.priority}</span>
+      </div>
+    )
   },
   {
     accessorKey: 'roster',
@@ -89,7 +102,12 @@ export const columns: ColumnDef<ProductManagement>[] = [
   },
   {
     accessorKey: 'pieces',
-    header: 'Pieces'
+    header: 'Pieces',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.pieces}
+      </div>
+    )
   },
   {
     accessorKey: 'addons',
