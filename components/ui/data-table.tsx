@@ -73,7 +73,7 @@ export function DataTable<TData, TValue>({
       <Input
   value={filterInput}
   onChange={handleSearchChange}
-  placeholder={`Search by ${searchKey?.charAt(0).toUpperCase() + searchKey.slice(1)}`}
+  placeholder={`Search by ${(searchKey || 'defaultSearchKey').charAt(0).toUpperCase() + (searchKey || 'defaultSearchKey').slice(1)}`}
   className="mb-4 max-w-64"
 />
 
