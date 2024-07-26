@@ -57,7 +57,7 @@ export const SubscriptionCellAction: React.FC<SubscriptionCellActionProps> = ({ 
             <Edit className="mr-2 h-4 w-4" /> Edit 
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleInactiveSubscription}>
-            <Eye className="mr-2 h-4 w-4" /> Inactive
+            <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
          
         </DropdownMenuContent>

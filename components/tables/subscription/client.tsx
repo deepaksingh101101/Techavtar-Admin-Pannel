@@ -50,6 +50,12 @@ export const SubscriptionClient: React.FC = () => {
     console.log('Data saved:', data);
     // Implement the logic to save the data
   };
+  const filters = [
+    {
+      label: 'Subscription Type',
+      subOptions: ['Trial', 'Weekly', 'Monthly', 'Fortnightly', 'Bi Weekly'],
+    },
+  ];
 
   return (
     <>
@@ -72,6 +78,8 @@ export const SubscriptionClient: React.FC = () => {
         data={data}
         onSearch={handleSearch}
         meta={{ updateData, updateColumnData }}
+        filters={filters}
+
       />
       <Button onClick={handleSave}>Save Changes</Button>
     </>

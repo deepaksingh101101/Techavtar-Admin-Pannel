@@ -122,7 +122,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={control}
             name="frequency"
             render={({ field }) => (
@@ -146,6 +146,24 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     <SelectItem value="Biweekly">Biweekly</SelectItem>
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+           <FormField
+            control={control}
+            name="frequency"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Frequency</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Enter Frequency"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
