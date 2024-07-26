@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 const data = [
@@ -54,6 +55,8 @@ const data = [
 ];
 
 export function Overview() {
+  const [fillColor, setFillColor] = useState(getRandomColor());
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart data={data}>
@@ -71,8 +74,17 @@ export function Overview() {
           axisLine={false}
           tickFormatter={(value) => `₹${value}`}
         />
-        <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="total" fill={fillColor} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
 }
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
