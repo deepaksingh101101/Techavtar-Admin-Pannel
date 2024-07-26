@@ -19,7 +19,7 @@ export const SubscriptionManagementData: SubscriptionManagement[] = [
   {
     subscriptionId: 1,
     userId: 1,
-    subscriptionPlan: 'Monthly Veggie Bag',
+    subscriptionPlan: 'Quarterly',
     numberOfDeliveries: 4,
     deliveryDays: ['Wed', 'Fri'], // Wednesday and Saturday
     subscriptionStartDate: '2023-01-01',
@@ -31,7 +31,7 @@ export const SubscriptionManagementData: SubscriptionManagement[] = [
   {
     subscriptionId: 2,
     userId: 2,
-    subscriptionPlan: 'Bi-weekly Mixed Bag',
+    subscriptionPlan: 'SemiAnnual',
     numberOfDeliveries: 6,
     deliveryDays: ['Mon','Sat'], // Tuesday and Friday
     subscriptionStartDate: '2023-02-15',

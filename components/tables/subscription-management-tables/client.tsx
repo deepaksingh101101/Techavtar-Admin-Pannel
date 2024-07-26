@@ -43,7 +43,7 @@ export const SubscriptionManagementClient: React.FC = () => {
     },
     {
       label: 'Subscription Plan',
-      subOptions: ['Trial', 'Weekly', 'Monthly', 'Fortnightly', 'Bi Weekly'],
+      subOptions: ['Trial', 'Quarterly', 'Monthly', 'Annual', 'SemiAnnual'],
     },
   ];
   return (
