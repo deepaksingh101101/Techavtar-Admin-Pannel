@@ -36,6 +36,17 @@ export const ProductManagementClient: React.FC = () => {
     });
     setData(sortedData);
   };
+  const filters = [
+    {
+      label: 'Season ',
+      subOptions: ['Winter', 'Autumn',],
+    },
+    {
+      label: 'Priority',
+      subOptions: ['High', 'Medium', 'Low'],
+    },
+  
+  ];
 
   return (
     <>
@@ -57,6 +68,8 @@ export const ProductManagementClient: React.FC = () => {
         columns={columns}
         data={data}
         onSearch={handleSearch} 
+        filters={filters}
+
         // onSort={handleSort} 
       />
     </>

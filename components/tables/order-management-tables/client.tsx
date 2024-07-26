@@ -24,6 +24,17 @@ export const OrderManagementClient: React.FC = () => {
     setData(filteredData);
   };
 
+  const filters = [
+    {
+      label: 'Payment Status',
+      subOptions: ['Paid', 'Unpaid',],
+    },
+    {
+      label: 'Delivery Status',
+      subOptions: ['Pending', 'Delivered', 'Canceled'],
+    },
+  
+  ];
   const handleSort = (sortBy: string, sortOrder: 'asc' | 'desc') => {
     // Example: Sorting by first name
     const sortedData = [...data].sort((a, b) => {
@@ -55,7 +66,9 @@ export const OrderManagementClient: React.FC = () => {
         searchKey="productsOrdered"
         columns={columns}
         data={data}
-        // onSearch={handleSearch} 
+        filters={filters}
+
+        onSearch={handleSearch} 
         // onSort={handleSort} 
       />
     </>

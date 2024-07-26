@@ -37,6 +37,18 @@ export const ComplaintManagementClient: React.FC = () => {
     setData(sortedData);
   };
 
+  const filters = [
+    {
+      label: 'Status ',
+      subOptions: ['Open', 'Closed',],
+    },
+    {
+      label: 'Complain Type',
+      subOptions: ['Delay', 'Bad Quality', 'Wrong Item', 'Not Reached'],
+    },
+  
+  ];
+
   return (
     <>
       <div className="flex items-start justify-between">
@@ -57,6 +69,7 @@ export const ComplaintManagementClient: React.FC = () => {
         columns={columns}
         data={data}
         onSearch={handleSearch} 
+        filters={filters}
         // onSort={handleSort} 
       />
     </>
