@@ -32,7 +32,7 @@ export const UserManagementClient: React.FC = () => {
   ];
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.subscriptionType.toLowerCase().includes(searchValue.toLowerCase())
+      item.firstName.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
@@ -65,7 +65,7 @@ export const UserManagementClient: React.FC = () => {
       </div>
       <Separator />
       <DataTable
-        searchKey="Name"
+        searchKey="firstName"
         columns={columns}
         data={data}
         onSearch={handleSearch} 

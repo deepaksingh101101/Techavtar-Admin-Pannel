@@ -70,12 +70,13 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className="flex justify-end">
-        <Input
-          value={filterInput}
-          onChange={handleSearchChange}
-          placeholder={`Search by ${searchKey}`}
-          className="mb-4 max-w-64"
-        />
+      <Input
+  value={filterInput}
+  onChange={handleSearchChange}
+  placeholder={`Search by ${searchKey?.charAt(0).toUpperCase() + searchKey.slice(1)}`}
+  className="mb-4 max-w-64"
+/>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button style={{ background: "#04894d", color: 'white' }} className="text-xs md:text-sm ms-4">

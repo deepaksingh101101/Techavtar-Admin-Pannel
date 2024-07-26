@@ -30,16 +30,24 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'User ID'
   },
   {
-    accessorKey: 'Name',
-    header: ' Name'
+    accessorKey: 'firstName',
+    header: ' First Name'
+  },
+  {
+    accessorKey: 'lastName',
+    header: ' Last Name'
   },
   {
     accessorKey: 'email',
     header: 'Email'
   },
   {
-    accessorKey: 'phoneNumber',
-    header: 'Phone Number'
+    accessorKey: 'subscriptionType',
+    header: 'Subscription Type'
+  },
+  {
+    accessorKey: 'deliveryFrequency',
+    header: 'Delivery Frequency'
   },
   {
     accessorKey: 'address',
@@ -50,13 +58,11 @@ export const columns: ColumnDef<UserManagement>[] = [
       </div>
     )
   },
+ 
+ 
   {
-    accessorKey: 'subscriptionType',
-    header: 'Subscription Type'
-  },
-  {
-    accessorKey: 'deliveryFrequency',
-    header: 'Delivery Frequency'
+    accessorKey: 'phoneNumber',
+    header: 'Phone Number'
   },
   {
     accessorKey: 'paymentType',

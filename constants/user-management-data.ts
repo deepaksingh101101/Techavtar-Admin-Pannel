@@ -2,7 +2,8 @@ import { NavItem } from '@/types';
 
 export type UserManagement = {
   userId: number;
-  Name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phoneNumber: string;
   address: {
@@ -24,7 +25,8 @@ export type UserManagement = {
 export const userManagementData: UserManagement[] = [
   {
     userId: 1,
-    Name: 'John Doe',
+    firstName: 'John',
+    lastName:"Doe",
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -32,8 +34,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B'
     },
-    subscriptionType: 'Premium',
-    deliveryFrequency: 'Weekly',
+    subscriptionType: 'Weekly',
+    deliveryFrequency: '4',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -44,7 +46,8 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 2,
-    Name: 'Ridhi Mishra',
+    firstName: 'Ridhi',
+    lastName:"Mishra",
     email: 'john.doe@example.com',
     phoneNumber: '11111111',
     address: {
@@ -52,8 +55,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B'
     },
-    subscriptionType: 'Premium',
-    deliveryFrequency: 'Weekly',
+    subscriptionType: 'Quarterly',
+    deliveryFrequency: '8',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -64,7 +67,8 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 3,
-    Name: 'Shivam Kumar',
+    firstName: 'Deepak',
+    lastName:"Singh",
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -72,8 +76,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B'
     },
-    subscriptionType: 'Premium',
-    deliveryFrequency: 'Weekly',
+    subscriptionType: 'Semi Annual',
+    deliveryFrequency: '8',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -84,7 +88,8 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 4,
-    Name: 'John Doe',
+    firstName: 'Shivam',
+    lastName:"Kumar",
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -92,8 +97,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B'
     },
-    subscriptionType: 'Premium',
-    deliveryFrequency: 'Weekly',
+    subscriptionType: 'Annual',
+    deliveryFrequency: '4',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -104,7 +109,8 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 5,
-    Name: 'John Doe',
+    firstName: 'John',
+    lastName:"Doe",
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -112,8 +118,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B'
     },
-    subscriptionType: 'Premium',
-    deliveryFrequency: 'Weekly',
+    subscriptionType: 'Trial',
+    deliveryFrequency: '4',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -124,7 +130,8 @@ export const userManagementData: UserManagement[] = [
   },
   {
     userId: 6,
-    Name: 'John Doe',   
+    firstName: 'John',
+    lastName:"Doe",   
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
@@ -132,8 +139,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B'
     },
-    subscriptionType: 'Premium',
-    deliveryFrequency: 'Weekly',
+    subscriptionType: 'Quarterly',
+    deliveryFrequency: '8',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
