@@ -93,7 +93,7 @@ export function DashboardNav({
                         isActive ? 'bg-green-500' : ''
                       )}
                     >
-                      <Icon className={`ml-3 size-5`} />
+                      <Icon className="ml-3 size-5" />
                       {isMobileNav || (!isMinimized && !isMobileNav) ? (
                         <span className="mr-2 truncate">{item.title}</span>
                       ) : (
@@ -111,7 +111,7 @@ export function DashboardNav({
                       )}
                       onClick={() => handleClick(item.href || '/')}
                     >
-                      <Icon className={`ml-3 size-5`} />
+                      <Icon className="ml-3 size-5" />
                       {isMobileNav || (!isMinimized && !isMobileNav) ? (
                         <span className="mr-2 truncate">{item.title}</span>
                       ) : (
@@ -148,7 +148,9 @@ export function DashboardNav({
                               )}
                               onClick={() => handleClick(subItem?.href || "")}
                             >
-                              <SubIcon className={`ml-1 size-5`} />
+                             
+                              <SubIcon className="ml-3 size-5" />
+
                               {isMobileNav || (!isMinimized && !isMobileNav) ? (
                                 <span className="mr-2 truncate">{subItem.title}</span>
                               ) : (
@@ -161,7 +163,9 @@ export function DashboardNav({
                                 'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium  cursor-not-allowed',
                               )}
                             >
-                              <SubIcon className={`ml-1 size-5`} />
+                             
+                              <SubIcon className="ml-3 size-5" />
+
                               {isMobileNav || (!isMinimized && !isMobileNav) ? (
                                 <span className="mr-2 truncate">{subItem.title}</span>
                               ) : (
@@ -187,6 +191,6 @@ export function DashboardNav({
           );
         })}
       </TooltipProvider>
-    </nav>
-  );
+    </nav>
+  );
 }

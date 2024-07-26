@@ -1,41 +1,74 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Subscription } from '@/constants/subscription-data';
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { CellAction } from './cell-action';
+import { Checkbox } from '@/components/ui/checkbox';
+import { SubscriptionCellAction } from './cell-action';
 
 export const columns: ColumnDef<Subscription>[] = [
   {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false
+  },
+  {
     accessorKey: 'subscriptionType',
     header: 'Subscription Type',
-   
   },
   {
     accessorKey: 'frequency',
     header: 'Frequency',
-  
   },
   {
     accessorKey: 'price',
     header: 'Price',
   },
-  
- 
+  {
+    accessorKey: 'offers',
+    header: 'Offers',
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => <SubscriptionCellAction data={row.original} />,
+  },
 ];
 
-const TableComponent = () => {
+const TableComponent: React.FC = () => {
   const [data, setData] = useState<Subscription[]>([
     {
-      subscriptionType: '',
-      frequency: '',
-      price: 0,
-     
+      subscriptionType: 'Basic',
+      frequency: 'Monthly',
+      price: 10,
+      offers: '10% ',
+    },
+    {
+      subscriptionType: 'Premium',
+      frequency: 'Yearly',
+      price: 100,
+      offers: '20%',
     },
   ]);
 
+  return (
+    <div>
+      {/* Your table rendering logic should go here */}
+    </div>
+  );
 };
 
 export default TableComponent;
