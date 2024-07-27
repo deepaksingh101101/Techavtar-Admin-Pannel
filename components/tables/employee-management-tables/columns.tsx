@@ -38,24 +38,28 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'employeeId',
-    header: 'Employee ID'
+    accessorKey: 'sno',
+    header: 'Sno'
   },
   {
     accessorKey: 'firstName',
-    header: 'Full Name',
+    header: 'First Name',
     cell: ({ row }) => (
       <div className="flex items-center">
         <div 
           className="flex items-center justify-center w-8 h-8 rounded-full mr-2"
           style={{ backgroundColor: getRandomColor(), color: 'white' }}
         >
-          {row.original.fullName.charAt(0)}
+          {row.original.firstName.charAt(0)}
         </div>
-        <span>{row.original.fullName}</span>
+        <span>{row.original.firstName}</span>
       </div>
     ),
     enableSorting: true,
+  },
+  {
+    accessorKey: 'lastName',
+    header: 'Last Name',
   },
   {
     accessorKey: 'role',

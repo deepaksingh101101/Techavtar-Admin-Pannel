@@ -20,7 +20,7 @@ export const EmployeeManagementClient: React.FC = () => {
 
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.fullName.toLowerCase().includes(searchValue.toLowerCase())
+      item.firstName.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
@@ -29,9 +29,9 @@ export const EmployeeManagementClient: React.FC = () => {
     // Example: Sorting by first name
     const sortedData = [...data].sort((a, b) => {
       if (sortOrder === 'asc') {
-        return a.fullName.localeCompare(b.fullName);
+        return a.firstName.localeCompare(b.firstName);
       } else {
-        return b.fullName.localeCompare(a.fullName);
+        return b.firstName.localeCompare(a.firstName);
       }
     });
     setData(sortedData);

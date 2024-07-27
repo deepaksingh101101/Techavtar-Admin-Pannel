@@ -6,8 +6,9 @@ interface User {
 
 // Define the EmployeeManagement interface
 export interface EmployeeManagement {
-  employeeId: number;
-  fullName: string;
+  sno: number;
+  firstName: string;
+  lastName: string;
   role: string;
   assignedUsers: User[]; // Array of user objects assigned to the employee
   contactInformation: {
@@ -19,8 +20,9 @@ export interface EmployeeManagement {
 // Sample data for the employee management system
 export const EmployeeManagementData: EmployeeManagement[] = [
   {
-    employeeId: 1,
-    fullName: 'John Doe',
+    sno: 1,
+    firstName: 'John',
+    lastName: 'Doe',
     role: 'Manager',
     assignedUsers: [
       { id: 1, name: 'Alice Johnson' },
@@ -33,8 +35,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     }
   },
   {
-    employeeId: 2,
-    fullName: 'Jane Smith',
+    sno: 2,
+    firstName: 'Jane',
+    lastName: 'Smith',
     role: 'Support Staff',
     assignedUsers: [
       { id: 4, name: 'David Miller' },
@@ -46,8 +49,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     }
   },
   {
-    employeeId: 3,
-    fullName: 'Robert Brown',
+    sno: 3,
+    firstName: 'Robert',
+    lastName: 'Brown',
     role: 'Technician',
     assignedUsers: [
       { id: 6, name: 'Fiona White' },
@@ -60,8 +64,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     }
   },
   {
-    employeeId: 4,
-    fullName: 'Emily Davis',
+    sno: 4,
+    firstName : 'Emily',
+    lastName : 'Davis',
     role: 'Customer Service',
     assignedUsers: [
       { id: 9, name: 'Ian Yellow' },

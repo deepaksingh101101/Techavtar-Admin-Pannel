@@ -29,15 +29,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
  
   const editEmployeeDetails = () => {
-    router.push(`/employee-management/editEmployeeDetails/${data.employeeId}`); 
+    router.push(`/employee-management/editEmployeeDetails/${data}`); 
   };
 
   const viewEmployeePerformance = () => {
-    router.push(`/employee-management/viewEmployeePerformance/${data.employeeId}`); 
+    router.push(`/employee-management/viewEmployeePerformance/${data}`); 
   };
 
   const assignUserToEmployee = () => {
-    router.push(`/employee-management/assignUserToEmployee/${data.employeeId}`); 
+    router.push(`/employee-management/assignUserToEmployee/${data}`); 
   };
 
 
