@@ -19,7 +19,8 @@ export const profileSchema = z.object({
   address2: z.string().min(1, { message: 'Please Enter Address 2' }),
   assignedEmployee: z.string().min(1, { message: 'Please select an employee' }),
   subscriptionType: z.string().min(1, { message: 'Please select an Subscription Type' }),
-  paymentType: z.string().min(1, { message: 'Please select an Payment Type' }),
+  paymentType:  z.string().min(1, { message: 'Please select an Payment Type' }),
+  subscriptionStartDate:  z.string().min(1, { message: 'Please Select Subscription Start Date' }),
   // jobs array is for the dynamic fields
   jobs: z.array(
     z.object({
@@ -31,7 +32,7 @@ export const profileSchema = z.object({
       employer: z
         .string()
         .min(3, { message: 'Product Name must be at least 3 characters' }),
-      startdate: z
+        subscriptionStartDate: z
         .string()
         .refine((value) => /^\d{4}-\d{2}-\d{2}$/.test(value), {
           message: 'Start date should be in the format YYYY-MM-DD'

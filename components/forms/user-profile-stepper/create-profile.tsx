@@ -384,6 +384,37 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     </FormItem>
                   )}
                 />
+
+<FormField
+                  control={form.control}
+                  name="paymentType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Payment Type</FormLabel>
+                      <Select
+                        disabled={loading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              defaultValue={field.value}
+                              placeholder="Select Payment Type"
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Upi">UPI</SelectItem>
+                          <SelectItem value="Netbanking">Net Banking</SelectItem>
+                          <SelectItem value="Credit/Debit">Credit/Debit</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 </div>
 
 
