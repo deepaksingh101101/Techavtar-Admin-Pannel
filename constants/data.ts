@@ -143,12 +143,12 @@ export const navItems: NavItem[] = [
     label: 'subscription'
   },
   
-  {
-    title: 'Subscription Management',
-    href: '/subscription-management',
-    icon:  'manageSubscription',
-    label: 'create-subscription'
-  },
+  // {
+  //   title: 'Subscription Management',
+  //   href: '/subscription-management',
+  //   icon:  'manageSubscription',
+  //   label: 'create-subscription'
+  // },
   {
     title: 'Order Management',
     href: '/order-management',

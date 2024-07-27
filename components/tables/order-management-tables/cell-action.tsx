@@ -90,7 +90,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <UserCheck className="mr-2 h-4 w-4" /> Generate Packing List
           </DropdownMenuItem>
           <DropdownMenuItem onClick={assignDeliveryRoutes}>
-            <UserCheck className="mr-2 h-4 w-4" /> Assign Delivery Routes
+            <UserCheck className="mr-2 h-4 w-4" /> Assign Employee
           </DropdownMenuItem>
          
         </DropdownMenuContent>
