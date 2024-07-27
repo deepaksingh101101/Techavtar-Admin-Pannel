@@ -1,5 +1,12 @@
 'use client';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -29,21 +36,61 @@ import { z } from 'zod';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import { Edit, Trash } from 'lucide-react';
+import { MultiSelect } from '@/components/ui/MultiSelect';
+
+const subscriptionFormSchema = z.object({
+  subscriptionType: z.string(),
+  totalBags: z.number().positive('Total bags must be greater than zero'),
+  frequency: z.string(),
+  deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
+  subscriptionStartDate: z.string().min(1, 'Subscription Start Date is required'),
+  subscriptionEndDate: z.string().min(1, 'Subscription End Date is required'),
+  subscriptionStatus: z.enum(['Active', 'Inactive']),
+
+  price: z.number().positive('Price must be greater than zero'),
+  offers: z.number()
+}).refine((data) => data.totalBags % frequencyNumbers[data.frequency] === 0, {
+  message: 'Total bags must be a multiple of frequency',
+  path: ['totalBags'],
+}).refine((data) => data.totalBags % subscriptionTypeNumbers[data.subscriptionType] === 0, {
+  message: 'Total bags must be a multiple of the associated subscription type',
+  path: ['totalBags'],
+});
+
+type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
 
 interface SubscriptionFormType {
   initialData: any | null;
 }
 
-const subscriptionFormSchema = z.object({
-  subscriptionType: z.enum(['Trial', 'Monthly', 'Quarterly', 'Semi-Annual', 'Annually']),
-  frequency: z.enum(['Daily', 'Weekly', 'Monthly', 'Fortnightly', 'Biweekly']),
-  price: z.number().positive('Price must be greater than zero'),
-  offers: z.enum(['25% off', '31% off', '36% off', '44% off', '6% off', '11% off'])
-});
+const frequencyNumbers: { [key: string]: number } = {
+  Daily: 1,
+  Weekly: 2,
+  Monthly: 3,
+  Fortnightly: 4,
+  Biweekly: 5
+};
 
-type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
+const subscriptionTypeNumbers: { [key: string]: number } = {
+  Trial: 1,
+  Monthly: 2,
+  Quarterly: 3,
+  'Semi-Annual': 4,
+  Annually: 5
+};
+
+const deliveryDaysOptions = [
+  // { id: '1', name: 'Monday' },
+  // { id: '2', name: 'Tuesday' },
+  { id: '3', name: 'Wednesday' },
+  // { id: '4', name: 'Thursday' },
+  // { id: '5', name: 'Friday' },
+  { id: '6', name: 'Saturday' },
+  // { id: '7', name: 'Sunday' }
+];
 
 export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
   initialData
@@ -60,14 +107,15 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     resolver: zodResolver(subscriptionFormSchema),
     mode: 'onChange',
     defaultValues: {
-      subscriptionType: 'Trial',
-      frequency: 'Weekly',
-      price: 0,
-      offers: '25% off'
+      subscriptionType: initialData?.subscriptionType || 'Trial',
+      frequency: initialData?.frequency || 'Weekly',
+      price: initialData?.price || 0,
+      totalBags: initialData?.totalBags || 1,
+      offers: initialData?.offers 
     }
   });
 
-  const { handleSubmit, control, formState: { errors } } = form;
+  const { handleSubmit, control, watch, setValue } = form;
 
   const onSubmit: SubmitHandler<SubscriptionFormValues> = async (data) => {
     try {
@@ -86,135 +134,366 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     }
   };
 
+  const [isSubscriptionTypeModalOpen, setIsSubscriptionTypeModalOpen] = useState(false);
+  const [isFrequencyModalOpen, setIsFrequencyModalOpen] = useState(false);
+  const [subscriptionTypes, setSubscriptionTypes] = useState([
+    'Trial',
+    'Monthly',
+    'Quarterly',
+    'Semi-Annual',
+    'Annually'
+  ]);
+  const [frequencies, setFrequencies] = useState([
+    'Daily',
+    'Weekly',
+    'Monthly',
+    'Fortnightly',
+    'Biweekly'
+  ]);
+  const [newSubscriptionType, setNewSubscriptionType] = useState('');
+  const [newFrequency, setNewFrequency] = useState('');
+
+  const openSubscriptionTypeModal = () => {
+    setIsSubscriptionTypeModalOpen(true);
+  };
+
+  const closeSubscriptionTypeModal = () => {
+    setIsSubscriptionTypeModalOpen(false);
+  };
+
+  const openFrequencyModal = () => {
+    setIsFrequencyModalOpen(true);
+  };
+
+  const closeFrequencyModal = () => {
+    setIsFrequencyModalOpen(false);
+  };
+
+  const addSubscriptionType = () => {
+    if (newSubscriptionType) {
+      setSubscriptionTypes([...subscriptionTypes, newSubscriptionType]);
+      setNewSubscriptionType('');
+    }
+  };
+
+  const deleteSubscriptionType = (index: number) => {
+    setSubscriptionTypes(subscriptionTypes.filter((_, i) => i !== index));
+  };
+
+  const addFrequency = () => {
+    if (newFrequency) {
+      setFrequencies([...frequencies, newFrequency]);
+      setNewFrequency('');
+    }
+  };
+
+  const deleteFrequency = (index: number) => {
+    setFrequencies(frequencies.filter((_, i) => i !== index));
+  };
+
+  const frequency = watch('frequency');
+  const subscriptionType = watch('subscriptionType');
+
+  useEffect(() => {
+    const freqNum = frequencyNumbers[frequency];
+    const subTypeNum = subscriptionTypeNumbers[subscriptionType];
+    const totalBags = freqNum*subTypeNum;
+    setValue('totalBags', totalBags);
+  }, [frequency, subscriptionType, setValue]);
+
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
       </div>
       <Separator />
+      <Dialog open={isSubscriptionTypeModalOpen} onOpenChange={(open) => !open && closeSubscriptionTypeModal()}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Subscription Types</DialogTitle>
+            <DialogDescription>You can manage subscription types here.</DialogDescription>
+          </DialogHeader>
+          <div>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscription Type</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {subscriptionTypes.map((type, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{type}</td>
+                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteSubscriptionType(index)} className="cursor-pointer text-red-500" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex mt-4">
+              <Input
+                type="text"
+                placeholder="Add new subscription type"
+                value={newSubscriptionType}
+                onChange={(e) => setNewSubscriptionType(e.target.value)}
+              />
+              <Button onClick={addSubscriptionType} className="ml-2">
+                Add
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isFrequencyModalOpen} onOpenChange={(open) => !open && closeFrequencyModal()}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Frequencies</DialogTitle>
+            <DialogDescription>You can manage frequencies here.</DialogDescription>
+          </DialogHeader>
+          <div>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Frequency</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {frequencies.map((freq, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{freq}</td>
+                    <td className="px-6 py-4 flex justify-end whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteFrequency(index)} className="cursor-pointer text-red-500" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex mt-4">
+              <Input
+                type="text"
+                placeholder="Add new frequency"
+                value={newFrequency}
+                onChange={(e) => setNewFrequency(e.target.value)}
+              />
+              <Button onClick={addFrequency} className="ml-2">
+                Add
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-8">
-          <FormField
-            control={control}
-            name="subscriptionType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Subscription Type</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
+          <div className="gap-8 md:grid md:grid-cols-3">
+            <FormField
+              control={control}
+              name="subscriptionType"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex">
+                    <FormLabel>Subscription Type</FormLabel>
+                    <Edit onClick={openSubscriptionTypeModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
+                  </div>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Subscription Type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {subscriptionTypes.map((type, index) => (
+                        <SelectItem key={index} value={type}>{type}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="frequency"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex">
+                  <div className="flex items-center">
+
+                    <FormLabel>Frequency</FormLabel>
+                    <Edit onClick={openFrequencyModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
+                    <span className='ms-2 text-white font-bold bg-red-600 px-[5px] py-[0.3px]' style={{borderRadius:"50%",fontSize:"10px"}} >{frequencyNumbers[field.value]}</span>
+                    </div>
+                  </div>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Frequency" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {frequencies.map((freq, index) => (
+                        <SelectItem key={index} value={freq}>{freq}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                  
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="totalBags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Total Bags</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Subscription Type" />
-                    </SelectTrigger>
+                    <Input
+                      type="number"
+                      placeholder="Enter Bags"
+                      disabled
+                      className='mt-0'
+                      {...field}
+                      value={field.value}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Trial">Trial</SelectItem>
-                    <SelectItem value="Monthly">Monthly</SelectItem>
-                    <SelectItem value="Quarterly">Quarterly</SelectItem>
-                    <SelectItem value="Semi-Annual">Semi-Annual</SelectItem>
-                    <SelectItem value="Annually">Annually</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* <FormField
-            control={control}
-            name="frequency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Frequency</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+                  control={form.control}
+                  name="subscriptionStartDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subscription Start Date</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          disabled={loading}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="subscriptionEndDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subscription End Date</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          disabled={loading}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="subscriptionStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subscription Status</FormLabel>
+                      <Select
+                        disabled={loading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              defaultValue={field.value}
+                              placeholder="Select Subscription Status"
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Active">Active</SelectItem>
+                          <SelectItem value="Inactive">Inactive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+<Controller
+  control={form.control}
+  name="deliveryDays"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Delivery Days</FormLabel>
+      <FormControl>
+        <MultiSelect
+          value={field.value || []}
+          onChange={(value) => field.onChange(value)}
+          options={deliveryDaysOptions}
+          disabled={loading}
+          placeholder="Select Delivery Days"
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+            <FormField
+              control={control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Frequency" />
-                    </SelectTrigger>
+                    <Input
+                      type="number"
+                      placeholder="Enter Price"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Daily">Daily</SelectItem>
-                    <SelectItem value="Weekly">Weekly</SelectItem>
-                    <SelectItem value="Monthly">Monthly</SelectItem>
-                    <SelectItem value="Fortnightly">Fortnightly</SelectItem>
-                    <SelectItem value="Biweekly">Biweekly</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-           <FormField
-            control={control}
-            name="frequency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Frequency</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Enter Frequency"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Enter Price"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={control}
-            name="offers"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Offers</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  defaultValue={field.value}
-                >
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+         <FormField
+              control={control}
+              name="offers"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Offers</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Offer" />
-                    </SelectTrigger>
+                    <Input
+                      type="number"
+                      placeholder="Enter Offer in Percentage"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="25% off">25% off</SelectItem>
-                    <SelectItem value="31% off">31% off</SelectItem>
-                    <SelectItem value="36% off">36% off</SelectItem>
-                    <SelectItem value="44% off">44% off</SelectItem>
-                    <SelectItem value="6% off">6% off</SelectItem>
-                    <SelectItem value="11% off">11% off</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+          </div>
           <Button disabled={loading} type="submit">
             {action}
           </Button>

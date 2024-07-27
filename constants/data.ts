@@ -125,7 +125,7 @@ export const navItems: NavItem[] = [
   //   label: 'User'
   // },
   {
-    title: 'User Management',
+    title: 'Customer Management',
     href: '/user-management',
     icon: 'management',
     label: 'User Management'
