@@ -32,15 +32,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   };
 
   const handleEditUser = () => {
-    router.push(`/user-management/edit/${data.userId}`); 
+    router.push(`/user-management/edit/${data}`); 
   };
 
   const handleViewUser = () => {
-    router.push(`/user-management/view/${data.userId}`); 
+    router.push(`/user-management/view/${data}`); 
   };
 
   const handleAssignEmployee = () => {
-    router.push(`/user-management/assign/${data.userId}`); 
+    router.push(`/user-management/assign/${data}`); 
   };
 
   return (
