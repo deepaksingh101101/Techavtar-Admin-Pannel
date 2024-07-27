@@ -32,15 +32,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   // };
 
   const handleEditProduct = () => {
-    router.push(`/product-management/edit/${data.productId}`); 
+    router.push(`/product-management/edit/${data}`); 
   };
 
   const manageProductCategories = () => {
-    router.push(`/product-management/view/${data.productId}`); 
+    router.push(`/product-management/view/${data}`); 
   };
 
   const updateProductAvailability = () => {
-    router.push(`/product-management/toggleDeliveryDays/${data.productId}`); 
+    router.push(`/product-management/toggleDeliveryDays/${data}`); 
   };
 
 
