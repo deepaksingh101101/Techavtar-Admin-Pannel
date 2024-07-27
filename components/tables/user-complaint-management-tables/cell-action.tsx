@@ -10,12 +10,13 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { ComplaintManagement } from '@/constants/complaint-management-data';
+import { ComplaintManagementUser } from '@/constants/complaint-management-data-user';
 import { Edit, MoreHorizontal, Trash, Eye, UserPlus, UserCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface CellActionProps {
-  data: ComplaintManagement;
+  data: ComplaintManagementUser;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -32,19 +33,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   };
 
   const editComplaintMessage = () => {
-    router.push(`/complaint-management/editComplaintMessage/${data.sno}`); 
+    router.push(`/complaint-management/editComplaintMessage/${data}`); 
   };
 
   const viewComplaint = () => {
-    router.push(`/complaint-management/viewComplaint/${data.sno}`); 
+    router.push(`/complaint-management/viewComplaint/${data}`); 
   };
 
   const updateComplaintStatus = () => {
-    router.push(`/complaint-management/updateComplaintStatus/${data.sno}`); 
+    router.push(`/complaint-management/updateComplaintStatus/${data}`); 
   };
-  // const recordResolution = () => {
-  //   router.push(`/complaint-management/recordResolution/${data.complaintId}`); 
-  // };
+  const recordResolution = () => {
+    router.push(`/complaint-management/recordResolution/${data}`); 
+  };
 
 
 
@@ -70,17 +71,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <UserPlus className="mr-2 h-4 w-4" /> Create New Subscription
           </DropdownMenuItem> */}
           <DropdownMenuItem onClick={editComplaintMessage}>
-            <Edit className="mr-2 h-4 w-4" /> Edit Complaint
+            <Edit className="mr-2 h-4 w-4" /> Edit Complaint Message
           </DropdownMenuItem>
-          {/* <DropdownMenuItem onClick={viewComplaint}>
+          <DropdownMenuItem onClick={viewComplaint}>
             <Eye className="mr-2 h-4 w-4" /> View Complaint 
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={updateComplaintStatus}>
             <UserCheck className="mr-2 h-4 w-4" /> Update Complaint Status
           </DropdownMenuItem>
-          {/* <DropdownMenuItem onClick={recordResolution}>
+          <DropdownMenuItem onClick={recordResolution}>
             <UserCheck className="mr-2 h-4 w-4" /> Record Resolution
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
           
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete

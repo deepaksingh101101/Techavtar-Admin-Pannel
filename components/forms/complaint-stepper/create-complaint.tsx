@@ -94,36 +94,25 @@ export const ComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({
                 </FormItem>
               )}
             /> */}
-            <FormField
+     <FormField
   control={control}
   name="complaintType"
   render={({ field }) => (
     <FormItem>
       <FormLabel>Complaint Type</FormLabel>
       <FormControl>
-        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Complaint Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Rotten">Rotten</SelectItem>
-            <SelectItem value="Damaged">Damaged</SelectItem>
-            <SelectItem value="Not Fresh">Not Fresh</SelectItem>
-            <SelectItem value="Wrong Item">Wrong Item</SelectItem>
-            <SelectItem value="Missing Items">Missing Items</SelectItem>
-            <SelectItem value="Poor Quality">Poor Quality</SelectItem>
-            <SelectItem value="Incorrect Quantity">Incorrect Quantity</SelectItem>
-            <SelectItem value="Infested with Bugs">Infested with Bugs</SelectItem>
-            <SelectItem value="Bad Smell">Bad Smell</SelectItem>
-            <SelectItem value="Not as Described">Not as Described</SelectItem>
-            <SelectItem value="Packaging Issues">Packaging Issues</SelectItem>
-          </SelectContent>
-        </Select>
+        <Input 
+          disabled={loading} 
+          onChange={field.onChange} 
+          value={field.value} 
+          placeholder="Enter Complaint Type" 
+        />
       </FormControl>
       <FormMessage>{errors.complaintType?.message}</FormMessage>
     </FormItem>
   )}
 />
+
 
             <FormField
               control={control}
@@ -146,7 +135,7 @@ export const ComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={control}
               name="resolution"
               render={({ field }) => (
@@ -167,7 +156,27 @@ export const ComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({
                   <FormMessage>{errors.resolution?.message}</FormMessage>
                 </FormItem>
               )}
-            />
+            /> */}
+
+<FormField
+  control={control}
+  name="resolution"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Resolution</FormLabel>
+      <FormControl>
+        <Input 
+          disabled={loading} 
+          onChange={field.onChange} 
+          value={field.value} 
+          placeholder="Enter Resolution" 
+        />
+      </FormControl>
+      <FormMessage>{errors.resolution?.message}</FormMessage>
+    </FormItem>
+  )}
+/>
+
           </div>
           <FormField
             control={control}

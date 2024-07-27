@@ -3,9 +3,9 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ComplaintManagement } from '@/constants/complaint-management-data';
+import { ComplaintManagementUser } from '@/constants/complaint-management-data-user';
 
-export const columns: ColumnDef<ComplaintManagement>[] = [
+export const columns: ColumnDef<ComplaintManagementUser>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -30,8 +30,16 @@ export const columns: ColumnDef<ComplaintManagement>[] = [
     header: 'Sno'
   },
   {
+    accessorKey: 'name',
+    header: 'name'
+  },
+  {
     accessorKey: 'complaintType',
     header: 'Complaint Type'
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description'
   },
   {
     accessorKey: 'status',
