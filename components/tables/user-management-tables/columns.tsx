@@ -41,11 +41,11 @@ export const columns: ColumnDef<UserManagement>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'userId',
-    header: 'User ID',
+    accessorKey: 'sno',
+    header: 'SNo',
     cell: ({ row }) => (
       <div className="flex justify-center">
-       <span className="  text-red-600 font-bold px-1" style={{borderRadius:"50%"}} > {row.original.userId}</span>
+       <span className="  text-red-600 font-bold px-1" style={{borderRadius:"50%"}} > {row.original.sno}</span>
       </div>
     )
   },

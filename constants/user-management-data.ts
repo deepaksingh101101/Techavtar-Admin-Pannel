@@ -1,7 +1,7 @@
 import { NavItem } from '@/types';
 
 export type UserManagement = {
-  userId: number;
+  sno: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -24,7 +24,7 @@ export type UserManagement = {
 
 export const userManagementData: UserManagement[] = [
   {
-    userId: 1,
+    sno: 1,
     firstName: 'John',
     lastName:"Doe",
     email: 'john.doe@example.com',
@@ -45,7 +45,7 @@ export const userManagementData: UserManagement[] = [
     createdDate: '2023-01-01'
   },
   {
-    userId: 2,
+    sno: 2,
     firstName: 'Ridhi',
     lastName:"Mishra",
     email: 'john.doe@example.com',
@@ -66,7 +66,7 @@ export const userManagementData: UserManagement[] = [
     createdDate: '2023-01-01'
   },
   {
-    userId: 3,
+    sno: 3,
     firstName: 'Deepak',
     lastName:"Singh",
     email: 'john.doe@example.com',
@@ -87,7 +87,7 @@ export const userManagementData: UserManagement[] = [
     createdDate: '2023-01-01'
   },
   {
-    userId: 4,
+    sno: 4,
     firstName: 'Shivam',
     lastName:"Kumar",
     email: 'john.doe@example.com',
@@ -108,7 +108,7 @@ export const userManagementData: UserManagement[] = [
     createdDate: '2023-01-01'
   },
   {
-    userId: 5,
+    sno: 5,
     firstName: 'John',
     lastName:"Doe",
     email: 'john.doe@example.com',
@@ -129,7 +129,7 @@ export const userManagementData: UserManagement[] = [
     createdDate: '2023-01-01'
   },
   {
-    userId: 6,
+    sno: 6,
     firstName: 'John',
     lastName:"Doe",   
     email: 'john.doe@example.com',
