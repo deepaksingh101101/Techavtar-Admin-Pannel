@@ -103,36 +103,8 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     // Add more employees as needed
   ];
 
-  const [subscriptionTypes, setSubscriptionTypes] = useState([
-    'Trial',
-    'Monthly',
-    'Quarterly',
-    'Semi-Annual',
-    'Annually'
-  ]);
-  const [frequencies, setFrequencies] = useState([
-    'Daily',
-    'Weekly',
-    'Monthly',
-    'Fortnightly',
-    'Biweekly'
-  ]);
 
-  const frequencyNumbers: { [key: string]: number } = {
-    Daily: 1,
-    Weekly: 2,
-    Monthly: 3,
-    Fortnightly: 4,
-    Biweekly: 5
-  };
-  
-  const subscriptionTypeNumbers: { [key: string]: number } = {
-    Trial: 1,
-    Monthly: 2,
-    Quarterly: 3,
-    'Semi-Annual': 4,
-    Annually: 5
-  };
+
 
 
   return (
@@ -308,29 +280,21 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
               render={({ field }) => (
                 <FormItem>
                     <FormLabel>Subscription Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Subscription Type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {subscriptionTypes.map((type, index) => (
-                        <SelectItem key={index} value={type}>{type}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      
+                    <Input
+                          disabled={loading}
+                          placeholder="Enter Subscription Type"
+                          {...field}
+                        />
+                        </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
 
-<FormField
+{/* <FormField
               control={form.control}
               name="frequency"
               render={({ field }) => (
@@ -365,7 +329,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
 
               )}
               
-            />
+            /> */}
 
 <FormField
                   control={form.control}

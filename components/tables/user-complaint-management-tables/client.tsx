@@ -48,7 +48,7 @@ const ComplaintManagementUserPage: React.FC = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Revived Complaint  (${data.length})`}
+          title={`Received Complaint  (${data.length})`}
           description="Complaint Subscription (Client side table functionalities.)"
         />
         {/* <Button

@@ -43,21 +43,22 @@ import { MultiSelect } from '@/components/ui/MultiSelect';
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.string(),
-  totalBags: z.number().positive('Total bags must be greater than zero'),
+  totalDelivery: z.number().positive('Total bags must be greater than zero'),
   frequency: z.string(),
   deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
   subscriptionStartDate: z.string().min(1, 'Subscription Start Date is required'),
   subscriptionEndDate: z.string().min(1, 'Subscription End Date is required'),
+  bagName: z.string().min(1, 'Bag Name  is required'),
   subscriptionStatus: z.enum(['Active', 'Inactive']),
 
   price: z.number().positive('Price must be greater than zero'),
   offers: z.number()
-}).refine((data) => data.totalBags % frequencyNumbers[data.frequency] === 0, {
+}).refine((data) => data.totalDelivery % frequencyNumbers[data.frequency] === 0, {
   message: 'Total bags must be a multiple of frequency',
-  path: ['totalBags'],
-}).refine((data) => data.totalBags % subscriptionTypeNumbers[data.subscriptionType] === 0, {
+  path: ['totalDelivery'],
+}).refine((data) => data.totalDelivery % subscriptionTypeNumbers[data.subscriptionType] === 0, {
   message: 'Total bags must be a multiple of the associated subscription type',
-  path: ['totalBags'],
+  path: ['totalDelivery'],
 });
 
 type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
@@ -110,7 +111,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
       subscriptionType: initialData?.subscriptionType || 'Trial',
       frequency: initialData?.frequency || 'Weekly',
       price: initialData?.price || 0,
-      totalBags: initialData?.totalBags || 1,
+      totalDelivery: initialData?.totalDelivery || 1,
       offers: initialData?.offers 
     }
   });
@@ -197,8 +198,8 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
   useEffect(() => {
     const freqNum = frequencyNumbers[frequency];
     const subTypeNum = subscriptionTypeNumbers[subscriptionType];
-    const totalBags = freqNum*subTypeNum;
-    setValue('totalBags', totalBags);
+    const totalDelivery = freqNum*subTypeNum;
+    setValue('totalDelivery', totalDelivery);
   }, [frequency, subscriptionType, setValue]);
 
   return (
@@ -353,10 +354,10 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
             />
             <FormField
               control={control}
-              name="totalBags"
+              name="totalDelivery"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Total Bags</FormLabel>
+                  <FormLabel>Total Delivery</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -372,6 +373,23 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
+             <FormField
+            control={form.control}
+            name="bagName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Enter Bag Name</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Bag Name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
              <FormField
                   control={form.control}
                   name="subscriptionStartDate"
@@ -389,7 +407,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     </FormItem>
                   )}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="subscriptionEndDate"
                   render={({ field }) => (
@@ -405,7 +423,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                  <FormField
                   control={form.control}
                   name="subscriptionStatus"

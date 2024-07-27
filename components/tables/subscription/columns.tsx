@@ -36,13 +36,17 @@ export const columns: ColumnDef<Subscription>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: 'customerName',
-    header: 'Customer Name',
-  },
+  // {
+  //   accessorKey: 'customerName',
+  //   header: 'Customer Name',
+  // },
   {
     accessorKey: 'subscriptionType',
     header: 'Subscription Type',
+  },
+  {
+    accessorKey: 'bagName',
+    header: 'Bags Name',
   },
 
   {

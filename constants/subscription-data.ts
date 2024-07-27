@@ -11,6 +11,7 @@ export interface Subscription {
   subscriptionEndDate: string;
   subscriptionStatus: 'Active' | 'Inactive'; // Subscription status
   paymentStatus?: string; // Example: paid, unpaid, etc.
+  bagName?:string
   // Add other fields as necessary
 }
 
@@ -25,7 +26,8 @@ export const SubscriptionData: Subscription[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     subscriptionStatus: 'Active',
-    paymentStatus: 'Paid'
+    paymentStatus: 'Paid',
+    bagName:"Regular Veggie Bag"
   },
   {
     subscriptionType: 'Monthly',
@@ -37,7 +39,9 @@ export const SubscriptionData: Subscription[] = [
     subscriptionStartDate: '2023-07-01',
     subscriptionEndDate: '2023-07-31',
     subscriptionStatus: 'Inactive',
-    paymentStatus: 'Unpaid'
+    paymentStatus: 'Unpaid',
+    bagName:"Mini Veggie Bag"
+
   },
   {
     subscriptionType: 'Quarterly',
@@ -49,7 +53,8 @@ export const SubscriptionData: Subscription[] = [
     subscriptionStartDate: '2023-04-01',
     subscriptionEndDate: '2023-06-30',
     subscriptionStatus: 'Active',
-    paymentStatus: 'Paid'
+    paymentStatus: 'Paid',
+    bagName:"Regular Veggie Bag"
   },
   // Add more sample data as needed
 ];
