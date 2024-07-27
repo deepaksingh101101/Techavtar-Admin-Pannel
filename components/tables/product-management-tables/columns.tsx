@@ -30,8 +30,9 @@ export const columns: ColumnDef<ProductManagement>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'productId',
-    header: 'Product ID'
+    accessorKey: 'sno',
+    header: 'Sno',
+    cell: ({ row }) => row.index + 1,
   },
   {
     accessorKey: 'productName',
@@ -107,17 +108,6 @@ export const columns: ColumnDef<ProductManagement>[] = [
       <div className="text-center">
         {row.original.pieces}
       </div>
-    )
-  },
-  {
-    accessorKey: 'addons',
-    header: 'Add-ons',
-    cell: ({ row }) => (
-      <ul>
-        {row.original.addons?.map((addon, index) => (
-          <li key={index}>{addon}</li>
-        ))}
-      </ul>
     )
   },
   {

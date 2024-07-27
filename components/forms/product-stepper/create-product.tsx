@@ -37,7 +37,6 @@ interface ProductFormType {
   initialData: any | null;
 }
 
-
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
@@ -49,7 +48,7 @@ const productFormSchema = z.object({
   veggieNameInHindi: z.string().min(1, 'Veggie Name in Hindi is required'),
   unitQuantity: z.number().positive('Unit Quantity must be greater than zero'),
   pieces: z.number().positive('Pieces must be greater than zero'),
-  addons: z.string().optional(),
+  // addons: z.string().optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
@@ -65,9 +64,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     : 'To create a new product, fill in the required information.';
   const toastMessage = initialData ? 'Product updated.' : 'Product created.';
   const action = initialData ? 'Save changes' : 'Create';
-  const [previousStep, setPreviousStep] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [data, setData] = useState({});
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -77,13 +73,12 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   const {
     control,
     formState: { errors },
-    trigger,
     handleSubmit,
     setValue,
     watch,
   } = form;
 
-  const onSubmit = async (data:ProductFormValues) => {
+  const onSubmit = async (data: ProductFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -113,66 +108,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     }
   };
 
-  const processForm: SubmitHandler<ProductFormValues> = (data) => {
-    setData(data);
-  };
-
-  const steps = [
-    {
-      id: 'Step 1',
-      name: 'Product Details',
-      fields: [
-        'productId',
-        'productName',
-        'type',
-        'group',
-        'season',
-        'priority',
-        'roster',
-        'veggieNameInHindi',
-        'unitQuantity',
-        'pieces'
-      ]
-    },
-    {
-      id: 'Step 2',
-      name: 'Add-ons',
-      fields: [
-        'addons'
-      ]
-    },
-    { id: 'Step 3', name: 'Complete' }
-  ];
-
-  
-  type FieldName = keyof ProductFormValues;
-
-  
-  const next = async () => {
-    const fields = steps[currentStep].fields;
-
-    const output = await form.trigger(fields as FieldName[], {
-      shouldFocus: true
-    });
-
-    if (!output) return;
-
-    if (currentStep < steps.length - 1) {
-      if (currentStep === steps.length - 2) {
-        await form.handleSubmit(processForm)();
-      }
-      setPreviousStep(currentStep);
-      setCurrentStep((step) => step + 1);
-    }
-  };
-
-  const prev = () => {
-    if (currentStep > 0) {
-      setPreviousStep(currentStep);
-      setCurrentStep((step) => step - 1);
-    }
-  };
-
   return (
     <>
       <div className="flex items-center justify-between">
@@ -189,301 +124,194 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
         )}
       </div>
       <Separator />
-      <div>
-        <ul className="flex gap-4">
-          {steps.map((step, index) => (
-            <li key={step.name} className="md:flex-1">
-              {currentStep > index ? (
-                <div className="group flex w-full flex-col border-l-4 border-sky-600 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-                  <span className="text-sm font-medium text-sky-600 transition-colors ">
-                    {step.id}
-                  </span>
-                  <span className="text-sm font-medium">{step.name}</span>
-                </div>
-              ) : currentStep === index ? (
-                <div
-                  className="flex w-full flex-col border-l-4 border-[#029740] py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-                  aria-current="step"
-                >
-                  <span className="text-sm font-medium text-[#029740]">
-                    {step.id}
-                  </span>
-                  <span className="text-sm font-medium">{step.name}</span>
-                </div>
-              ) : (
-                <div className="group flex h-full w-full flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-                  <span className="text-sm font-medium text-gray-500 transition-colors">
-                    {step.id}
-                  </span>
-                  <span className="text-sm font-medium">{step.name}</span>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <Separator />
       <Form {...form}>
         <form
-          onSubmit={handleSubmit(processForm)}
+          onSubmit={handleSubmit(onSubmit)}
           className="w-full space-y-8"
         >
-          <div
-            className={cn(
-              currentStep === 1
-                ? 'w-full md:inline-block'
-                : 'gap-8 md:grid md:grid-cols-3'
+
+<div className="relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3">
+
+          <FormField
+            control={form.control}
+            name="productName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Product Name</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Product Name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          >
-            {currentStep === 0 && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="productName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Product Name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Type</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Type"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="group"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Group</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Group"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="season"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Season</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Season"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="priority"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Priority</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Priority"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="roster"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Roster</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Roster"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="veggieNameInHindi"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Veggie Name in Hindi</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Veggie Name in Hindi"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="unitQuantity"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Unit Quantity (gms)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          disabled={loading}
-                          placeholder="Enter Unit Quantity"
-                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="pieces"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pieces</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          disabled={loading}
-                          placeholder="Enter Pieces"
-                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
+          />
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Type"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {currentStep === 1 && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="addons"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Add-ons</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Enter Add-ons (comma separated)"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
+          />
+          <FormField
+            control={form.control}
+            name="group"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Group</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Group"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {currentStep === 2 && (
-              <div>
-                <h1>Completed</h1>
-                <pre className="whitespace-pre-wrap">
-                  {JSON.stringify(data, null, 2)}
-                </pre>
-              </div>
+          />
+          <FormField
+            control={form.control}
+            name="season"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Season</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Season"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
+          />
+          <FormField
+            control={form.control}
+            name="priority"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Priority</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Priority"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="roster"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Roster</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Roster"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="veggieNameInHindi"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Veggie Name in Hindi</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Veggie Name in Hindi"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="unitQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Unit Quantity (gms)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    placeholder="Enter Unit Quantity"
+                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="pieces"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Pieces</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    placeholder="Enter Pieces"
+                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* <FormField
+            control={form.control}
+            name="addons"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Add-ons</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Enter Add-ons (comma separated)"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            /> */}
+            </div>
+          <Button type="submit" disabled={loading}>
+            {action}
+          </Button>
         </form>
       </Form>
-      {/* Navigation */}
-      <div className="mt-8 pt-5">
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={prev}
-            disabled={currentStep === 0}
-            className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 19.5L8.25 12l7.5-7.5"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-            onClick={next}
-            disabled={currentStep === steps.length - 1}
-            className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-              />
-            </svg>
-          </button>
-          {currentStep === steps.length - 1 && (
-            <Button
-              type="submit"
-              disabled={loading}
-              onClick={handleSubmit(onSubmit)}
-            >
-              {action}
-            </Button>
-          )}
-        </div>
-      </div>
       {initialData && (
         <div className="mt-8 pt-5 border-t border-gray-200">
           <div className="flex justify-between">
