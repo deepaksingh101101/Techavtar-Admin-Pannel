@@ -373,7 +373,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
-             <FormField
+             {/* <FormField
             control={form.control}
             name="bagName"
             render={({ field }) => (
@@ -389,7 +389,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
              <FormField
                   control={form.control}
                   name="subscriptionStartDate"

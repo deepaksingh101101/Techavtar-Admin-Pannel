@@ -44,10 +44,10 @@ export const columns: ColumnDef<Subscription>[] = [
     accessorKey: 'subscriptionType',
     header: 'Subscription Type',
   },
-  {
-    accessorKey: 'bagName',
-    header: 'Bags Name',
-  },
+  // {
+  //   accessorKey: 'bagName',
+  //   header: 'Bags Name',
+  // },
 
   {
     accessorKey: 'subscriptionStartDate',
