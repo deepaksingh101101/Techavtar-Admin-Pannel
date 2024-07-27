@@ -35,7 +35,7 @@ export const userManagementData: UserManagement[] = [
       addressLine2: 'Apt 4B'
     },
     subscriptionType: 'Weekly',
-    deliveryFrequency: '4',
+    deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -56,7 +56,7 @@ export const userManagementData: UserManagement[] = [
       addressLine2: 'Apt 4B'
     },
     subscriptionType: 'Quarterly',
-    deliveryFrequency: '8',
+    deliveryFrequency: 'Weekly',
     paymentType: 'Net Banking',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -77,7 +77,7 @@ export const userManagementData: UserManagement[] = [
       addressLine2: 'Apt 4B'
     },
     subscriptionType: 'Semi Annual',
-    deliveryFrequency: '8',
+    deliveryFrequency: 'Monthly',
     paymentType: 'UPI',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -98,7 +98,7 @@ export const userManagementData: UserManagement[] = [
       addressLine2: 'Apt 4B'
     },
     subscriptionType: 'Annual',
-    deliveryFrequency: '4',
+    deliveryFrequency: 'Fortnightly',
     paymentType: 'Net Banking',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -119,7 +119,7 @@ export const userManagementData: UserManagement[] = [
       addressLine2: 'Apt 4B'
     },
     subscriptionType: 'Trial',
-    deliveryFrequency: '4',
+    deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
@@ -140,7 +140,7 @@ export const userManagementData: UserManagement[] = [
       addressLine2: 'Apt 4B'
     },
     subscriptionType: 'Quarterly',
-    deliveryFrequency: '8',
+    deliveryFrequency: 'Daily',
     paymentType: 'UPI',
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',

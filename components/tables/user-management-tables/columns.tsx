@@ -151,11 +151,6 @@ export const columns: ColumnDef<UserManagement>[] = [
   {
     accessorKey: 'deliveryFrequency',
     header: 'Delivery Frequency',
-    cell: ({ row }) => (
-      <div className="flex justify-center">
-       <span className="bg-red-600 text-black text-white px-1" style={{borderRadius:"50%"}} > {row.original.deliveryFrequency}</span>
-      </div>
-    )
   },
   {
     accessorKey: 'lastUpdateDate',

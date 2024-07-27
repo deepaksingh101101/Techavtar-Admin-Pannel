@@ -14,9 +14,11 @@ export const profileSchema = z.object({
   country: z.string().min(1, { message: 'Please select a category' }),
   city: z.string().min(1, { message: 'Please select a category' }),
   address1: z.string().min(1, { message: 'Please Enter Address 1' }),
+  frequency: z.string().min(1, { message: 'Please Enter Frequency' }),
   // state: z.string().min(1, { message: 'Please Enter Sate' }),
   address2: z.string().min(1, { message: 'Please Enter Address 2' }),
   assignedEmployee: z.string().min(1, { message: 'Please select an employee' }),
+  subscriptionType: z.string().min(1, { message: 'Please select an Subscription Type' }),
   paymentType: z.string().min(1, { message: 'Please select an Payment Type' }),
   // jobs array is for the dynamic fields
   jobs: z.array(
@@ -49,6 +51,7 @@ export const subscriptionSchema = z.object({
   subscriptionId: z.number(),
   userId: z.number(),
   subscriptionPlan: z.string().min(3, { message: 'Subscription Plan must be at least 3 characters' }),
+  subscriptionType: z.string().min(3, { message: 'Subscription Type must be at least 3 characters' }),
   numberOfDeliveries: z.number(),
   deliveryDays: z.array(z.string()).min(1,{message:"Delivery Days is Required"}),
   customizationOptions: z.array(z.string().min(1)).optional(),
