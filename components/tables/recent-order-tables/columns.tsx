@@ -29,11 +29,11 @@ export const columns: ColumnDef<OrderManagement>[] = [
     header: 'Order ID'
   },
   {
-    accessorKey: 'userId',
-    header: 'User ID',
+    accessorKey: 'customerName',
+    header: 'Customer Name',
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.userId}
+      <div className="">
+        {row.original.customerName}
       </div>
     )
   },
@@ -76,11 +76,11 @@ export const columns: ColumnDef<OrderManagement>[] = [
     )
   },
   {
-    accessorKey: 'productsOrdered',
-    header: 'Products Ordered',
+    accessorKey: 'bagOrdered',
+    header: 'Bag Ordered',
     cell: ({ row }) => (
       <ul>
-        {row.original.productsOrdered?.map((product, index) => (
+        {row.original.bagOrdered?.map((product, index) => (
           <li key={index}>{product}</li>
         ))}
       </ul>
@@ -101,7 +101,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
     cell: ({ row }) => (
       <ul>
         {row.original.addons?.map((addon, index) => (
-          <li key={index}>{addon}</li>
+          <li style={{listStyleType: "square"}} key={index}>{addon}</li>
         ))}
       </ul>
     )

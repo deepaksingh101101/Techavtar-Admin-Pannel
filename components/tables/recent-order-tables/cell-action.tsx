@@ -48,9 +48,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const generatePackingList = () => {
     router.push(`/subscription-management/manageCustomizationOption/${data.orderId}`); 
   };
-  const assignDeliveryRoutes = () => {
-    router.push(`/subscription-management/handleUpgradeAndRenewal/${data.orderId}`); 
-  };
+  // const assignDeliveryRoutes = () => {
+  //   router.push(`/subscription-management/handleUpgradeAndRenewal/${data.orderId}`); 
+  // };
 
 
   return (
@@ -89,9 +89,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={generatePackingList}>
             <UserCheck className="mr-2 h-4 w-4" /> Generate Packing List
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={assignDeliveryRoutes}>
+          {/* <DropdownMenuItem onClick={assignDeliveryRoutes}>
             <UserCheck className="mr-2 h-4 w-4" /> Assign Delivery Routes
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
          
         </DropdownMenuContent>
       </DropdownMenu>
