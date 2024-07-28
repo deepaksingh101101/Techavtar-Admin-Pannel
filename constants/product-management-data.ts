@@ -9,6 +9,9 @@ export interface ProductManagement {
   veggieNameInHindi: string;
   unitQuantity?: number; // in grams
   pieces?: number;
+  price?:number;
+  available?:string;
+
 }
 
 
@@ -21,8 +24,10 @@ export const ProductManagementData: ProductManagement[] = [
     season: 'Monsoon',
     priority: 'High',
     roster: 'A',
+    price:200,
     veggieNameInHindi: 'अरबी',
-    unitQuantity: 500,
+    unitQuantity: 1000,
+    available:"Yes"
   },
   {
     sno: 2,
@@ -33,6 +38,8 @@ export const ProductManagementData: ProductManagement[] = [
     priority: 'Medium',
     roster: 'A',
     veggieNameInHindi: 'खीरा',
-    unitQuantity: 700,
+    unitQuantity: 1000,
+    price:100,
+    available:"No"
   }
 ];

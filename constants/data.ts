@@ -125,30 +125,11 @@ export const navItems: NavItem[] = [
   //   label: 'User'
   // },
   {
-    title: 'Customer Management',
-    href: '/user-management',
-    icon: 'management',
-    label: 'User Management'
+    title: 'Product/Item Management',
+    href: '/product-management',
+    icon: 'product',
+    label: 'create-product'
   },
-  // {
-  //   title: 'Profile',
-  //   href: '/profile',
-  //   icon: 'profile',
-  //   label: 'Profile'
-  // },
-  {
-    title: 'Subscription',
-    href: '/subscriptions',
-    icon: 'createSubscription',
-    label: 'subscription'
-  },
-  
-  // {
-  //   title: 'Subscription Management',
-  //   href: '/subscription-management',
-  //   icon:  'manageSubscription',
-  //   label: 'create-subscription'
-  // },
   {
     title: 'Bag Management',
     href: '/bag',
@@ -156,22 +137,10 @@ export const navItems: NavItem[] = [
     label: 'create-order'
   },
   {
-    title: 'Order Management',
-    href: '/order-management',
-    icon: 'order',
-    label: 'create-order'
-  },
-  {
-    title: 'Product Management',
-    href: '/product-management',
-    icon: 'product',
-    label: 'create-product'
-  },
-  {
-    title: 'Complaint Management',
-    href: '/complaint-management',
-    icon: 'complaint',
-    label: 'create-complaint'
+    title: 'Subscription',
+    href: '/subscriptions',
+    icon: 'createSubscription',
+    label: 'subscription'
   },
   {
     title: 'Employee Management',
@@ -179,6 +148,44 @@ export const navItems: NavItem[] = [
     icon: 'user',
     label: 'create-employee'
   },
+  
+  {
+    title: 'Customer Management',
+    href: '/user-management',
+    icon: 'management',
+    label: 'User Management'
+  },
+  {
+    title: 'Order Management',
+    href: '/order-management',
+    icon: 'order',
+    label: 'create-order'
+  },
+ 
+  // {
+  //   title: 'Profile',
+  //   href: '/profile',
+  //   icon: 'profile',
+  //   label: 'Profile'
+  // },
+
+  
+  // {
+  //   title: 'Subscription Management',
+  //   href: '/subscription-management',
+  //   icon:  'manageSubscription',
+  //   label: 'create-subscription'
+  // },
+ 
+
+
+  {
+    title: 'Complaint Management',
+    href: '/complaint-management',
+    icon: 'complaint',
+    label: 'create-complaint'
+  },
+
   {
     title: 'Report And Analytics',
     href: '/report-management',

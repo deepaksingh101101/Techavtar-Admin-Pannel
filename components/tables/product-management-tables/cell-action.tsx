@@ -69,9 +69,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={handleEditProduct}>
             <Edit className="mr-2 h-4 w-4" /> Edit Product Details
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={manageProductCategories}>
+          {/* <DropdownMenuItem onClick={manageProductCategories}>
             <Eye className="mr-2 h-4 w-4" /> Manage Product Categories
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem onClick={updateProductAvailability}>
             <UserCheck className="mr-2 h-4 w-4" /> Update Product Availability
           </DropdownMenuItem>

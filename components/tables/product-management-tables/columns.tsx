@@ -79,6 +79,30 @@ export const columns: ColumnDef<ProductManagement>[] = [
     )
   },
   {
+    accessorKey: 'price',
+    header: 'Product Price',
+    cell: ({ row }) => (
+      <div className="text-center">
+       ₹{row.original.price}
+      </div>
+    )
+  },
+  {
+    accessorKey: 'available',
+    header: 'Available',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.available === 'Yes' ? 'bg-green-400' :
+          'bg-red-400'
+        }`}
+      >
+        <span className='text-black bold'>{row.original.available}</span>
+      </div>
+    )
+  },
+  {
     accessorKey: 'roster',
     header: 'Roster'
   },
@@ -96,7 +120,7 @@ export const columns: ColumnDef<ProductManagement>[] = [
     header: 'Unit Quantity',
     cell: ({ row }) => (
       <div className="text-center">
-        {row.original.unitQuantity}
+        {row.original.unitQuantity} gm
       </div>
     )
     

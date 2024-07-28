@@ -1,11 +1,13 @@
-'use client';
-
-
 export interface BagItem {
   itemName: string;
   itemPrice: number;
   itemPieces?: number;
   itemWeight?: number;
+}
+
+export interface Creator {
+  role: 'Admin' | 'Customer' | 'Employee';
+  name: string;
 }
 
 export interface Bag {
@@ -16,7 +18,8 @@ export interface Bag {
   totalPieces?: number;
   createdDate: string;
   updatedDate?: string;
-  status: 'Active' | 'Inactive'; // Bag status
+  status: 'Active' | 'Inactive';
+  createdBy: Creator;
 }
 
 export const BagData: Bag[] = [
@@ -32,6 +35,7 @@ export const BagData: Bag[] = [
     totalPieces: undefined,
     createdDate: '2023-01-01',
     status: 'Active',
+    createdBy: { role: 'Admin', name: 'Deepak singh' }
   },
   {
     bagName: 'Mini Veggie Bag',
@@ -45,4 +49,20 @@ export const BagData: Bag[] = [
     totalPieces: 3,
     createdDate: '2023-07-01',
     status: 'Inactive',
-  },]
+    createdBy: { role: 'Customer', name: 'John Doe' }
+  },
+  {
+    bagName: 'Veggie Bag',
+    bagItems: [
+      { itemName: 'Spinach', itemPrice: 100, itemPieces: 1 },
+      { itemName: 'Onions', itemPrice: 100, itemPieces: 1 },
+      { itemName: 'Garlic', itemPrice: 100, itemPieces: 1 },
+    ],
+    totalPrice: 300,
+    totalWeight: undefined,
+    totalPieces: 3,
+    createdDate: '2023-07-01',
+    status: 'Inactive',
+    createdBy: { role: 'Employee', name: 'John roy' }
+  }
+];

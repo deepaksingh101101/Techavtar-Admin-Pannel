@@ -1,5 +1,3 @@
-'use client';
-
 import { ColumnDef } from '@tanstack/react-table';
 import { Bag } from '@/constants/bag-data';
 import { BagCellAction } from './cell-action';
@@ -60,6 +58,23 @@ export const columns: ColumnDef<Bag>[] = [
     cell: ({ row }) => (
       <div className="flex justify-center">
         <span className='text-center'>{row.original.totalPieces ?? '-'}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'createdBy',
+    header: 'Created By',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.createdBy.role === 'Admin' ? 'bg-red-400' :
+          row.original.createdBy.role === 'Customer' ? 'bg-green-400' :
+          row.original.createdBy.role === 'Employee' ? 'bg-yellow-400' :
+          'bg-red-400'
+        }`}
+      >
+        <span className='text-black bold'>{`${row.original.createdBy.role} - ${row.original.createdBy.name}`}</span>
       </div>
     ),
   },

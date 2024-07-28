@@ -67,7 +67,7 @@ export const BagClient: React.FC = () => {
         />
         <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/bag-form`)}
+          onClick={() => router.push(`/bag-management`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
