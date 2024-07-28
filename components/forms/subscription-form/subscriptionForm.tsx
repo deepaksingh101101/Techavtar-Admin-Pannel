@@ -52,6 +52,7 @@ const subscriptionFormSchema = z.object({
   subscriptionStatus: z.enum(['Active', 'Inactive']),
 
   price: z.number().positive('Price must be greater than zero'),
+  netPrice: z.any(),
   offers: z.number()
 }).refine((data) => data.totalDelivery % frequencyNumbers[data.frequency] === 0, {
   message: 'Total bags must be a multiple of frequency',
@@ -69,28 +70,28 @@ interface SubscriptionFormType {
 
 const frequencyNumbers: { [key: string]: number } = {
   Daily: 1,
-  Weekly: 2,
-  Monthly: 3,
-  Fortnightly: 4,
-  Biweekly: 5
+  Weekly: 1,
+  Monthly: 1/4,
+  Fortnightly: 1/2,
+  Biweekly: 2
 };
 
 const subscriptionTypeNumbers: { [key: string]: number } = {
   Trial: 1,
-  Monthly: 2,
-  Quarterly: 3,
-  'Semi-Annual': 4,
-  Annually: 5
+  Monthly: 4,
+  Quarterly: 12,
+  'Semi-Annual': 24,
+  Annually: 48
 };
 
 const deliveryDaysOptions = [
-  // { id: '1', name: 'Monday' },
-  // { id: '2', name: 'Tuesday' },
+  { id: '1', name: 'Monday' },
+  { id: '2', name: 'Tuesday' },
   { id: '3', name: 'Wednesday' },
-  // { id: '4', name: 'Thursday' },
-  // { id: '5', name: 'Friday' },
+  { id: '4', name: 'Thursday' },
+  { id: '5', name: 'Friday' },
   { id: '6', name: 'Saturday' },
-  // { id: '7', name: 'Sunday' }
+  { id: '7', name: 'Sunday' }
 ];
 
 export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
@@ -112,7 +113,13 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
       frequency: initialData?.frequency || 'Weekly',
       price: initialData?.price || 0,
       totalDelivery: initialData?.totalDelivery || 1,
-      offers: initialData?.offers 
+      offers: initialData?.offers || 0,
+      netPrice: initialData?.netPrice || 0,
+      deliveryDays: initialData?.deliveryDays || [],
+      bagName: initialData?.bagName || '',
+      subscriptionStatus: initialData?.subscriptionStatus || 'Active',
+      subscriptionStartDate: initialData?.subscriptionStartDate || '',
+      subscriptionEndDate: initialData?.subscriptionEndDate || '',
     }
   });
 
@@ -194,13 +201,20 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
 
   const frequency = watch('frequency');
   const subscriptionType = watch('subscriptionType');
+  const price = watch('price');
+  const offers = watch('offers');
 
   useEffect(() => {
     const freqNum = frequencyNumbers[frequency];
     const subTypeNum = subscriptionTypeNumbers[subscriptionType];
-    const totalDelivery = freqNum*subTypeNum;
-    setValue('totalDelivery', totalDelivery);
+    const totalDelivery = freqNum * subTypeNum;
+    setValue('totalDelivery', subTypeNum);
   }, [frequency, subscriptionType, setValue]);
+
+  useEffect(() => {
+    const netPrice = price - (price * (offers / 100));
+    setValue('netPrice', parseFloat(netPrice.toFixed(2)));
+  }, [price, offers, setValue]);
 
   return (
     <>
@@ -324,11 +338,10 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
               render={({ field }) => (
                 <FormItem>
                   <div className="flex">
-                  <div className="flex items-center">
-
-                    <FormLabel>Frequency</FormLabel>
-                    <Edit onClick={openFrequencyModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
-                    <span className='ms-2 text-white font-bold bg-red-600 px-[5px] py-[0.3px]' style={{borderRadius:"50%",fontSize:"10px"}} >{frequencyNumbers[field.value]}</span>
+                    <div className="flex items-center">
+                      <FormLabel>Frequency</FormLabel>
+                      <Edit onClick={openFrequencyModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
+                      {/* <span className='ms-2 text-white font-bold bg-red-600 px-[5px] py-[0.3px]' style={{borderRadius:"50%",fontSize:"10px"}} >{frequencyNumbers[field.value]}</span> */}
                     </div>
                   </div>
                   <Select
@@ -348,7 +361,6 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     </SelectContent>
                   </Select>
                   <FormMessage />
-                  
                 </FormItem>
               )}
             />
@@ -364,6 +376,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                       placeholder="Enter Bags"
                       disabled
                       className='mt-0'
+                      min={1}
                       {...field}
                       value={field.value}
                       onChange={(e) => field.onChange(Number(e.target.value))}
@@ -373,107 +386,105 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
-             {/* <FormField
-            control={form.control}
-            name="bagName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Enter Bag Name</FormLabel>
-                <FormControl>
-                  <Input
+            <FormField
+              control={form.control}
+              name="bagName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter Bag Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter Bag Name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <FormField
+              control={form.control}
+              name="subscriptionStartDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subscription Start Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subscriptionEndDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subscription End Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="subscriptionStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subscription Status</FormLabel>
+                  <Select
                     disabled={loading}
-                    placeholder="Enter Bag Name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-             <FormField
-                  control={form.control}
-                  name="subscriptionStartDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Subscription Start Date</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          disabled={loading}
-                          {...field}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select Subscription Status"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {/* <FormField
-                  control={form.control}
-                  name="subscriptionEndDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Subscription End Date</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          disabled={loading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
-                 <FormField
-                  control={form.control}
-                  name="subscriptionStatus"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Subscription Status</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              defaultValue={field.value}
-                              placeholder="Select Subscription Status"
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Active">Active</SelectItem>
-                          <SelectItem value="Inactive">Inactive</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-<Controller
-  control={form.control}
-  name="deliveryDays"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Delivery Days</FormLabel>
-      <FormControl>
-        <MultiSelect
-          value={field.value || []}
-          onChange={(value) => field.onChange(value)}
-          options={deliveryDaysOptions}
-          disabled={loading}
-          placeholder="Select Delivery Days"
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="deliveryDays"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Delivery Days</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value || []}
+                      onChange={(value) => field.onChange(value)}
+                      options={deliveryDaysOptions}
+                      disabled={loading}
+                      placeholder="Select Delivery Days"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={control}
               name="price"
@@ -485,32 +496,55 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                       type="number"
                       placeholder="Enter Price"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value ? Number(value) : "");
+                      }}                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-         <FormField
+           <FormField
+  control={control}
+  name="offers"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Offers (%)</FormLabel>
+      <FormControl>
+        <Input
+          type="number"
+          placeholder="Enter Offer in Percentage"
+          {...field}
+          onChange={(e) => {
+            const value = e.target.value;
+            field.onChange(value ? Number(value) : '');
+          }}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+            <FormField
               control={control}
-              name="offers"
+              name="netPrice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Offers</FormLabel>
+                  <FormLabel>Net Price</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter Offer in Percentage"
+                      disabled
+                      placeholder="Net Price"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      readOnly
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
-
           </div>
           <Button disabled={loading} type="submit">
             {action}
