@@ -150,6 +150,12 @@ export const navItems: NavItem[] = [
   //   label: 'create-subscription'
   // },
   {
+    title: 'Bag Management',
+    href: '/bag',
+    icon: 'order',
+    label: 'create-order'
+  },
+  {
     title: 'Order Management',
     href: '/order-management',
     icon: 'order',
