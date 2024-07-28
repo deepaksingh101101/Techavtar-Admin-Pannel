@@ -10,6 +10,7 @@ export interface OrderManagement {
   addons?: string[]; // Array of add-ons
   paymentStatus: 'Paid' | 'Unpaid' | 'Pending'; // Example: paid, unpaid, pending
   specialInstructions?: string; // Special delivery instructions
+  totalPrice?: number; // Special delivery instructions
 }
 
 export const OrderManagementData: OrderManagement[] = [
@@ -22,6 +23,7 @@ export const OrderManagementData: OrderManagement[] = [
     deliveryStatus: 'Pending',
     bagOrdered: ['Regular Veggie Bag'],
     totalWeight: 10,
+    totalPrice: 779,
     addons: ['Lemons'],
     paymentStatus: 'Paid',
     specialInstructions: 'Leave the package at the front door.'
@@ -35,6 +37,7 @@ export const OrderManagementData: OrderManagement[] = [
     deliveryStatus: 'Delivered',
     bagOrdered: ['Mini Veggie Bag'],
     totalWeight: 8,
+    totalPrice: 733,
     addons: ['Lady Finger'],
     paymentStatus: 'Unpaid',
     specialInstructions: 'Call on arrival.'
@@ -48,6 +51,7 @@ export const OrderManagementData: OrderManagement[] = [
     deliveryStatus: 'Cancelled',
     bagOrdered: ['Brinjal'],
     totalWeight: 5,
+    totalPrice: 567,
     addons: [],
     paymentStatus: 'Unpaid',
     specialInstructions: 'Deliver to the back gate.'
@@ -61,19 +65,21 @@ export const OrderManagementData: OrderManagement[] = [
     deliveryStatus: 'Pending',
     bagOrdered: ['Regular Veggie Bag'],
     totalWeight: 5,
+    totalPrice: 986,
     addons: ['Tomato','Potato'],
     paymentStatus: 'Paid',
     specialInstructions: 'Ring the bell twice.'
   },
   {
     orderId: 105,
-    empId: 10322,
+    empId: 1022,
     customerName: "Arya Singh",
     deliveryDate: '2023-07-27',
     deliveryTimeSlot: '10am - 12pm',
     deliveryStatus: 'Delivered',
     bagOrdered: ['Regular Veggie Bag'],
     totalWeight: 7,
+    totalPrice: 999,
     addons: ['Carrots'],
     paymentStatus: 'Paid',
     specialInstructions: 'Leave with the neighbor if not home.'

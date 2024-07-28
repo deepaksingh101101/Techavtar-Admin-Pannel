@@ -78,7 +78,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <Edit className="mr-2 h-4 w-4" /> Update Delivery Status
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleViewAndManageOrder}>
-            <Eye className="mr-2 h-4 w-4" /> View And Manage Order
+            <Eye className="mr-2 h-4 w-4" /> Manage Order
           </DropdownMenuItem>
           <DropdownMenuItem onClick={viewOrderDetals}>
             <UserCheck className="mr-2 h-4 w-4" /> View Order Details
@@ -86,9 +86,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem onClick={hanldeResheduleAndSkips}>
             <UserCheck className="mr-2 h-4 w-4" /> Reschedule and Skips
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={generatePackingList}>
+          {/* <DropdownMenuItem onClick={generatePackingList}>
             <UserCheck className="mr-2 h-4 w-4" /> Generate Packing List
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem onClick={assignDeliveryRoutes}>
             <UserCheck className="mr-2 h-4 w-4" /> Assign Employee
           </DropdownMenuItem>

@@ -100,6 +100,15 @@ export const columns: ColumnDef<OrderManagement>[] = [
     )
   },
   {
+    accessorKey: 'totalPrice',
+    header: 'Total Price ',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.totalPrice}
+      </div>
+    )
+  },
+  {
     accessorKey: 'addons',
     header: 'Add-ons',
     cell: ({ row }) => (

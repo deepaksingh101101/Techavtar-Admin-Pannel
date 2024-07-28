@@ -1,30 +1,11 @@
 'use client';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Heading } from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,27 +22,59 @@ interface OrderManagementFormType {
 }
 
 const orderFormSchema = z.object({
-   deliveryDate: z.string().min(1, 'Delivery Date is required'),
+  customerName: z.string().min(1, 'Customer Name is required'),
+  eid: z.number().min(1, 'Eid is required'),
+  deliveryDate: z.string().min(1, 'Delivery Date is required'),
   deliveryTimeSlot: z.string().min(1, 'Delivery Time Slot is required'),
   deliveryStatus: z.string(),
-  productsOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
+  bagOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
   totalWeight: z.number().positive('Total Weight must be greater than zero'),
   addons: z.string().optional(),
   paymentStatus: z.string(),
   specialInstructions: z.string().optional(),
 });
 
-export const CreateOrder: React.FC<OrderManagementFormType> = ({
-  initialData
-}) => {
+type FormFields = keyof typeof orderFormSchema.shape;
+
+interface Step {
+  id: string;
+  name: string;
+  fields?: FormFields[]; // Optional because the last step doesn't have fields
+}
+
+const steps: Step[] = [
+  {
+    id: 'Step 1',
+    name: 'Order Details',
+    fields: [
+      'customerName',
+      'eid',
+      'deliveryDate',
+      'deliveryTimeSlot',
+      'deliveryStatus',
+      'bagOrdered',
+      'totalWeight',
+      'paymentStatus',
+    ]
+  },
+  {
+    id: 'Step 2',
+    name: 'Add-ons and Instructions',
+    fields: [
+      'addons',
+      'specialInstructions'
+    ]
+  },
+  { id: 'Step 3', name: 'Complete' } // No fields needed here
+];
+
+export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const title = initialData ? 'Edit Order' : 'Create New Order';
-  const description = initialData
-    ? 'Edit the Order details.'
-    : 'To create a new Order, fill in the required information.';
+  const description = initialData ? 'Edit the Order details.' : 'To create a new Order, fill in the required information.';
   const toastMessage = initialData ? 'Order updated.' : 'Order created.';
   const action = initialData ? 'Save changes' : 'Create';
 
@@ -69,36 +82,24 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     resolver: zodResolver(orderFormSchema),
     mode: 'onChange',
     defaultValues: {
+      customerName: '',
+      eid: undefined as any, // Initialize as any to handle initial state
       deliveryDate: '',
       deliveryTimeSlot: '',
-      deliveryStatus: 'Pending',  // Ensure this matches one of the specific string literals
-      productsOrdered: [],
-      totalWeight: 0,  // Handle properly in your input as you suggested
+      deliveryStatus: 'Pending',
+      bagOrdered: [] as string[],
+      totalWeight: 0,
       paymentStatus: 'Pending',
       addons: '',
       specialInstructions: ''
     }
   });
-  
-  
 
-  // const {
-  //   control,
-  //   formState: { errors },
-  //   trigger,
-  //   handleSubmit,
-  //   setValue,
-  //   watch,
-  // } = form;
+  const { control, trigger, watch, handleSubmit, formState: { errors } } = form;
 
-  const { control,  trigger,watch,
-    handleSubmit, formState: { errors } } = form;
-
-
-    const onSubmit: SubmitHandler<typeof orderFormSchema._type> = async (data) => {
-
+  const onSubmit: SubmitHandler<typeof orderFormSchema._type> = async (data) => {
     try {
-      // setLoading(true);
+      setLoading(true);
       if (initialData) {
         // await axios.post(`/api/orders/edit-order/${initialData._id}`, data);
       } else {
@@ -126,60 +127,21 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({
     }
   };
 
-
-  type FormFields = 'orderId' | 'userId' | 'deliveryDate' | 'deliveryTimeSlot' | 'deliveryStatus' | 'productsOrdered' | 'totalWeight' | 'paymentStatus' | 'addons' | 'specialInstructions';
-
-interface Step {
-  id: string;
-  name: string;
-  fields?: FormFields[]; // Optional because the last step doesn't have fields
-}
-
-
-
-const steps: Step[] = [
-  {
-    id: 'Step 1',
-    name: 'Order Details',
-    fields: [
-      'orderId',
-      'userId',
-      'deliveryDate',
-      'deliveryTimeSlot',
-      'deliveryStatus',
-      'productsOrdered',
-      'totalWeight',
-      'paymentStatus',
-    ]
-  },
-  {
-    id: 'Step 2',
-    name: 'Add-ons and Instructions',
-    fields: [
-      'addons',
-      'specialInstructions'
-    ]
-  },
-  { id: 'Step 3', name: 'Complete' } // No fields needed here
-];
-
   const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
 
   const next = async () => {
     if (currentStep < steps.length - 1) {
-      const fields:any = steps[currentStep].fields;
+      const fields: any = steps[currentStep].fields;
       if (fields) {
         const output = await trigger(fields);
         if (!output) return;
       }
-  
       setCurrentStep(step => step + 1);
     } else {
-      // await handleSubmit(onSubmit)();
+      await handleSubmit(onSubmit)(); // Handle complete form submission at the last step
     }
   };
-  
 
   const prev = () => {
     if (currentStep > 0) {
@@ -188,16 +150,11 @@ const steps: Step[] = [
     }
   };
 
-
-  
-
-
   const orderedOptions = [
-    { id: '1', name: 'Veggie Bag Fruit Basket' },
-    { id: '2', name: 'Mixed Bag Flower Bouquet' },
-    { id: '3', name: 'Weekly Veggie Bag' },
-    { id: '4', name: 'Monthly Veggie Bag Fruit Basket' },
+    { id: '1', name: 'Mini Veggie Bag' },
+    { id: '2', name: 'Regular Veggie Bag' },
   ];
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -262,42 +219,38 @@ const steps: Step[] = [
           >
             {currentStep === 0 && (
               <>
-                {/* <FormField
+                <FormField
                   control={form.control}
-                  name="orderId"
+                  name="customerName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Order ID</FormLabel>
+                      <FormLabel>Customer Name</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          disabled={loading}
-                          placeholder="Enter Order ID"
-                          {...field}
-                        />
+                        <Input type="text" disabled={loading} placeholder="Enter Customer Name" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{errors.customerName?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="userId"
+                  name="eid"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>User ID</FormLabel>
+                      <FormLabel>Employee Id</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           disabled={loading}
-                          placeholder="Enter User ID"
-                          {...field}
+                          placeholder="Enter Employee Id"
+                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                          value={field.value || ''}
                         />
                       </FormControl>
-                      <FormMessage />
+                      {/* <FormMessage>{errors.eid?.message}</FormMessage> */}
                     </FormItem>
                   )}
-                /> */}
+                />
                 <FormField
                   control={form.control}
                   name="deliveryDate"
@@ -323,7 +276,7 @@ const steps: Step[] = [
                       <FormLabel>Delivery Time Slot</FormLabel>
                       <FormControl>
                         <Input
-                          type="time"
+                          type="text"
                           disabled={loading}
                           placeholder="Enter Delivery Time Slot"
                           {...field}
@@ -333,7 +286,7 @@ const steps: Step[] = [
                     </FormItem>
                   )}
                 />
-                {/* <FormField
+                <FormField
                   control={form.control}
                   name="deliveryStatus"
                   render={({ field }) => (
@@ -362,79 +315,26 @@ const steps: Step[] = [
                       <FormMessage />
                     </FormItem>
                   )}
-                /> */}
-
-<FormField
-  control={form.control}
-  name="deliveryStatus"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Delivery Status</FormLabel>
-      <Select
-        disabled={loading}
-        onValueChange={field.onChange}
-        value={field.value as "Pending" | "Delivered" | "Cancelled"}  // Explicit casting
-        defaultValue={field.value}
-      >
-        <FormControl>
-          <SelectTrigger>
-            <SelectValue
-              defaultValue={field.value}
-              placeholder="Select Delivery Status"
-            />
-          </SelectTrigger>
-        </FormControl>
-        <SelectContent>
-          <SelectItem value="Pending">Pending</SelectItem>
-          <SelectItem value="Delivered">Delivered</SelectItem>
-          <SelectItem value="Cancelled">Cancelled</SelectItem>
-        </SelectContent>
-      </Select>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
-                {/* <FormField
+                />
+                <Controller
                   control={form.control}
-                  name="productsOrdered"
+                  name="bagOrdered"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Products Ordered</FormLabel>
+                      <FormLabel>Bag Ordered</FormLabel>
                       <FormControl>
-                        <Input
-                          type="text"
+                        <MultiSelect
+                          value={field.value || []}
+                          onChange={(value) => field.onChange(value)}
+                          options={orderedOptions}
                           disabled={loading}
-                          placeholder="Enter Products Ordered (comma separated)"
-                          {...field}
+                          placeholder="Select Bag Options"
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
-                /> */}
-
-
-<Controller
-  control={form.control}
-  name="productsOrdered"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Product  Ordered</FormLabel>
-      <FormControl>
-        <MultiSelect
-          value={field.value || []}
-          onChange={(value) => field.onChange(value)}
-          options={orderedOptions}
-          disabled={loading}
-          placeholder="Select Ordered Options"
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
+                />
                 <FormField
                   control={form.control}
                   name="totalWeight"
@@ -444,7 +344,7 @@ const steps: Step[] = [
                       <FormControl>
                         <Input
                           type="number"
-                          disabled={loading}
+                          disabled={true}
                           placeholder="Enter Total Weight"
                           onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                           value={field.value || ''}
@@ -556,7 +456,7 @@ const steps: Step[] = [
         </div>
       )}
 
-<div className="mt-8 pt-5">
+      <div className="mt-8 pt-5">
         <div className="flex justify-between">
           <button
             type="button"
@@ -582,7 +482,6 @@ const steps: Step[] = [
           <button
             type="button"
             onClick={next}
-            disabled={currentStep === steps.length - 1}
             className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <svg

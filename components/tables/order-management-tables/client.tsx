@@ -54,16 +54,16 @@ export const OrderManagementClient: React.FC = () => {
           title={`Order (${data.length})`}
           description="Manage Orders (Client side table functionalities.)"
         />
-        {/* <Button
+        <Button
           className="text-xs md:text-sm"
           onClick={() => router.push(`/order`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button> */}
+        </Button>
       </div>
       <Separator />
       <DataTable
-        searchKey="productsOrdered"
+        searchKey="customerName"
         columns={columns}
         data={data}
         filters={filters}
