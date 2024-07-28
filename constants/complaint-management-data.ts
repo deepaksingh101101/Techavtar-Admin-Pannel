@@ -2,7 +2,7 @@
 export interface ComplaintManagement {
   sno: number;
   complaintType: 'Delay' | 'Bad quality' | 'Wrong item' | 'Not reached';
-  status: 'Open' | 'Closed';
+  status: 'Active' | 'Inactive';
   resolution?: 'Coupon' | 'Store credits' | 'Add-on bag';
 }
 
@@ -11,25 +11,25 @@ export const ComplaintManagementData: ComplaintManagement[] = [
   {
     sno: 1,
     complaintType: 'Delay',
-    status: 'Open',
+    status: 'Active',
     resolution: 'Coupon'
   },
   {
     sno: 2,
     complaintType: 'Bad quality',
-    status: 'Closed',
+    status: 'Inactive',
     resolution: 'Store credits'
   },
   {
     sno: 3,
     complaintType: 'Wrong item',
-    status: 'Open',
+    status: 'Active',
     resolution: 'Add-on bag'
   },
   {
     sno: 4,
     complaintType: 'Not reached',
-    status: 'Closed',
+    status: 'Inactive',
     resolution: 'Add-on bag'
   }
 ];

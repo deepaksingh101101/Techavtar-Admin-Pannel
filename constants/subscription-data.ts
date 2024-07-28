@@ -20,7 +20,7 @@ export const SubscriptionData: Subscription[] = [
   {
     subscriptionType: 'Annual',
     customerName: 'John Doe',
-    frequency: 'Biweekly (24)',
+    frequency: 'Biweekly',
     price: 16455,
     offers: '25% Off',
     deliveryDays: ['Monday', 'Thursday'],
@@ -34,7 +34,7 @@ export const SubscriptionData: Subscription[] = [
   {
     subscriptionType: 'Monthly',
     customerName: 'Jane Smith',
-    frequency: 'Fortnightly (16)',
+    frequency: 'Fortnightly',
     price: 15455,
     offers: '31% Off',
     deliveryDays: ['Wednesday', 'Saturday'],
@@ -50,7 +50,7 @@ export const SubscriptionData: Subscription[] = [
   {
     subscriptionType: 'Quarterly',
     customerName: 'Alice Johnson',
-    frequency: 'Biweekly (24)',
+    frequency: 'Biweekly',
     price: 13245,
     offers: '44% Off',
     deliveryDays: ['Tuesday', 'Friday'],

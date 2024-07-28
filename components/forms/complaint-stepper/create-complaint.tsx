@@ -16,17 +16,17 @@ export interface ComplaintManagement {
   userId: number;
   complaintType: 'Delay' | 'Bad quality' | 'Wrong item' | 'Not reached';
   description: string;
-  status: 'Open' | 'Closed';
+  status: 'Active' | 'Inactive';
   resolution?: 'Coupon' | 'Store credits' | 'Add-on bag';
 }
 
 const complaintFormSchema = z.object({
   complaintId: z.number().nonnegative(),
   userId: z.number().nonnegative(),
-  complaintType: z.enum(['Delay', 'Bad quality', 'Wrong item', 'Not reached']),
+  complaintType: z.string(),
   description: z.string().min(1, 'Description is required'),
-  status: z.enum(['Open', 'Closed']),
-  resolution: z.enum(['Coupon', 'Store credits', 'Add-on bag']),
+  status: z.enum(['Active', 'Inactive']),
+  resolution: z.string(),
 });
 
 export const ComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({ initialData }) => {
@@ -38,7 +38,7 @@ export const ComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({
       userId: 0,
       complaintType: 'Delay',
       description: '',
-      status: 'Open',
+      status: 'Active',
       resolution: undefined,
     },
   });
@@ -126,8 +126,8 @@ export const ComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({
                         <SelectValue placeholder="Select Status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Open">Open</SelectItem>
-                        <SelectItem value="Closed">Closed</SelectItem>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Inactive">Inactive</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>

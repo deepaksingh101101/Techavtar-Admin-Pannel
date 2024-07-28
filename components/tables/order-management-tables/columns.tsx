@@ -29,6 +29,10 @@ export const columns: ColumnDef<OrderManagement>[] = [
     header: 'Order ID'
   },
   {
+    accessorKey: 'empId',
+    header: 'Emp ID'
+  },
+  {
     accessorKey: 'customerName',
     header: 'Customer Name',
     cell: ({ row }) => (

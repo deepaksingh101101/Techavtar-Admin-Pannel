@@ -69,10 +69,10 @@ interface SubscriptionFormType {
 }
 
 const frequencyNumbers: { [key: string]: number } = {
-  Daily: 1,
-  Weekly: 1,
-  Monthly: 1/4,
   Fortnightly: 1/2,
+  Weekly: 1,
+  Daily: 1,
+  Monthly: 1/4,
   Biweekly: 2
 };
 
@@ -208,13 +208,16 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     const freqNum = frequencyNumbers[frequency];
     const subTypeNum = subscriptionTypeNumbers[subscriptionType];
     const totalDelivery = freqNum * subTypeNum;
-    setValue('totalDelivery', subTypeNum);
+    setValue('totalDelivery', totalDelivery);
   }, [frequency, subscriptionType, setValue]);
 
   useEffect(() => {
     const netPrice = price - (price * (offers / 100));
     setValue('netPrice', parseFloat(netPrice.toFixed(2)));
   }, [price, offers, setValue]);
+
+
+  const [subTypeNumber, setSubTypeNumber] = useState(1)
 
   return (
     <>
@@ -313,8 +316,10 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     <Edit onClick={openSubscriptionTypeModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
                   </div>
                   <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
+ onValueChange={(value) => {
+  field.onChange(value);  // This updates the form state managed by your form library
+  setSubTypeNumber(Number(value));   // This updates your local state, replace `setLocalState` with your actual state setter
+}}                    value={field.value}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -348,6 +353,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     onValueChange={field.onChange}
                     value={field.value}
                     defaultValue={field.value}
+                    disabled={subTypeNumber===1}
                   >
                     <FormControl>
                       <SelectTrigger>

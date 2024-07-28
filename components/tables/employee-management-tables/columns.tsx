@@ -39,7 +39,7 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
   },
   {
     accessorKey: 'sno',
-    header: 'Sno'
+    header: 'EID'
   },
   {
     accessorKey: 'firstName',

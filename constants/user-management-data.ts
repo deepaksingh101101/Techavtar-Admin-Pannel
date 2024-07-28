@@ -17,7 +17,7 @@ export type UserManagement = {
   subscriptionStartDate: string;
   subscriptionEndDate: string;
   accountStatus: 'Active' | 'Inactive';
-  associatedEmployeeId: number;
+  employeeName: string;
   lastUpdateDate: string;
   createdDate: string;
 };
@@ -40,7 +40,7 @@ export const userManagementData: UserManagement[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     accountStatus: 'Active',
-    associatedEmployeeId: 101,
+    employeeName: "Deepak Singh",
     lastUpdateDate: '2023-07-01',
     createdDate: '2023-01-01'
   },
@@ -61,7 +61,7 @@ export const userManagementData: UserManagement[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     accountStatus: 'Inactive',
-    associatedEmployeeId: 101,
+    employeeName: "Amar Singh",
     lastUpdateDate: '2023-07-01',
     createdDate: '2023-01-01'
   },
@@ -82,7 +82,7 @@ export const userManagementData: UserManagement[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     accountStatus: 'Active',
-    associatedEmployeeId: 101,
+    employeeName: "Aman Singh",
     lastUpdateDate: '2023-07-01',
     createdDate: '2023-01-01'
   },
@@ -103,7 +103,7 @@ export const userManagementData: UserManagement[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     accountStatus: 'Inactive',
-    associatedEmployeeId: 101,
+    employeeName: "Roshan Singh",
     lastUpdateDate: '2023-07-01',
     createdDate: '2023-01-01'
   },
@@ -124,7 +124,7 @@ export const userManagementData: UserManagement[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     accountStatus: 'Active',
-    associatedEmployeeId: 101,
+    employeeName: "Vikash Singh",
     lastUpdateDate: '2023-07-01',
     createdDate: '2023-01-01'
   },
@@ -145,7 +145,7 @@ export const userManagementData: UserManagement[] = [
     subscriptionStartDate: '2023-01-01',
     subscriptionEndDate: '2023-12-31',
     accountStatus: 'Inactive',
-    associatedEmployeeId: 101,
+    employeeName: "Prashant Singh",
     lastUpdateDate: '2023-07-01',
     createdDate: '2023-01-01'
   }

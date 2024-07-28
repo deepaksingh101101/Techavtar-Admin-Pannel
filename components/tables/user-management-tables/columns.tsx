@@ -140,11 +140,11 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'Subscription End Date'
   },
   {
-    accessorKey: 'associatedEmployeeId',
-    header: 'Associated Employee ID',
+    accessorKey: 'employeeName',
+    header: 'Associated Employee ',
     cell: ({ row }) => (
       <div className="text-center">
-        {row.original.associatedEmployeeId}
+        {row.original.employeeName}
       </div>
     )
   },
