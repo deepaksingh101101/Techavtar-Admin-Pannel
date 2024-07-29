@@ -40,6 +40,7 @@ interface ProductFormType {
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
+  available: z.string().min(1, 'Please Enter availability'),
   productPrice: z.number().min(1, 'Product Price is required'),
   type: z.string().min(1, 'Type is required'),
   group: z.string().min(1, 'Group is required'),
@@ -309,6 +310,27 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               </FormItem>
             )}
           />
+           <FormField
+                  control={control}
+                  name="available"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Availability</FormLabel>
+                      <FormControl>
+                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Available">Available</SelectItem>
+                            <SelectItem value="Unavailable">Unavailable</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage>{errors.available?.message}</FormMessage>
+                    </FormItem>
+                  )}
+                />
           {/* <FormField
             control={form.control}
             name="addons"
