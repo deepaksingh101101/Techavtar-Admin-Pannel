@@ -109,8 +109,8 @@ export const columns: ColumnDef<ProductManagement>[] = [
       <div 
         style={{ borderRadius: "20px" }}
         className={`flex items-center px-2 py-1 ${
-          row.original.visibility === 'Admin' ? 'bg-blue-400' :
-          row.original.visibility === 'Customer+Admin' ? 'bg-orange-400' :
+          row.original.visibility === 'Admin' ? 'bg-red-400' :
+          row.original.visibility === 'Customer+Admin' ? 'bg-green-400' :
           'bg-red-400'
         }`}
       >

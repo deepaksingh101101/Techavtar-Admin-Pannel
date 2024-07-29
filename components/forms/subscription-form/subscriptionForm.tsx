@@ -6,13 +6,6 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -33,12 +26,12 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { z } from 'zod';
-import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { Edit, Trash } from 'lucide-react';
+import ReactSelect from 'react-select';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 
 const subscriptionFormSchema = z.object({
@@ -48,15 +41,11 @@ const subscriptionFormSchema = z.object({
   deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
   subscriptionStartDate: z.string().min(1, 'Subscription Start Date is required'),
   subscriptionEndDate: z.string().min(1, 'Subscription End Date is required'),
-  bagName: z.string().min(1, 'Bag Name  is required'),
+  bagName: z.string().min(1, 'Bag Name is required'),
   subscriptionStatus: z.enum(['Active', 'Inactive']),
-
   price: z.number().positive('Price must be greater than zero'),
   netPrice: z.any(),
   offers: z.number()
-}).refine((data) => data.totalDelivery % frequencyNumbers[data.frequency] === 0, {
-  message: 'Total bags must be a multiple of frequency',
-  path: ['totalDelivery'],
 }).refine((data) => data.totalDelivery % subscriptionTypeNumbers[data.subscriptionType] === 0, {
   message: 'Total bags must be a multiple of the associated subscription type',
   path: ['totalDelivery'],
@@ -67,14 +56,6 @@ type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
 interface SubscriptionFormType {
   initialData: any | null;
 }
-
-const frequencyNumbers: { [key: string]: number } = {
-  Fortnightly: 1/2,
-  Weekly: 1,
-  Daily: 1,
-  Monthly: 1/4,
-  Biweekly: 2
-};
 
 const subscriptionTypeNumbers: { [key: string]: number } = {
   Trial: 1,
@@ -92,6 +73,11 @@ const deliveryDaysOptions = [
   { id: '5', name: 'Friday' },
   { id: '6', name: 'Saturday' },
   { id: '7', name: 'Sunday' }
+];
+
+const dummyBags = [
+  { value: 'Regular Veggie Bag', label: 'Regular Veggie Bag' },
+  { value: 'Mini Veggie Bag', label: 'Mini Veggie Bag' }
 ];
 
 export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
@@ -199,25 +185,13 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     setFrequencies(frequencies.filter((_, i) => i !== index));
   };
 
-  const frequency = watch('frequency');
-  const subscriptionType = watch('subscriptionType');
   const price = watch('price');
   const offers = watch('offers');
-
-  useEffect(() => {
-    const freqNum = frequencyNumbers[frequency];
-    const subTypeNum = subscriptionTypeNumbers[subscriptionType];
-    const totalDelivery = freqNum * subTypeNum;
-    setValue('totalDelivery', totalDelivery);
-  }, [frequency, subscriptionType, setValue]);
 
   useEffect(() => {
     const netPrice = price - (price * (offers / 100));
     setValue('netPrice', parseFloat(netPrice.toFixed(2)));
   }, [price, offers, setValue]);
-
-
-  const [subTypeNumber, setSubTypeNumber] = useState(1)
 
   return (
     <>
@@ -316,10 +290,8 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     <Edit onClick={openSubscriptionTypeModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
                   </div>
                   <Select
- onValueChange={(value) => {
-  field.onChange(value);  // This updates the form state managed by your form library
-  setSubTypeNumber(Number(value));   // This updates your local state, replace `setLocalState` with your actual state setter
-}}                    value={field.value}
+                    onValueChange={field.onChange}
+                    value={field.value}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -346,14 +318,12 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     <div className="flex items-center">
                       <FormLabel>Frequency</FormLabel>
                       <Edit onClick={openFrequencyModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
-                      {/* <span className='ms-2 text-white font-bold bg-red-600 px-[5px] py-[0.3px]' style={{borderRadius:"50%",fontSize:"10px"}} >{frequencyNumbers[field.value]}</span> */}
                     </div>
                   </div>
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
                     defaultValue={field.value}
-                    disabled={subTypeNumber===1}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -380,7 +350,6 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                     <Input
                       type="number"
                       placeholder="Enter Bags"
-                      disabled
                       className='mt-0'
                       min={1}
                       {...field}
@@ -399,50 +368,20 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 <FormItem>
                   <FormLabel>Enter Bag Name</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Enter Bag Name"
-                      {...field}
+                    <ReactSelect
+                      isClearable
+                      isSearchable
+                      options={dummyBags}
+                      onChange={(selected) => {
+                        field.onChange(selected?.value);
+                      }}
+                      value={dummyBags.find((option) => option.value === field.value)}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="subscriptionStartDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subscription Start Date</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      disabled={loading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="subscriptionEndDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subscription End Date</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      disabled={loading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="subscriptionStatus"
@@ -505,34 +444,34 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                       onChange={(e) => {
                         const value = e.target.value;
                         field.onChange(value ? Number(value) : "");
-                      }}                    />
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-           <FormField
-  control={control}
-  name="offers"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Offers (%)</FormLabel>
-      <FormControl>
-        <Input
-          type="number"
-          placeholder="Enter Offer in Percentage"
-          {...field}
-          onChange={(e) => {
-            const value = e.target.value;
-            field.onChange(value ? Number(value) : '');
-          }}
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
+            <FormField
+              control={control}
+              name="offers"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Offers (%)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter Offer in Percentage"
+                      {...field}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value ? Number(value) : '');
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={control}
               name="netPrice"
