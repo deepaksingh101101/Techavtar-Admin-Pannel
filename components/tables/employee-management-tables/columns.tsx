@@ -67,7 +67,7 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
   },
   {
     accessorKey: 'assignedUsers',
-    header: 'Assigned Users',
+    header: 'Assigned Customers',
     cell: ({ row }) => (
       <ul>
         {row.original.assignedUsers.map((user) => (

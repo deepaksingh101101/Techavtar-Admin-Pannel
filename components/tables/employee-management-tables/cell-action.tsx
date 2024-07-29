@@ -71,7 +71,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <UserCheck className="mr-2 h-4 w-4" /> Edit Employee Details
           </DropdownMenuItem>
           <DropdownMenuItem onClick={assignUserToEmployee}>
-            <UserCheck className="mr-2 h-4 w-4" /> Assign User To Employee
+            <UserCheck className="mr-2 h-4 w-4" /> Assign Customer To Employee
           </DropdownMenuItem>
           <DropdownMenuItem onClick={assignUserToEmployee}>
             <UserCheck className="mr-2 h-4 w-4" /> Edit Permissions

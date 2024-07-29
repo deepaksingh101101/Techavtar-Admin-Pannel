@@ -29,6 +29,10 @@ export const columns: ColumnDef<OrderManagement>[] = [
     header: 'Order ID'
   },
   {
+    accessorKey: 'empId',
+    header: 'Emp ID'
+  },
+  {
     accessorKey: 'customerName',
     header: 'Customer Name',
     cell: ({ row }) => (
@@ -92,6 +96,15 @@ export const columns: ColumnDef<OrderManagement>[] = [
     cell: ({ row }) => (
       <div className="text-center">
         {row.original.totalWeight}
+      </div>
+    )
+  },
+  {
+    accessorKey: 'totalPrice',
+    header: 'Total Price ',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.totalPrice}
       </div>
     )
   },
