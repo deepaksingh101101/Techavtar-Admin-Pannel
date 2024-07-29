@@ -1,83 +1,98 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from './cell-action';
-import { Checkbox } from '@/components/ui/checkbox';
 import { OrderManagement } from '@/constants/order-management-data';
-import { Check, X, Calendar, Clock } from 'lucide-react';
+import { CellAction } from './cell-action';
+import { Check, Edit, Trash, X } from 'lucide-react';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'; // Adjust the import path as necessary
 
 export const columns: ColumnDef<OrderManagement>[] = [
   {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
-  {
     accessorKey: 'orderId',
-    header: 'Order ID'
+    header: 'Order ID',
+    cell: ({ row }) => <span>{row.original.orderId}</span>,
   },
   {
     accessorKey: 'empId',
-    header: 'Emp ID'
+    header: 'Emp ID',
+    cell: ({ row }) => <span>{row.original.empId}</span>,
   },
   {
     accessorKey: 'customerName',
     header: 'Customer Name',
-    cell: ({ row }) => (
-      <div className="">
-        {row.original.customerName}
-      </div>
-    )
+    cell: ({ row }) => <span>{row.original.customerName}</span>,
   },
   {
-    accessorKey: 'deliveryDate',
-    header: 'Delivery Date',
+    accessorKey: 'deliveries',
+    header: 'Deliveries',
     cell: ({ row }) => (
-        <div className="flex items-center mt-1">
-          <Calendar className="text-blue-500 mr-2" width={16} height={16} />
-          <span className="text-[12px]">{row.original.deliveryDate}</span>
-        </div>
-     
-    )
-  },
-  {
-    accessorKey: 'deliveryTimeSlot',
-    header: 'Delivery Time Slot',
-    cell: ({ row }) => (
-      <div className="flex items-center mt-1">
-        <Clock className="text-blue-500 mr-2" width={16} height={16} />
-        <span className="text-[12px]">{row.original.deliveryTimeSlot}</span>
+      <div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr className='bg-red-100'>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time Slot</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {row.original.deliveries.slice(0, 1).map((delivery, index) => (
+              <tr key={index} className='bg-blue-100'>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryDate}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryTimeSlot}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                  <div 
+                    style={{ borderRadius: "20px" }}
+                    className={`flex items-center px-2 py-1 ${
+                      delivery.deliveryStatus === 'Delivered' ? 'bg-green-400' :
+                      delivery.deliveryStatus === 'Pending' ? 'bg-yellow-400' :
+                      'bg-red-400'
+                    }`}
+                  >
+                    <span className='text-black bold'>{delivery.deliveryStatus}</span>
+                  </div>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
+
+              </tr>
+              
+            ))}
+          </tbody>
+        </table>
+        {row.original.deliveries.length > 1 && (
+          <Accordion type="single" collapsible>
+            <AccordionItem value="more-deliveries">
+              <AccordionTrigger>View All</AccordionTrigger>
+              <AccordionContent>
+                <table className="min-w-full divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {row.original.deliveries.slice(1).map((delivery, index) => (
+                      <tr key={index} className={index % 2 === 0 ? 'bg-blue-100' : 'bg-blue-200'}>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryDate}</td>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryTimeSlot}</td>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                          <div 
+                            style={{ borderRadius: "20px" }}
+                            className={`flex items-center px-2 py-1 ${
+                              delivery.deliveryStatus === 'Delivered' ? 'bg-green-400' :
+                              delivery.deliveryStatus === 'Pending' ? 'bg-yellow-400' :
+                              'bg-red-400'
+                            }`}
+                          >
+                            <span className='text-black bold'>{delivery.deliveryStatus}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
+
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
       </div>
-   
-  )
-  },
-  {
-    accessorKey: 'deliveryStatus',
-    header: 'Delivery Status',
-    cell: ({ row }) => (
-      <div 
-        style={{ borderRadius: "20px" }}
-        className={`flex items-center px-2 py-1 ${
-          row.original.deliveryStatus === 'Delivered' ? 'bg-green-400' :
-          row.original.deliveryStatus === 'Pending' ? 'bg-yellow-400' :
-          'bg-red-400'
-        }`}
-      >
-        <span className='text-black bold'>{row.original.deliveryStatus}</span>
-      </div>
-    )
+    ),
   },
   {
     accessorKey: 'bagOrdered',
@@ -88,25 +103,25 @@ export const columns: ColumnDef<OrderManagement>[] = [
           <li key={index}>{product}</li>
         ))}
       </ul>
-    )
+    ),
   },
   {
     accessorKey: 'totalWeight',
     header: 'Total Weight (kg)',
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.totalWeight}
+      <div className="flex justify-center">
+        <span className='text-center'>{row.original.totalWeight}</span>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'totalPrice',
-    header: 'Total Price ',
+    header: 'Total Price (₹)',
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.totalPrice}
+      <div className="flex justify-center">
+        <span className='text-center'>{row.original.totalPrice}</span>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'addons',
@@ -114,10 +129,10 @@ export const columns: ColumnDef<OrderManagement>[] = [
     cell: ({ row }) => (
       <ul>
         {row.original.addons?.map((addon, index) => (
-          <li style={{listStyleType: "square"}} key={index}>{addon}</li>
+          <li style={{ listStyleType: "square" }} key={index}>{addon}</li>
         ))}
       </ul>
-    )
+    ),
   },
   {
     accessorKey: 'paymentStatus',
@@ -136,11 +151,16 @@ export const columns: ColumnDef<OrderManagement>[] = [
         )}
         <span className='text-black bold'>{row.original.paymentStatus}</span>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'specialInstructions',
-    header: 'Special Instructions'
+    header: 'Special Instructions',
+    cell: ({ row }) => (
+      <div className="flex">
+        <span className=''>{row.original.specialInstructions}</span>
+      </div>
+    ),
   },
   {
     id: 'actions',
