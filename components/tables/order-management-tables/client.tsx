@@ -19,7 +19,7 @@ export const OrderManagementClient: React.FC = () => {
 
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.deliveryStatus.toLowerCase().includes(searchValue.toLowerCase())
+      item.customerName.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
@@ -35,17 +35,7 @@ export const OrderManagementClient: React.FC = () => {
     },
   
   ];
-  const handleSort = (sortBy: string, sortOrder: 'asc' | 'desc') => {
-    // Example: Sorting by first name
-    const sortedData = [...data].sort((a, b) => {
-      if (sortOrder === 'asc') {
-        return a.deliveryStatus.localeCompare(b.deliveryStatus);
-      } else {
-        return b.deliveryStatus.localeCompare(a.deliveryStatus);
-      }
-    });
-    setData(sortedData);
-  };
+
 
   return (
     <>
