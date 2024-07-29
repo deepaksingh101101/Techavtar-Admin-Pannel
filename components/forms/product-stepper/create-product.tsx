@@ -40,6 +40,7 @@ interface ProductFormType {
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
+  productPrice: z.number().min(1, 'Product Price is required'),
   type: z.string().min(1, 'Type is required'),
   group: z.string().min(1, 'Group is required'),
   season: z.string().min(1, 'Season is required'),
@@ -143,6 +144,25 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                     disabled={loading}
                     placeholder="Enter Product Name"
                     {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+            <FormField
+            control={form.control}
+            name="productPrice"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Product Price</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    placeholder="Enter Prodcut Price"
+                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormMessage />
