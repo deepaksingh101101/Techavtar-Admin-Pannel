@@ -103,6 +103,22 @@ export const columns: ColumnDef<ProductManagement>[] = [
     )
   },
   {
+    accessorKey: 'visibility',
+    header: 'Visibility',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.visibility === 'Admin' ? 'bg-blue-400' :
+          row.original.visibility === 'Customer+Admin' ? 'bg-orange-400' :
+          'bg-red-400'
+        }`}
+      >
+<span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
+</div>
+    )
+  },
+  {
     accessorKey: 'roster',
     header: 'Roster'
   },
@@ -115,12 +131,32 @@ export const columns: ColumnDef<ProductManagement>[] = [
       </div>
     )
   },
+  // {
+  //   accessorKey: 'unitQuantity',
+  //   header: 'Unit Quantity',
+  //   cell: ({ row }) => (
+  //     <div className="text-center">
+  //       {row.original.unitQuantity} gm
+  //     </div>
+  //   )
+    
+  // },
   {
-    accessorKey: 'unitQuantity',
-    header: 'Unit Quantity',
+    accessorKey: 'maxQuantity',
+    header: 'Max Quantity',
     cell: ({ row }) => (
       <div className="text-center">
-        {row.original.unitQuantity} gm
+        {row.original.maxQuantity} gm
+      </div>
+    )
+    
+  },
+  {
+    accessorKey: 'minQuantity',
+    header: 'Min Quantity',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.minQuantity} gm
       </div>
     )
     

@@ -20,6 +20,7 @@ export interface Bag {
   updatedDate?: string;
   status: 'Active' | 'Inactive';
   createdBy: Creator;
+  visibility?:String
 }
 
 export const BagData: Bag[] = [
@@ -35,6 +36,7 @@ export const BagData: Bag[] = [
     totalPieces: undefined,
     createdDate: '2023-01-01',
     status: 'Active',
+    visibility: 'Admin',
     createdBy: { role: 'Admin', name: 'Deepak singh' }
   },
   {
@@ -49,6 +51,7 @@ export const BagData: Bag[] = [
     totalPieces: 3,
     createdDate: '2023-07-01',
     status: 'Inactive',
+    visibility: 'Customer',
     createdBy: { role: 'Customer', name: 'John Doe' }
   },
   {
@@ -63,6 +66,7 @@ export const BagData: Bag[] = [
     totalPieces: 3,
     createdDate: '2023-07-01',
     status: 'Inactive',
-    createdBy: { role: 'Employee', name: 'John roy' }
+    createdBy: { role: 'Employee', name: 'John roy' },
+    visibility: 'Admin'
   }
 ];

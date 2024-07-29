@@ -7,10 +7,13 @@ export interface ProductManagement {
   priority: string;
   roster: string;
   veggieNameInHindi: string;
-  unitQuantity?: number; // in grams
+  // unitQuantity?: number; // in grams
+  maxQuantity?: number; // in grams
+  minQuantity?: number; // in grams
   pieces?: number;
   price?:number;
   available?:string;
+  visibility?:string;
 
 }
 
@@ -26,8 +29,11 @@ export const ProductManagementData: ProductManagement[] = [
     roster: 'A',
     price:200,
     veggieNameInHindi: 'अरबी',
-    unitQuantity: 1000,
-    available:"Yes"
+    // unitQuantity: 1000,
+    maxQuantity: 10000,
+    minQuantity: 1000,
+    available:"Yes",
+    visibility:"Customer+Admin"
   },
   {
     sno: 2,
@@ -38,8 +44,11 @@ export const ProductManagementData: ProductManagement[] = [
     priority: 'Medium',
     roster: 'A',
     veggieNameInHindi: 'खीरा',
-    unitQuantity: 1000,
+    // unitQuantity: 1000,
+    maxQuantity: 5000,
+    minQuantity: 2000,
     price:100,
-    available:"No"
+    available:"No",
+    visibility:"Admin"
   }
 ];

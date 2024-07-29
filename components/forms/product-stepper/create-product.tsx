@@ -31,7 +31,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+import { useForm, SubmitHandler, FieldValues, Controller } from 'react-hook-form';
+import { MultiSelect } from '@/components/ui/MultiSelect';
 
 interface ProductFormType {
   initialData: any | null;
@@ -40,6 +41,9 @@ interface ProductFormType {
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
+  visibility: z.array(z.string()).min(1, 'Visibility is required'),
+  minQuantity: z.number().min(1, 'Minimum Quantity  is required'),
+  maxQuantity: z.number().min(1, 'Maximum Quantity is required'),
   available: z.string().min(1, 'Please Enter availability'),
   productPrice: z.number().min(1, 'Product Price is required'),
   type: z.string().min(1, 'Type is required'),
@@ -109,6 +113,12 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
       setOpen(false);
     }
   };
+
+  const visibilityOption = [
+    { id: '1', name: 'Admin' },
+    { id: '2', name: 'Customer' }
+  ];
+  
 
   return (
     <>
@@ -272,7 +282,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="unitQuantity"
             render={({ field }) => (
@@ -283,6 +293,44 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                     type="number"
                     disabled={loading}
                     placeholder="Enter Unit Quantity"
+                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+           <FormField
+            control={form.control}
+            name="maxQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Maximum Quantity (gms)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    placeholder="Enter Maximum Unit Quantity"
+                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+           <FormField
+            control={form.control}
+            name="minQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Minimum Quantity (gms)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    placeholder="Enter Minimum Quantity"
                     onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                     value={field.value || ''}
                   />
@@ -331,6 +379,26 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                     </FormItem>
                   )}
                 />
+                
+                      <Controller
+              control={form.control}
+              name="visibility"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Delivery Days</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value || []}
+                      onChange={(value) => field.onChange(value)}
+                      options={visibilityOption}
+                      disabled={loading}
+                      placeholder="Select Visibility"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           {/* <FormField
             control={form.control}
             name="addons"
