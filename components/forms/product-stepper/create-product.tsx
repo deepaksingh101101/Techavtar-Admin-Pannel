@@ -385,7 +385,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               name="visibility"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Delivery Days</FormLabel>
+                  <FormLabel>Visibility</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value || []}

@@ -344,7 +344,6 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                       <FormControl>
                         <Input
                           type="number"
-                          disabled={true}
                           placeholder="Enter Total Weight"
                           onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                           value={field.value || ''}
