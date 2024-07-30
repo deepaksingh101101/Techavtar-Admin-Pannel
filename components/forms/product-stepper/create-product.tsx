@@ -282,7 +282,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               </FormItem>
             )}
           />
-          {/* <FormField
+          <FormField
             control={form.control}
             name="unitQuantity"
             render={({ field }) => (
@@ -293,25 +293,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                     type="number"
                     disabled={loading}
                     placeholder="Enter Unit Quantity"
-                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-           <FormField
-            control={form.control}
-            name="maxQuantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Maximum Quantity (gms)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="Enter Maximum Unit Quantity"
                     onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                     value={field.value || ''}
                   />
@@ -339,6 +320,26 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               </FormItem>
             )}
           />
+           <FormField
+            control={form.control}
+            name="maxQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Maximum Quantity (gms)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    placeholder="Enter Maximum Unit Quantity"
+                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
           <FormField
             control={form.control}
             name="pieces"

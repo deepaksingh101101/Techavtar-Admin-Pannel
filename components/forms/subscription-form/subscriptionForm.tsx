@@ -36,6 +36,7 @@ import { MultiSelect } from '@/components/ui/MultiSelect';
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.string(),
+  visibility: z.array(z.string()).min(1, 'Visibility is required'),
   totalDelivery: z.number().positive('Total bags must be greater than zero'),
   frequency: z.string(),
   deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
@@ -51,6 +52,11 @@ const subscriptionFormSchema = z.object({
   path: ['totalDelivery'],
 });
 
+
+const visibilityOption = [
+  { id: '1', name: 'Admin' },
+  { id: '2', name: 'Customer' }
+];
 type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
 
 interface SubscriptionFormType {
@@ -355,6 +361,25 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                       {...field}
                       value={field.value}
                       onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <Controller
+              control={form.control}
+              name="visibility"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Visibility</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value || []}
+                      onChange={(value) => field.onChange(value)}
+                      options={visibilityOption}
+                      disabled={loading}
+                      placeholder="Select Visibility"
                     />
                   </FormControl>
                   <FormMessage />
