@@ -18,8 +18,8 @@ export const columns: ColumnDef<Bag>[] = [
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item Name</th>
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item Price (₹)</th>
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit Quantity</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Maximum Quantity</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Minimum Quantity</th>
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Maximum Units</th>
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Minimum Units</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -47,7 +47,7 @@ export const columns: ColumnDef<Bag>[] = [
   },
   {
     accessorKey: 'totalWeight',
-    header: 'Total Weight (kg)',
+    header: 'Total Weight (gms)',
     cell: ({ row }) => (
       <div className="flex justify-center">
         <span className='text-center'>{row.original.totalWeight ?? '-'}</span>

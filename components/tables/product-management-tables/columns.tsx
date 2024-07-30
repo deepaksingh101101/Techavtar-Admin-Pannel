@@ -142,21 +142,21 @@ export const columns: ColumnDef<ProductManagement>[] = [
     
   // },
   {
-    accessorKey: 'maxQuantity',
-    header: 'Max Quantity',
+    accessorKey: 'maxUnit',
+    header: 'Max Unit',
     cell: ({ row }) => (
       <div className="text-center">
-        {row.original.maxQuantity} gm
+        {row.original.maxUnit} 
       </div>
     )
     
   },
   {
-    accessorKey: 'minQuantity',
-    header: 'Min Quantity',
+    accessorKey: 'minUnit',
+    header: 'Min Unit',
     cell: ({ row }) => (
       <div className="text-center">
-        {row.original.minQuantity} gm
+        {row.original.minUnit} 
       </div>
     )
     

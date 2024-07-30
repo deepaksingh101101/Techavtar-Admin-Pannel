@@ -42,8 +42,8 @@ const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
   visibility: z.string().min(1, 'Visibility is required'),
-  minQuantity: z.number().min(1, 'Minimum Quantity  is required'),
-  maxQuantity: z.number().min(1, 'Maximum Quantity is required'),
+  minUnit: z.number().min(1, 'Minimum Quantity  is required'),
+  maxUnit: z.number().min(1, 'Maximum Quantity is required'),
   available: z.string().min(1, 'Please Enter availability'),
   productPrice: z.number().min(1, 'Product Price is required'),
   type: z.string().min(1, 'Type is required'),
@@ -303,15 +303,15 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
           />
            <FormField
             control={form.control}
-            name="minQuantity"
+            name="minUnit"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Minimum Quantity (gms)</FormLabel>
+                <FormLabel>Minimum Units</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     disabled={loading}
-                    placeholder="Enter Minimum Quantity"
+                    placeholder="Enter Minimum Units"
                     onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                     value={field.value || ''}
                   />
@@ -322,15 +322,15 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
           />
            <FormField
             control={form.control}
-            name="maxQuantity"
+            name="maxUnit"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Maximum Quantity (gms)</FormLabel>
+                <FormLabel>Maximum Units</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     disabled={loading}
-                    placeholder="Enter Maximum Unit Quantity"
+                    placeholder="Enter Maximum Unit "
                     onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                     value={field.value || ''}
                   />

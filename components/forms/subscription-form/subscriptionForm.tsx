@@ -30,7 +30,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { Edit, Trash } from 'lucide-react';
+import { Edit, Trash, Weight } from 'lucide-react';
 import ReactSelect from 'react-select';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 
@@ -42,7 +42,7 @@ const subscriptionFormSchema = z.object({
   deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
   subscriptionStartDate: z.string().min(1, 'Subscription Start Date is required'),
   subscriptionEndDate: z.string().min(1, 'Subscription End Date is required'),
-  bagName: z.string().min(1, 'Bag Name is required'),
+  bagName: z.array(z.string()).min(1, 'Bag Name is required'),
   subscriptionStatus: z.enum(['Active', 'Inactive']),
   price: z.number().positive('Price must be greater than zero'),
   netPrice: z.any(),
@@ -88,8 +88,10 @@ const deliveryDaysOptions = [
 ];
 
 const dummyBags = [
-  { value: 'Regular Veggie Bag', label: 'Regular Veggie Bag' },
-  { value: 'Mini Veggie Bag', label: 'Mini Veggie Bag' }
+  { value: 'Regular Veggie Bag', label: 'Regular Veggie Bag', weight: 4000 },
+  { value: 'Mini Veggie Bag', label: 'Mini Veggie Bag', weight: 3000 },
+  { value: 'Large Veggie Bag', label: 'Large Veggie Bag', weight: 5000 },
+  { value: 'Veggie Bag', label: 'Veggie Bag', weight: 5000 }
 ];
 
 export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
@@ -97,6 +99,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isTotalWeightValid, setIsTotalWeightValid] = useState(true);
   const title = initialData ? 'Edit Subscription' : 'Create New Subscription';
   const description = initialData
     ? 'Edit the subscription details below.'
@@ -114,7 +117,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
       offers: initialData?.offers || 0,
       netPrice: initialData?.netPrice || 0,
       deliveryDays: initialData?.deliveryDays || [],
-      bagName: initialData?.bagName || '',
+      bagName: initialData?.bagName || [],
       subscriptionStatus: initialData?.subscriptionStatus || 'Active',
       subscriptionStartDate: initialData?.subscriptionStartDate || '',
       subscriptionEndDate: initialData?.subscriptionEndDate || '',
@@ -201,6 +204,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
   const offers = watch('offers');
   const subscriptionType = watch('subscriptionType');
   const frequency = watch('frequency');
+  const selectedBags = watch('bagName');
 
   useEffect(() => {
     const netPrice = price - (price * (offers / 100));
@@ -212,6 +216,19 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
       subscriptionTypeNumbers[subscriptionType] * frequencyTypeNumbers[frequency];
     setValue('totalDelivery', totalDelivery);
   }, [subscriptionType, frequency, setValue]);
+
+  useEffect(() => {
+    const totalWeight = selectedBags.reduce((acc, bagName) => {
+      const bag = dummyBags.find((bag) => bag.value === bagName);
+      return acc + (bag ? bag.weight : 0);
+    }, 0);
+
+    if (totalWeight >= 5000 && totalWeight <= 10000) {
+      setIsTotalWeightValid(true);
+    } else {
+      setIsTotalWeightValid(false);
+    }
+  }, [selectedBags]);
 
   return (
     <>
@@ -405,27 +422,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="bagName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter Bag Name</FormLabel>
-                  <FormControl>
-                    <ReactSelect
-                      isClearable
-                      isSearchable
-                      options={dummyBags}
-                      onChange={(selected) => {
-                        field.onChange(selected?.value);
-                      }}
-                      value={dummyBags.find((option) => option.value === field.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+           
             <FormField
               control={form.control}
               name="subscriptionStatus"
@@ -534,8 +531,41 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
+           <Controller
+  control={form.control}
+  name="bagName"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Select Bags</FormLabel>
+      <FormControl>
+        <ReactSelect
+          isClearable
+          isSearchable
+          options={dummyBags}
+          formatOptionLabel={(option) => (
+            <div className="flex justify-between items-center">
+              <span>{option.label}</span>
+              <span className=" ms-4 text-green-700">{option.weight}g</span>
+            </div>
+          )}
+          onChange={(selected) => {
+            field.onChange(selected ? selected.map(option => option.value) : []);
+          }}
+          value={dummyBags.filter(option => field.value.includes(option.value))}
+          isMulti
+        />
+      </FormControl>
+      {!isTotalWeightValid && (
+        <FormMessage>
+          <span className="text-red-500">Total weight must be between 5000 to 10000 grams</span>
+        </FormMessage>
+      )}
+    </FormItem>
+  )}
+/>
+
           </div>
-          <Button disabled={loading} type="submit">
+          <Button disabled={loading || !isTotalWeightValid} type="submit">
             {action}
           </Button>
         </form>

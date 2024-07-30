@@ -35,9 +35,9 @@ export interface Bag {
 }
 
 const dummyItems = [
-  { value: 'Carrot', label: 'Carrot', price: 20, unit: "grams", unitQuantity: 2, maximumQuantity: 4, minimumQuantity: 8 },
-  { value: 'Broccoli', label: 'Broccoli', price: 17, unit: "pieces", unitQuantity: 5, maximumQuantity: 3, minimumQuantity: 2 },
-  { value: 'Potato', label: 'Potato', price: 34, unit: "grams", unitQuantity: 6, maximumQuantity: 9, minimumQuantity: 8 },
+  { value: 'Carrot', label: 'Carrot', price: 20, unit: "grams", unitQuantity: 200, maximumQuantity: 4, minimumQuantity: 8 },
+  { value: 'Broccoli', label: 'Broccoli', price: 17, unit: "pieces", unitQuantity: 500, maximumQuantity: 3, minimumQuantity: 2 },
+  { value: 'Potato', label: 'Potato', price: 34, unit: "grams", unitQuantity: 600, maximumQuantity: 9, minimumQuantity: 8 },
 ];
 
 const bagFormSchema = z.object({
