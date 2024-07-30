@@ -8,12 +8,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Heading } from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { MultiSelect } from '@/components/ui/MultiSelect';
 import { useState } from 'react';
+import ReactSelect from 'react-select';
 
 interface EmployeeFormType {
   initialData: any | null;
-  userOptions: { id: string; name: string }[]; // List of users to assign
+  userOptions: { id: string; name: string; phoneNo: string }[]; // List of users to assign
 }
 
 const employeeFormSchema = z.object({
@@ -61,26 +61,28 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
     }
   };
 
+  const renderErrorMessage = (error: any) => {
+    if (!error) return null;
+    if (typeof error === 'string') return error;
+    if (error.message) return error.message;
+    return null;
+  };
+
+  const filterOption = (option: any, inputValue: string) => {
+    const user = userOptions.find((user) => user.id === option.value);
+    return (
+      option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      (user && user.phoneNo.includes(inputValue))
+    );
+  };
+
   return (
     <div className="container mx-auto p-4">
       <Heading title={initialData ? 'Edit Employee' : 'Create Employee'} description="Fill in the details below" />
       <Separator />
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* <FormField
-              control={control}
-              name="employeeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Employee ID</FormLabel>
-                  <FormControl>
-                    <Input type="number" disabled={loading} placeholder="Enter Employee ID" {...field} />
-                  </FormControl>
-                  <FormMessage>{errors.employeeId?.message}</FormMessage>
-                </FormItem>
-              )}
-            /> */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
             <FormField
               control={control}
               name="fullName"
@@ -90,7 +92,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="text" disabled={loading} placeholder="Enter Full Name" {...field} />
                   </FormControl>
-                  <FormMessage>{errors?.root?.message}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.fullName)}</FormMessage>
                 </FormItem>
               )}
             />
@@ -103,7 +105,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="text" disabled={loading} placeholder="Enter Role" {...field} />
                   </FormControl>
-                  <FormMessage>{errors?.root?.message}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.role)}</FormMessage>
                 </FormItem>
               )}
             />
@@ -116,7 +118,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="email" disabled={loading} placeholder="Enter Email" {...field} />
                   </FormControl>
-                  <FormMessage>{errors?.root?.message}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.contactInformation)}</FormMessage>
                 </FormItem>
               )}
             />
@@ -129,7 +131,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormControl>
                     <Input type="text" disabled={loading} placeholder="Enter Phone" {...field} />
                   </FormControl>
-                  <FormMessage>{errors?.root?.message}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.contactInformation)}</FormMessage>
                 </FormItem>
               )}
             />
@@ -138,17 +140,34 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
               name="assignedUsers"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assigned Users</FormLabel>
+                  <FormLabel>Assigned Users<span>Can be searched by phone number</span></FormLabel>
                   <FormControl>
-                    <MultiSelect
-                      value={field.value || []}
-                      onChange={(value) => field.onChange(value)}
-                      options={userOptions}
-                      disabled={loading}
-                      placeholder="Select Assigned Users"
+                    <Controller
+                      control={control}
+                      name="assignedUsers"
+                      render={({ field }) => (
+                        <ReactSelect
+                          isMulti
+                          isClearable
+                          isSearchable
+                          options={userOptions.map((option) => ({
+                            value: option.id,
+                            label: option.name,
+                          }))}
+                          value={userOptions.filter((option) =>
+                            field.value.includes(option.id)
+                          ).map(option => ({ value: option.id, label: option.name }))}
+                          onChange={(selected) => {
+                            field.onChange(selected ? selected.map(option => option.value) : []);
+                          }}
+                          filterOption={filterOption}
+                          placeholder="Select Assigned Users"
+                          isDisabled={loading}
+                        />
+                      )}
                     />
                   </FormControl>
-                  <FormMessage>{errors?.root?.message}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.assignedUsers)}</FormMessage>
                 </FormItem>
               )}
             />
