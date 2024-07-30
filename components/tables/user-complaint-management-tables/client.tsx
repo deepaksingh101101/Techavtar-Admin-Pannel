@@ -51,12 +51,12 @@ const ComplaintManagementUserPage: React.FC = () => {
           title={`Received Complaint  (${data.length})`}
           description="Complaint Subscription (Client side table functionalities.)"
         />
-        {/* <Button
+        <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/complaint`)}
+          onClick={() => router.push(`/received-complaint`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button> */}
+        </Button>
       </div>
       <Separator />
       <DataTable
