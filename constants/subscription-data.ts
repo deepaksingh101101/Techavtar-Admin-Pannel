@@ -13,6 +13,7 @@ export interface Subscription {
   paymentStatus?: string; // Example: paid, unpaid, etc.
   bagName?:string,
   netPrice?:number,
+  visibility?:string
   // Add other fields as necessary
 }
 
@@ -30,6 +31,9 @@ export const SubscriptionData: Subscription[] = [
     paymentStatus: 'Paid',
     bagName:"Regular Veggie Bag",
     netPrice:15323,
+    visibility: 'Admin',
+
+    
   },
   {
     subscriptionType: 'Monthly',
@@ -44,6 +48,8 @@ export const SubscriptionData: Subscription[] = [
     paymentStatus: 'Unpaid',
     bagName:"Mini Veggie Bag",
     netPrice:15323,
+    visibility: 'Admin',
+
 
 
   },
@@ -60,6 +66,8 @@ export const SubscriptionData: Subscription[] = [
     paymentStatus: 'Paid',
     bagName:"Regular Veggie Bag",
     netPrice:15323,
+    visibility: 'Admin',
+
 
   },
   // Add more sample data as needed

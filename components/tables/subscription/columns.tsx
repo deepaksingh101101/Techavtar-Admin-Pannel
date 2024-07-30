@@ -45,6 +45,22 @@ export const columns: ColumnDef<Subscription>[] = [
     header: 'Bags Name',
   },
   {
+    accessorKey: 'visibility',
+    header: 'Visibility',
+    cell: ({ row }) => (
+      <div 
+        style={{ borderRadius: "20px" }}
+        className={`flex items-center px-2 py-1 ${
+          row.original.visibility === 'Admin' ? 'bg-red-400' :
+          row.original.visibility === 'Customer' ? 'bg-green-400' :
+          'bg-red-400'
+        }`}
+      >
+<span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
+</div>
+    )
+  },
+  {
     accessorKey: 'subscriptionStatus',
     header: 'Subscription Status',
     cell: ({ row }) => (
