@@ -36,7 +36,7 @@ import { MultiSelect } from '@/components/ui/MultiSelect';
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.string(),
-  visibility: z.array(z.string()).min(1, 'Visibility is required'),
+  visibility: z.string().min(1, 'Visibility is required'),
   totalDelivery: z.number().positive('Total bags must be greater than zero'),
   frequency: z.string(),
   deliveryDays: z.array(z.string()).min(1, 'Delivery Days is required'),
@@ -52,10 +52,9 @@ const subscriptionFormSchema = z.object({
   path: ['totalDelivery'],
 });
 
-
 const visibilityOption = [
   { id: '1', name: 'Admin' },
-  { id: '2', name: 'Customer' }
+  { id: '2', name: 'Public' }
 ];
 type SubscriptionFormValues = z.infer<typeof subscriptionFormSchema>;
 
@@ -69,6 +68,13 @@ const subscriptionTypeNumbers: { [key: string]: number } = {
   Quarterly: 12,
   'Semi-Annual': 24,
   Annually: 48
+};
+const frequencyTypeNumbers: { [key: string]: number } = {
+  Daily: 1,
+  Weekly: 1,
+  Monthly: 1 / 4,
+  Fortnightly: 1 / 2,
+  Biweekly: 2
 };
 
 const deliveryDaysOptions = [
@@ -115,7 +121,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     }
   });
 
-  const { handleSubmit, control, watch, setValue } = form;
+  const { handleSubmit, control, watch, setValue, formState: { errors } } = form;
 
   const onSubmit: SubmitHandler<SubscriptionFormValues> = async (data) => {
     try {
@@ -193,11 +199,19 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
 
   const price = watch('price');
   const offers = watch('offers');
+  const subscriptionType = watch('subscriptionType');
+  const frequency = watch('frequency');
 
   useEffect(() => {
     const netPrice = price - (price * (offers / 100));
     setValue('netPrice', parseFloat(netPrice.toFixed(2)));
   }, [price, offers, setValue]);
+
+  useEffect(() => {
+    const totalDelivery =
+      subscriptionTypeNumbers[subscriptionType] * frequencyTypeNumbers[frequency];
+    setValue('totalDelivery', totalDelivery);
+  }, [subscriptionType, frequency, setValue]);
 
   return (
     <>
@@ -367,22 +381,27 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
-             <Controller
-              control={form.control}
+            <FormField
+              control={control}
               name="visibility"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Visibility</FormLabel>
+                  <FormLabel>Product Visibility</FormLabel>
                   <FormControl>
-                    <MultiSelect
-                      value={field.value || []}
-                      onChange={(value) => field.onChange(value)}
-                      options={visibilityOption}
-                      disabled={loading}
-                      placeholder="Select Visibility"
-                    />
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Visibility" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {visibilityOption.map((option) => (
+                          <SelectItem key={option.id} value={option.name}>
+                            {option.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{errors.visibility?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -468,7 +487,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                       {...field}
                       onChange={(e) => {
                         const value = e.target.value;
-                        field.onChange(value ? Number(value) : "");
+                        field.onChange(value ? Number(value) : '');
                       }}
                     />
                   </FormControl>
