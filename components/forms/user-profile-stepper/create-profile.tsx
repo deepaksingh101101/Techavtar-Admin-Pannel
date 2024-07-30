@@ -1,68 +1,82 @@
 'use client';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon, Trash } from "lucide-react";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import ReactSelect from 'react-select';
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form';
-import { Heading } from '@/components/ui/heading';
-import { Input } from '@/components/ui/input';
+  FormMessage,
+} from "@/components/ui/form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { profileSchema, type ProfileFormValues } from '@/lib/form-schema';
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Edit, Trash } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Heading } from "@/components/ui/heading";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "@/components/ui/use-toast";
+import { profileSchema, type ProfileFormValues } from "@/lib/form-schema";
 
 interface ProfileFormType {
   initialData: any | null;
   categories: any;
 }
 
+const FormSchema = z.object({
+  firstname: z.string().min(1, "First Name is required"),
+  lastname: z.string().min(1, "Last Name is required"),
+  email: z.string().email("Invalid email format").min(1, "Email is required"),
+  contactno: z.string().min(1, "Contact Number is required"),
+  address1: z.string().min(1, "Address Line 1 is required"),
+  address2: z.string().optional(),
+  assignedEmployee: z.string().optional(),
+  subscriptionType: z.string().min(1, "Subscription Type is required"),
+  subscriptionStartDate: z.date({
+    required_error: "Subscription Start Date is required.",
+  }),
+  paymentType: z.string().min(1, "Payment Type is required"),
+});
+
 export const CreateProfileOne: React.FC<ProfileFormType> = ({
   initialData,
-  categories
+  categories,
 }) => {
   const params = useParams();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = initialData ? 'Edit User' : 'Create User';
+  const title = initialData ? "Edit User" : "Create User";
   const description = initialData
-    ? 'Edit a product.'
-    : 'To create new user, we first need some basic information about user.';
-  const toastMessage = initialData ? 'Product updated.' : 'Product created.';
-  const action = initialData ? 'Save changes' : 'Create';
+    ? "Edit a product."
+    : "To create new user, we first need some basic information about user.";
+  const toastMessage = initialData ? "Product updated." : "Product created.";
+  const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema),
-    mode: 'onChange'
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    mode: "onChange",
   });
 
   const {
     control,
-    formState: { errors }
+    formState: { errors },
   } = form;
 
-  const onSubmit = async (data: ProfileFormValues) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -92,24 +106,26 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     }
   };
 
-  const processForm: SubmitHandler<ProfileFormValues> = (data) => {
+  const processForm = (data: z.infer<typeof FormSchema>) => {
     // api call and reset
     // form.reset();
   };
 
   const employees = [
-    { id: 'employee1', name: 'John Doe' },
-    { id: 'employee2', name: 'Jane Smith' },
+    { id: "employee1", name: "John Doe", phoneNumber: "123-456-7890" },
+    { id: "employee2", name: "Jane Smith", phoneNumber: "098-765-4321" },
     // Add more employees as needed
   ];
 
-
-
-
+  const subscriptionTypes = [
+    { id: "basic", name: "Basic" },
+    { id: "premium", name: "Premium" },
+    { id: "vip", name: "VIP" },
+  ];
 
   return (
     <>
-     <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (
           <Button
@@ -128,277 +144,250 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
           onSubmit={form.handleSubmit(processForm)}
           className="w-full space-y-8"
         >
-
-<div className="relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3">
-
-          <FormField
-            control={form.control}
-            name="firstname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="John"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          <div className="relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3">
+            <FormField
+              control={form.control}
+              name="firstname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="John" {...field} />
+                  </FormControl>
+                  <FormMessage>{errors.firstname?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Doe" {...field} />
+                  </FormControl>
+                  <FormMessage>{errors.lastname?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="johndoe@gmail.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.email?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contactno"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter your contact number"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.contactno?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address1"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address Line 1</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Address Line 1"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.address1?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address2"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address Line 2</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Address Line 2"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.address2?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+       <FormField
+  control={form.control}
+  name="assignedEmployee"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Assign Employee</FormLabel>
+      <Controller
+        control={control}
+        name="assignedEmployee"
+        render={({ field }) => (
+          <ReactSelect
+            isClearable
+            isSearchable
+            options={employees}
+            getOptionLabel={(option) => option.name} // Only display the employee name
+            getOptionValue={(option) => option.id}
+            isDisabled={loading}
+            onChange={(selected) => field.onChange(selected ? selected.id : '')}
+            value={employees.find(option => option.id === field.value)}
+            filterOption={(candidate, input) => {
+              const employee = employees.find(emp => emp.id === candidate.value);
+              return candidate.label.toLowerCase().includes(input.toLowerCase()) ||
+                (employee?.phoneNumber.includes(input) ?? false);
+            }} // Custom filter logic to search by phone number
           />
-          <FormField
-            control={form.control}
-            name="lastname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Doe"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="johndoe@gmail.com"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="contactno"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contact Number</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Enter your contact number"
-                    disabled={loading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-<FormField
-                  control={form.control}
-                  name="address1"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Address Line 1</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Address Line 1"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+        )}
+      />
+      <FormMessage>{errors.assignedEmployee?.message}</FormMessage>
+    </FormItem>
+  )}
+/>
 
 
-
-
-<FormField
-                  control={form.control}
-                  name="address2"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Address Line 2</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={loading}
-                          placeholder="Address Line 2"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-
-<FormField
-                    control={form.control}
-                    name="assignedEmployee"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Assign Employee</FormLabel>
-                        <Select
-                          disabled={loading}
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                defaultValue={field.value}
-                                placeholder="Select an employee"
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {employees.map((employee) => (
-                              <SelectItem key={employee.id} value={employee.id}>
-                                {employee.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-<FormField
+            <FormField
               control={form.control}
               name="subscriptionType"
               render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Subscription Type</FormLabel>
-                    <FormControl>
-                      
-                    <Input
-                          disabled={loading}
-                          placeholder="Enter Subscription Type"
-                          {...field}
-                        />
-                        </FormControl>
+                  <FormLabel>Subscription Type</FormLabel>
+                  <Controller
+                    control={control}
+                    name="subscriptionType"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={subscriptionTypes}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        value={subscriptionTypes.find(option => option.id === field.value)}
+                      />
+                    )}
+                  />
+                  <FormMessage>{errors.subscriptionType?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subscriptionStartDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Subscription Start Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "dd MMM yyyy")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-
-{/* <FormField
+            <FormField
               control={form.control}
-              name="frequency"
+              name="paymentType"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex">
-                  <div className="flex items-center mt-2">
-
-                    <FormLabel>Frequency</FormLabel>
-                    <span className='ms-2 text-white font-bold bg-red-600 px-[5px] py-[0.3px]' style={{borderRadius:"50%",fontSize:"10px"}} >{frequencyNumbers[field.value]}</span>
-                    </div>
-                  </div>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Frequency" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {frequencies.map((freq, index) => (
-                        <SelectItem key={index} value={freq}>{freq}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                  
+                  <FormLabel>Payment Type</FormLabel>
+                  <Controller
+                    control={control}
+                    name="paymentType"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={[
+                          { id: 'Upi', name: 'UPI' },
+                          { id: 'Netbanking', name: 'Net Banking' },
+                          { id: 'Credit/Debit', name: 'Credit/Debit' }
+                        ]}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        value={[
+                          { id: 'Upi', name: 'UPI' },
+                          { id: 'Netbanking', name: 'Net Banking' },
+                          { id: 'Credit/Debit', name: 'Credit/Debit' }
+                        ].find(option => option.id === field.value)}
+                      />
+                    )}
+                  />
+                  <FormMessage>{errors.paymentType?.message}</FormMessage>
                 </FormItem>
-
-
               )}
-              
-            /> */}
-
-<FormField
-                  control={form.control}
-                  name="subscriptionStartDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Subscription Start Date</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          disabled={loading}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-<FormField
-                  control={form.control}
-                  name="paymentType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Payment Type</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue
-                              defaultValue={field.value}
-                              placeholder="Select Payment Type"
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Upi">UPI</SelectItem>
-                          <SelectItem value="Netbanking">Net Banking</SelectItem>
-                          <SelectItem value="Credit/Debit">Credit/Debit</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-</div>
-
-
-<div className="mt-8 pt-5">
-        <div className="flex justify-end">
-       
-          
-            <Button
-              type="submit"
-              disabled={loading}
-              className='px-7 bg-green-700 text-white'
-            >
-              {action}
-            </Button>
-
-        </div>
-      </div>
-
-                </form>
-                </Form>
+            />
+          </div>
+          <div className="mt-8 pt-5">
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="px-7 bg-green-700 text-white"
+              >
+                {action}
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Form>
     </>
   );
 };

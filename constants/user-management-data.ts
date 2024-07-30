@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns';
 import { NavItem } from '@/types';
 
 export type UserManagement = {
@@ -22,134 +23,138 @@ export type UserManagement = {
   createdDate: string;
 };
 
+// Helper function to format dates
+const formatDate = (dateString: string) => {
+  return format(parseISO(dateString), 'dd MMM yyyy');
+};
+
 export const userManagementData: UserManagement[] = [
   {
     sno: 1,
     firstName: 'John',
-    lastName:"Doe",
+    lastName: 'Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
-      addressLine2: 'Apt 4B'
+      addressLine2: 'Apt 4B',
     },
     subscriptionType: 'Weekly',
     deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
-    subscriptionStartDate: '2023-01-01',
-    subscriptionEndDate: '2023-12-31',
+    subscriptionStartDate: formatDate('2023-01-01'),
+    subscriptionEndDate: formatDate('2023-12-31'),
     accountStatus: 'Active',
-    employeeName: "Deepak Singh",
-    lastUpdateDate: '2023-07-01',
-    createdDate: '2023-01-01'
+    employeeName: 'Deepak Singh',
+    lastUpdateDate: formatDate('2023-07-01'),
+    createdDate: formatDate('2023-01-01'),
   },
   {
     sno: 2,
     firstName: 'Ridhi',
-    lastName:"Mishra",
+    lastName: 'Mishra',
     email: 'john.doe@example.com',
     phoneNumber: '11111111',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
-      addressLine2: 'Apt 4B'
+      addressLine2: 'Apt 4B',
     },
     subscriptionType: 'Quarterly',
     deliveryFrequency: 'Weekly',
     paymentType: 'Net Banking',
-    subscriptionStartDate: '2023-01-01',
-    subscriptionEndDate: '2023-12-31',
+    subscriptionStartDate: formatDate('2023-01-01'),
+    subscriptionEndDate: formatDate('2023-12-31'),
     accountStatus: 'Inactive',
-    employeeName: "Amar Singh",
-    lastUpdateDate: '2023-07-01',
-    createdDate: '2023-01-01'
+    employeeName: 'Amar Singh',
+    lastUpdateDate: formatDate('2023-07-01'),
+    createdDate: formatDate('2023-01-01'),
   },
   {
     sno: 3,
     firstName: 'Deepak',
-    lastName:"Singh",
+    lastName: 'Singh',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
-      addressLine2: 'Apt 4B'
+      addressLine2: 'Apt 4B',
     },
     subscriptionType: 'Semi Annual',
     deliveryFrequency: 'Monthly',
     paymentType: 'UPI',
-    subscriptionStartDate: '2023-01-01',
-    subscriptionEndDate: '2023-12-31',
+    subscriptionStartDate: formatDate('2023-01-01'),
+    subscriptionEndDate: formatDate('2023-12-31'),
     accountStatus: 'Active',
-    employeeName: "Aman Singh",
-    lastUpdateDate: '2023-07-01',
-    createdDate: '2023-01-01'
+    employeeName: 'Aman Singh',
+    lastUpdateDate: formatDate('2023-07-01'),
+    createdDate: formatDate('2023-01-01'),
   },
   {
     sno: 4,
     firstName: 'Shivam',
-    lastName:"Kumar",
+    lastName: 'Kumar',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
-      addressLine2: 'Apt 4B'
+      addressLine2: 'Apt 4B',
     },
     subscriptionType: 'Annual',
     deliveryFrequency: 'Fortnightly',
     paymentType: 'Net Banking',
-    subscriptionStartDate: '2023-01-01',
-    subscriptionEndDate: '2023-12-31',
+    subscriptionStartDate: formatDate('2023-01-01'),
+    subscriptionEndDate: formatDate('2023-12-31'),
     accountStatus: 'Inactive',
-    employeeName: "Roshan Singh",
-    lastUpdateDate: '2023-07-01',
-    createdDate: '2023-01-01'
+    employeeName: 'Roshan Singh',
+    lastUpdateDate: formatDate('2023-07-01'),
+    createdDate: formatDate('2023-01-01'),
   },
   {
     sno: 5,
     firstName: 'John',
-    lastName:"Doe",
+    lastName: 'Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
-      addressLine2: 'Apt 4B'
+      addressLine2: 'Apt 4B',
     },
     subscriptionType: 'Trial',
     deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
-    subscriptionStartDate: '2023-01-01',
-    subscriptionEndDate: '2023-12-31',
+    subscriptionStartDate: formatDate('2023-01-01'),
+    subscriptionEndDate: formatDate('2023-12-31'),
     accountStatus: 'Active',
-    employeeName: "Vikash Singh",
-    lastUpdateDate: '2023-07-01',
-    createdDate: '2023-01-01'
+    employeeName: 'Vikash Singh',
+    lastUpdateDate: formatDate('2023-07-01'),
+    createdDate: formatDate('2023-01-01'),
   },
   {
     sno: 6,
     firstName: 'John',
-    lastName:"Doe",   
+    lastName: 'Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
-      addressLine2: 'Apt 4B'
+      addressLine2: 'Apt 4B',
     },
     subscriptionType: 'Quarterly',
     deliveryFrequency: 'Daily',
     paymentType: 'UPI',
-    subscriptionStartDate: '2023-01-01',
-    subscriptionEndDate: '2023-12-31',
+    subscriptionStartDate: formatDate('2023-01-01'),
+    subscriptionEndDate: formatDate('2023-12-31'),
     accountStatus: 'Inactive',
-    employeeName: "Prashant Singh",
-    lastUpdateDate: '2023-07-01',
-    createdDate: '2023-01-01'
-  }
- 
+    employeeName: 'Prashant Singh',
+    lastUpdateDate: formatDate('2023-07-01'),
+    createdDate: formatDate('2023-01-01'),
+  },
 ];
 
 export const navItems: NavItem[] = [
@@ -157,24 +162,24 @@ export const navItems: NavItem[] = [
     title: 'Dashboard',
     href: '/dashboard',
     icon: 'dashboard',
-    label: 'Dashboard'
+    label: 'Dashboard',
   },
   {
     title: 'User',
     href: '/user',
     icon: 'user',
-    label: 'User'
+    label: 'User',
   },
-  { 
+  {
     title: 'User Management',
     href: '/user-management',
-    icon: 'management', 
-    label: 'User Management'
+    icon: 'management',
+    label: 'User Management',
   },
   {
     title: 'Profile',
     href: '/profile',
     icon: 'profile',
-    label: 'Profile'
-  }
+    label: 'Profile',
+  },
 ];
