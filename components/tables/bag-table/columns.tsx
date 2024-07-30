@@ -17,8 +17,9 @@ export const columns: ColumnDef<Bag>[] = [
           <tr className='bg-red-100'>
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item Name</th>
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item Price (₹)</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item Weight (kg)</th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item Pieces</th>
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit Quantity</th>
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Maximum Quantity</th>
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Minimum Quantity</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -26,8 +27,9 @@ export const columns: ColumnDef<Bag>[] = [
             <tr key={index} className={index % 2 === 0 ? 'bg-blue-100' : 'bg-blue-200'}>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.itemName}</td>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.itemPrice}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.itemWeight ?? '-'}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.itemPieces ?? '-'}</td>
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.unitQuantity ?? '-'}</td>
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.minimumQuantity ?? '-'}</td>
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.maximumQuantity ?? '-'}</td>
             </tr>
           ))}
         </tbody>

@@ -9,7 +9,7 @@ import { Heading } from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ReactSelect from 'react-select';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -18,8 +18,9 @@ import { MultiSelect } from '@/components/ui/MultiSelect';
 export interface BagItem {
   itemName: string;
   itemPrice: number;
-  itemPieces?: number;
-  itemWeight?: number;
+  unitQuantity: number;
+  maximumQuantity: number;
+  minimumQuantity: number;
   totalItemPrice?: number;
 }
 
@@ -27,18 +28,16 @@ export interface Bag {
   bagName: string;
   bagItems: BagItem[];
   totalPrice: number;
-  totalWeight?: number;
-  totalPieces?: number;
   createdDate: string;
   updatedDate?: string;
   status: 'Active' | 'Inactive';
-  visibility?:string
+  visibility?: string;
 }
 
 const dummyItems = [
-  { value: 'Carrot', label: 'Carrot', price: 20, unit: "grams" },
-  { value: 'Broccoli', label: 'Broccoli', price: 17, unit: "pieces" },
-  { value: 'Potato', label: 'Potato', price: 34, unit: "grams" },
+  { value: 'Carrot', label: 'Carrot', price: 20, unit: "grams", unitQuantity: 2, maximumQuantity: 4, minimumQuantity: 8 },
+  { value: 'Broccoli', label: 'Broccoli', price: 17, unit: "pieces", unitQuantity: 5, maximumQuantity: 3, minimumQuantity: 2 },
+  { value: 'Potato', label: 'Potato', price: 34, unit: "grams", unitQuantity: 6, maximumQuantity: 9, minimumQuantity: 8 },
 ];
 
 const bagFormSchema = z.object({
@@ -48,14 +47,13 @@ const bagFormSchema = z.object({
     z.object({
       itemName: z.string().min(1, 'Item name is required'),
       itemPrice: z.number().nonnegative(),
-      itemPieces: z.number().nonnegative().optional(),
-      itemWeight: z.number().min(1000, 'At least 1000 grams').max(5000, 'At most 5000 grams').optional(),
+      unitQuantity: z.number().nonnegative(),
+      maximumQuantity: z.number().nonnegative(),
+      minimumQuantity: z.number().nonnegative(),
       totalItemPrice: z.number().optional(),
     })
   ).min(1, 'At least one item is required'),
   totalPrice: z.number().nonnegative(),
-  totalWeight: z.number().nonnegative().optional(),
-  totalPieces: z.number().nonnegative().optional(),
   updatedDate: z.string().optional(),
   status: z.enum(['Active', 'Inactive']),
 });
@@ -70,8 +68,6 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
       bagName: '',
       bagItems: [],
       totalPrice: 0,
-      totalWeight: undefined,
-      totalPieces: undefined,
       createdDate: '',
       status: 'Active',
     },
@@ -117,7 +113,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     { id: '1', name: 'Admin' },
     { id: '2', name: 'Customer' }
   ];
-    
+
   type FieldName = keyof Bag;
 
   const next = async () => {
@@ -144,7 +140,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
   };
 
   const handleAddItem = () => {
-    setBagItems([...bagItems, { itemName: '', itemPrice: 0 }]);
+    setBagItems([...bagItems, { itemName: '', itemPrice: 0, unitQuantity: 0, maximumQuantity: 0, minimumQuantity: 0 }]);
   };
 
   const handleRemoveItem = (index: number) => {
@@ -156,27 +152,19 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     const updatedBagItems = [...bagItems];
     updatedBagItems[index] = { ...updatedBagItems[index], [field]: value };
 
-    // Update total item price
-    const item = updatedBagItems[index];
-    if (field === 'itemWeight' || field === 'itemPieces') {
-      if (item.itemWeight) {
-        item.totalItemPrice = item.itemPrice * (item.itemWeight / 1000);
-      } else if (item.itemPieces) {
-        item.totalItemPrice = item.itemPrice * item.itemPieces;
-      }
-    }
+    setBagItems(updatedBagItems);
+  };
+
+  const handleItemChanges = (index: number, changes: Partial<BagItem>) => {
+    const updatedBagItems = [...bagItems];
+    updatedBagItems[index] = { ...updatedBagItems[index], ...changes };
 
     setBagItems(updatedBagItems);
   };
 
-  const [weight, setWeight] = useState<number>(0);
-  const [pieces, setPieces] = useState<number>(0);
-
   // Calculate totals
   const totalItems = bagItems.length;
-  const totalWeight = bagItems.reduce((acc, item) => acc + (item.itemWeight || 0), 0);
-  const totalPieces = bagItems.reduce((acc, item) => acc + (item.itemPieces || 0), 0);
-  const totalPrice = bagItems.reduce((acc, item) => acc + (item.totalItemPrice || 0), 0);
+  const totalPrice = bagItems.reduce((acc, item) => acc + item.itemPrice, 0);
 
   return (
     <div className="container mx-auto p-4">
@@ -251,22 +239,24 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                   )}
                 />
                 
-                <Controller
+                <FormField
                   control={form.control}
                   name="visibility"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Bag visibility</FormLabel>
+                      <FormLabel>Product Visibility</FormLabel>
                       <FormControl>
-                        <MultiSelect
-                          value={Array.isArray(field.value) ? field.value : []}
-                          onChange={(value) => field.onChange(value)}
-                          options={visibilityOption}
-                          disabled={loading}
-                          placeholder="Select Visibility"
-                        />
+                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Visibility" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Admin">Admin</SelectItem>
+                            <SelectItem value="Public">Public</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{errors.visibility?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
@@ -321,13 +311,16 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                       Item Price
                     </th>
                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Item Weight
+                      Unit Quantity
                     </th>
                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Item Pieces
+                      Minimum Quantity
+                    </th>
+                    <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Maximum Quantity
                     </th>
                     <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Total Item Price
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -351,19 +344,29 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                                       value: item.value,
                                       label: item.label,
                                       price: item.price,
-                                      unit: item.unit
+                                      unit: item.unit,
+                                      unitQuantity: item.unitQuantity,
+                                      maximumQuantity: item.maximumQuantity,
+                                      minimumQuantity: item.minimumQuantity
                                     }))}
                                     formatOptionLabel={({ value, label, price }) => (
                                       <div className="flex justify-between">
                                         <span>{label}</span>
-                                        <span>₹{price}</span>
+                                        {/* <span>₹{price}</span> */}
                                       </div>
                                     )}
                                     isDisabled={loading}
                                     onChange={(selected) => {
                                       field.onChange(selected?.value);
                                       const selectedItem = dummyItems.find(item => item.value === selected?.value);
-                                      handleItemChange(index, 'itemPrice', selectedItem?.price || 0);
+                                      if (selectedItem) {
+                                        handleItemChanges(index, {
+                                          itemPrice: selectedItem.price,
+                                          unitQuantity: selectedItem.unitQuantity,
+                                          maximumQuantity: selectedItem.maximumQuantity,
+                                          minimumQuantity: selectedItem.minimumQuantity
+                                        });
+                                      }
                                     }}
                                     value={dummyItems.find((option) => option.value === field.value)}
                                   />
@@ -377,58 +380,13 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                         ₹{item.itemPrice}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <FormField
-                          control={control}
-                          name={`bagItems.${index}.itemWeight` as const}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <Input
-                                  type="number"
-                                  disabled={loading}
-                                  placeholder="Enter Item Weight"
-                                  onChange={(e) => {
-                                    const newValue = e.target.value === '' ? 0 : Number(e.target.value);
-                                    field.onChange(newValue);
-                                    setWeight(newValue);
-                                    handleItemChange(index, 'itemWeight', newValue);
-                                  }}
-                                  value={field.value || ''}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        {item.unitQuantity}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <FormField
-                          control={control}
-                          name={`bagItems.${index}.itemPieces` as const}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  type="number"
-                                  disabled={loading}
-                                  placeholder="Enter Item Pieces"
-                                  onChange={(e) => {
-                                    const newValue = e.target.value === '' ? 0 : Number(e.target.value);
-                                    field.onChange(newValue);
-                                    setPieces(newValue);
-                                    handleItemChange(index, 'itemPieces', newValue);
-                                  }}
-                                  value={field.value || ''}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        {item.minimumQuantity}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                        ₹{item.totalItemPrice?.toFixed(2) || 0}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {item.maximumQuantity}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
@@ -441,13 +399,11 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                       </td>
                     </tr>
                   ))}
-                  <tr>
+                  {/* <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold">Total</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold">₹{totalPrice.toFixed(2)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold">{totalWeight} grams<span style={{fontSize:"10px"}} className='text-red-600 mx-2' >(Must be B/w 5000-10000gm)</span></td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold">{totalPieces} pieces</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold text-right">₹{totalPrice.toFixed(2)}</td>
-                  </tr>
+                    <td colSpan={4}></td>
+                  </tr> */}
                 </tbody>
               </table>
             )}
@@ -476,43 +432,40 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                 </svg>
               </Button>
               {currentStep !== 1 && (
-  <Button
-    type="button"
-    onClick={next}
-    disabled={currentStep === steps.length - 1}
-    className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      className="h-6 w-6"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8.25 4.5l7.5 7.5-7.5 7.5"
-      />
-    </svg>
-  </Button>
-)}
-
+                <Button
+                  type="button"
+                  onClick={next}
+                  disabled={currentStep === steps.length - 1}
+                  className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </Button>
+              )}
             </div>
           </div>
           {currentStep === 1 && (
-  <div className="mt-4">
-    <Button
-      type="submit"
-      disabled={totalWeight < 5000 || totalWeight > 10000}
-      className="w-full disabled:cursor-not-allowed"
-    >
-      Submit
-    </Button>
-  </div>
-)}
-
+            <div className="mt-4">
+              <Button
+                type="submit"
+                className="w-full disabled:cursor-not-allowed"
+              >
+                Submit
+              </Button>
+            </div>
+          )}
         </form>
       </Form>
       {initialData && (

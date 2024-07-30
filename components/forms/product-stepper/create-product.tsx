@@ -41,7 +41,7 @@ interface ProductFormType {
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
-  visibility: z.array(z.string()).min(1, 'Visibility is required'),
+  visibility: z.string().min(1, 'Visibility is required'),
   minQuantity: z.number().min(1, 'Minimum Quantity  is required'),
   maxQuantity: z.number().min(1, 'Maximum Quantity is required'),
   available: z.string().min(1, 'Please Enter availability'),
@@ -381,7 +381,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                   )}
                 />
                 
-                      <Controller
+                      {/* <Controller
               control={form.control}
               name="visibility"
               render={({ field }) => (
@@ -399,7 +399,29 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
+
+            <FormField
+                  control={form.control}
+                  name="visibility"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Visibility</FormLabel>
+                      <FormControl>
+                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Visibility" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Admin">Admin</SelectItem>
+                            <SelectItem value="Public">Public</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage>{errors.visibility?.message}</FormMessage>
+                    </FormItem>
+                  )}
+                />
           {/* <FormField
             control={form.control}
             name="addons"
