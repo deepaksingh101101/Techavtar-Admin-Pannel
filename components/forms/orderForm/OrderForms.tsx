@@ -18,16 +18,20 @@ export const OrderData: OrderManagement[] = [
         deliveryDate: '2023-07-17',
         deliveryTimeSlot: '10am - 12pm',
         deliveryStatus: 'Delivered',
+        assignedEmployee:"Deepak singh"
       },
       {
         deliveryDate: '2023-07-18',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Shivam singh"
+
       },
       {
         deliveryDate: '2023-07-19',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Kartik singh"
       },
       {
         deliveryDate: '2023-07-20',
@@ -80,6 +84,7 @@ export const OrderView: React.FC = () => {
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Delivery Date</th>
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time Slot</th>
             <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned Employee</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -88,6 +93,7 @@ export const OrderView: React.FC = () => {
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryDate}</td>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryTimeSlot}</td>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.deliveryStatus}</td>
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedEmployee}</td>
             </tr>
           ))}
         </tbody>

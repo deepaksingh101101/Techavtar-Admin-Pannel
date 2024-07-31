@@ -31,6 +31,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time Slot</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned Employee</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
             </tr>
           </thead>
@@ -51,6 +52,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
                     <span className='text-black bold'>{delivery.deliveryStatus}</span>
                   </div>
                 </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedEmployee}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
 
               </tr>
@@ -81,6 +83,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
                             <span className='text-black bold'>{delivery.deliveryStatus}</span>
                           </div>
                         </td>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedEmployee}</td>
                         <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
 
                       </tr>

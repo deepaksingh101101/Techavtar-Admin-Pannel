@@ -161,6 +161,12 @@ export const navItems: NavItem[] = [
     icon: 'order',
     label: 'create-order'
   },
+  // {
+  //   title: 'Delivery Management',
+  //   href: '/delivery-management',
+  //   icon: 'order',
+  //   label: 'create-order'
+  // },
  
   // {
   //   title: 'Profile',

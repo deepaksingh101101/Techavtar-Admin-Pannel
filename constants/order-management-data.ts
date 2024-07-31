@@ -1,6 +1,7 @@
 export interface DeliveryInfo {
   deliveryDate: string; // ISO format date string
   deliveryTimeSlot: string; // Example: '9am - 11am'
+  assignedEmployee?: string;
   deliveryStatus: 'Pending' | 'Delivered' | 'Cancelled'; // Delivery status options
 }
 
@@ -28,11 +29,13 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-17',
         deliveryTimeSlot: '10am - 12pm',
         deliveryStatus: 'Delivered',
+        assignedEmployee:"Deepak singh"
       },
       {
         deliveryDate: '2023-07-18',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Roshan singh"
       },
       {
         deliveryDate: '2023-07-19',
@@ -61,6 +64,7 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-20',
         deliveryTimeSlot: '1pm - 3pm',
         deliveryStatus: 'Delivered',
+        assignedEmployee:"Deepak singh"
       }
     ],
     bagOrdered: ['Mini Veggie Bag'],
@@ -79,6 +83,8 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-22',
         deliveryTimeSlot: '11am - 1pm',
         deliveryStatus: 'Cancelled',
+        assignedEmployee:"Kartik singh"
+
       }
     ],
     bagOrdered: ['Brinjal'],
@@ -97,11 +103,14 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-25',
         deliveryTimeSlot: '2pm - 4pm',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Arya singh"
       },
       {
         deliveryDate: '2023-07-25',
         deliveryTimeSlot: '2pm - 4pm',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Shivam kumar"
+
       }
     ],
     bagOrdered: ['Regular Veggie Bag'],
@@ -120,6 +129,8 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-27',
         deliveryTimeSlot: '10am - 12pm',
         deliveryStatus: 'Delivered',
+        assignedEmployee:"Rohit singh"
+
       }
     ],
     bagOrdered: ['Regular Veggie Bag'],

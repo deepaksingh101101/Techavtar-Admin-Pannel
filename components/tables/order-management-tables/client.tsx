@@ -11,6 +11,7 @@ import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { columns } from './columns';
 import { OrderManagement, OrderManagementData } from '@/constants/order-management-data';
+import { CalendarDateRangePicker } from '@/components/date-range-picker';
 
 export const OrderManagementClient: React.FC = () => {
   const router = useRouter();
@@ -52,6 +53,10 @@ export const OrderManagementClient: React.FC = () => {
         </Button>
       </div>
       <Separator />
+      <div className="flex justify-end">
+
+<CalendarDateRangePicker />
+</div>
       <DataTable
         searchKey="customerName"
         columns={columns}
