@@ -39,6 +39,7 @@ interface ProfileFormType {
 
 const FormSchema = z.object({
   firstname: z.string().min(1, "First Name is required"),
+  route: z.string().min(1, "Route is required"),
   lastname: z.string().min(1, "Last Name is required"),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   contactno: z.string().min(1, "Contact Number is required"),
@@ -124,6 +125,12 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     { id: "premium", name: "Premium" },
     { id: "vip", name: "VIP" },
   ];
+  
+  // const routeType = [
+  //   { id: "route 1", name: "route 1" },
+  //   { id: "route 2", name: "route 2" },
+  //   { id: "route 3", name: "route 3" },
+  // ];
   const [cityOptions, setCityOptions] = useState([
     { id: "delhi", name: "Delhi" },
     { id: "kolkata", name: "Kolkata" },
@@ -301,6 +308,19 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     )}
                   />
                   <FormMessage>{errors.city?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="route"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Route</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Route" {...field} />
+                  </FormControl>
+                  <FormMessage>{errors.route?.message}</FormMessage>
                 </FormItem>
               )}
             />

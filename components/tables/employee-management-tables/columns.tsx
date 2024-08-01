@@ -1,11 +1,14 @@
+// columns/EmployeeManagementColumns.tsx
 'use client';
 
+import React from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from './cell-action';
 import { Checkbox } from '@/components/ui/checkbox';
 import { EmployeeManagement } from '@/constants/employee-management-data';
 import { Mail, Phone } from 'lucide-react';
-
+import AssignedRoutesCell from '@/components/AssignedRoutesCell';
+import { Button } from '@/components/ui/button';
+import { CellAction } from './cell-action';
 
 // Function to generate a random color in hex format
 const getRandomColor = () => {
@@ -66,6 +69,10 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
     header: 'Role'
   },
   {
+    accessorKey: 'city',
+    header: 'City'
+  },
+  {
     accessorKey: 'assignedUsers',
     header: 'Assigned Customers',
     cell: ({ row }) => (
@@ -93,8 +100,8 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
       <div className="flex items-center mt-1">
         <Phone className="text-green-500 mr-2" width={10} height={10} />
         <span className="">{row.original.contactInformation.phone}</span>
-    </div>
-  )
+      </div>
+    )
   },
   {
     id: 'actions',

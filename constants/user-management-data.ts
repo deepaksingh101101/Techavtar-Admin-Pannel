@@ -12,6 +12,7 @@ export type UserManagement = {
     addressLine1: string;
     addressLine2?: string;
   };
+  assignedRoutes?: string[]; // Array of assigned routes
   subscriptionType: string;
   deliveryFrequency: string;
   paymentType: string;
@@ -40,6 +41,7 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
+    assignedRoutes: ['Route 1'],
     subscriptionType: 'Weekly',
     deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
@@ -61,6 +63,7 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
+    assignedRoutes: ['Route 3'],
     subscriptionType: 'Quarterly',
     deliveryFrequency: 'Weekly',
     paymentType: 'Net Banking',
@@ -82,6 +85,7 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
+    assignedRoutes: ['Route 4'],
     subscriptionType: 'Semi Annual',
     deliveryFrequency: 'Monthly',
     paymentType: 'UPI',
@@ -103,6 +107,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
+    assignedRoutes: ['Route 6'],
+
     subscriptionType: 'Annual',
     deliveryFrequency: 'Fortnightly',
     paymentType: 'Net Banking',
@@ -124,6 +130,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
+    assignedRoutes: ['Route 6'],
+
     subscriptionType: 'Trial',
     deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
@@ -145,6 +153,8 @@ export const userManagementData: UserManagement[] = [
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
+    assignedRoutes: ['Route 6'],
+
     subscriptionType: 'Quarterly',
     deliveryFrequency: 'Daily',
     paymentType: 'UPI',

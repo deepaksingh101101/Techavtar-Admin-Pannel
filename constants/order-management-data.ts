@@ -2,6 +2,7 @@ export interface DeliveryInfo {
   deliveryDate: string; // ISO format date string
   deliveryTimeSlot: string; // Example: '9am - 11am'
   assignedEmployee?: string;
+  assignedRoutes?: string;
   deliveryStatus: 'Pending' | 'Delivered' | 'Cancelled'; // Delivery status options
 }
 
@@ -29,13 +30,15 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-17',
         deliveryTimeSlot: '10am - 12pm',
         deliveryStatus: 'Delivered',
-        assignedEmployee:"Deepak singh"
+        assignedEmployee:"Deepak singh",
+        assignedRoutes:"Route 1"
       },
       {
         deliveryDate: '2023-07-18',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
-        assignedEmployee:"Roshan singh"
+        assignedEmployee:"Roshan singh",
+        assignedRoutes:"Route 1"
       },
       {
         deliveryDate: '2023-07-19',
@@ -64,7 +67,9 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-20',
         deliveryTimeSlot: '1pm - 3pm',
         deliveryStatus: 'Delivered',
-        assignedEmployee:"Deepak singh"
+        assignedEmployee:"Deepak singh",
+        assignedRoutes:"Route 1"
+
       }
     ],
     bagOrdered: ['Mini Veggie Bag'],
@@ -83,7 +88,9 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-22',
         deliveryTimeSlot: '11am - 1pm',
         deliveryStatus: 'Cancelled',
-        assignedEmployee:"Kartik singh"
+        assignedEmployee:"Kartik singh",
+        assignedRoutes:"Route 1"
+
 
       }
     ],
@@ -103,13 +110,17 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-25',
         deliveryTimeSlot: '2pm - 4pm',
         deliveryStatus: 'Pending',
-        assignedEmployee:"Arya singh"
+        assignedEmployee:"Arya singh",
+        assignedRoutes:"Route 1"
+
       },
       {
         deliveryDate: '2023-07-25',
         deliveryTimeSlot: '2pm - 4pm',
         deliveryStatus: 'Pending',
-        assignedEmployee:"Shivam kumar"
+        assignedEmployee:"Shivam kumar",
+        assignedRoutes:"Route 1"
+
 
       }
     ],
@@ -129,7 +140,9 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-27',
         deliveryTimeSlot: '10am - 12pm',
         deliveryStatus: 'Delivered',
-        assignedEmployee:"Rohit singh"
+        assignedEmployee:"Rohit singh",
+        assignedRoutes:"Route 1"
+
 
       }
     ],

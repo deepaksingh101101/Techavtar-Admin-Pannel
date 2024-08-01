@@ -10,6 +10,7 @@ export interface EmployeeManagement {
   firstName: string;
   lastName: string;
   role: string;
+  city?: string;
   assignedUsers: User[]; // Array of user objects assigned to the employee
   contactInformation: {
     email: string;
@@ -24,6 +25,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     firstName: 'John',
     lastName: 'Doe',
     role: 'Manager',
+    city: "Delhi",
     assignedUsers: [
       { id: 1, name: 'Alice Johnson' },
       { id: 2, name: 'Bob Williams' },
@@ -39,6 +41,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     firstName: 'Jane',
     lastName: 'Smith',
     role: 'Support Staff',
+    city: "Delhi",
     assignedUsers: [
       { id: 4, name: 'David Miller' },
       { id: 5, name: 'Eva Green' }
@@ -53,6 +56,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     firstName: 'Robert',
     lastName: 'Brown',
     role: 'Technician',
+    city: "Kolkata",
     assignedUsers: [
       { id: 6, name: 'Fiona White' },
       { id: 7, name: 'George Black' },
@@ -65,9 +69,10 @@ export const EmployeeManagementData: EmployeeManagement[] = [
   },
   {
     sno: 4,
-    firstName : 'Emily',
-    lastName : 'Davis',
+    firstName: 'Emily',
+    lastName: 'Davis',
     role: 'Customer Service',
+    city: "Delhi",
     assignedUsers: [
       { id: 9, name: 'Ian Yellow' },
       { id: 10, name: 'Jack Purple' }

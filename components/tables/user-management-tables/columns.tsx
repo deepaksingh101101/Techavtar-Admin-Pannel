@@ -4,11 +4,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
 import { UserManagement } from '@/constants/user-management-data';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Check, X, Mail, Phone, MapPin } from 'lucide-react'; // Importing icons
+import { Check, X, Mail, Phone, MapPin } from 'lucide-react';
 import upi from '@/public/assets/icons/upi.png';
 import credit from '@/public/assets/icons/credit.png';
 import net from '@/public/assets/icons/net.png';
 import Image from 'next/image';
+import AssignedRoutesCell from '@/components/AssignedRoutesCell';
 
 // Function to generate a random color in hex format
 const getRandomColor = () => {
@@ -70,6 +71,16 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'Last Name'
   },
   {
+    accessorKey: 'assignedRoutes',
+    header: 'Assigned Routes',
+    cell: ({ row }) => (
+      <AssignedRoutesCell 
+        routes={row.original.assignedRoutes || []} 
+        onSave={(newRoutes) => { row.original.assignedRoutes = newRoutes }} 
+      />
+    )
+  },
+  {
     accessorKey: 'subscriptionType',
     header: 'Subscription Type'
   },
@@ -89,7 +100,6 @@ export const columns: ColumnDef<UserManagement>[] = [
       </div>
     )
   },
-
   {
     accessorKey: 'address',
     header: 'Address',
