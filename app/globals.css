@@ -95,3 +95,9 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+
+#dateFormat button{
+  width: 100% !important;
+  margin-top: 10px;
+}

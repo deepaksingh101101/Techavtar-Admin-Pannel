@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon, Edit, Trash } from "lucide-react";
+import { CalendarIcon, Cross, Edit, Trash } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { useParams, useRouter } from "next/navigation";
@@ -29,7 +29,6 @@ import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/use-toast";
-import { profileSchema, type ProfileFormValues } from "@/lib/form-schema";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface ProfileFormType {
@@ -43,7 +42,7 @@ const FormSchema = z.object({
   lastname: z.string().min(1, "Last Name is required"),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   contactno: z.string().min(1, "Contact Number is required"),
-  city: z.string().min(1, "City  is required"),
+  city: z.string().min(1, "City is required"),
   address1: z.string().min(1, "Address Line 1 is required"),
   address2: z.string().optional(),
   assignedEmployee: z.string().optional(),
@@ -62,10 +61,10 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = initialData ? "Edit User" : "Create User";
+  const title = initialData ? "Edit Customer" : "Create Customer";
   const description = initialData
     ? "Edit a product."
-    : "To create new user, we first need some basic information about user.";
+    : "To create new Customer, we first need some basic information about Customer.";
   const toastMessage = initialData ? "Product updated." : "Product created.";
   const action = initialData ? "Save changes" : "Create";
 
@@ -77,7 +76,11 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   const {
     control,
     formState: { errors },
+    setValue,
+    watch,
   } = form;
+
+  const selectedCity = watch('city');
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
@@ -125,19 +128,20 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     { id: "premium", name: "Premium" },
     { id: "vip", name: "VIP" },
   ];
-  
-  // const routeType = [
-  //   { id: "route 1", name: "route 1" },
-  //   { id: "route 2", name: "route 2" },
-  //   { id: "route 3", name: "route 3" },
-  // ];
+
   const [cityOptions, setCityOptions] = useState([
-    { id: "delhi", name: "Delhi" },
-    { id: "kolkata", name: "Kolkata" },
+    { id: "Gurgaon", name: "Gurgaon", routes: ["route 1", "route 2", "route 3"] },
+    { id: "Delhi", name: "Delhi", routes: ["route 4", "route 5", "route 6"] },
+    { id: "Noida", name: "Noida", routes: ["route 7", "route 8", "route 9"] },
+    { id: "Faridabad", name: "Faridabad", routes: ["route 1", "route 2", "route 3"] },
+    { id: "Ghaziabad", name: "Ghaziabad", routes: ["route 1", "route 2", "route 3"] },
+    { id: "Sahibabad", name: "Sahibabad", routes: ["route 1", "route 2", "route 3"] },
   ]);
 
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
   const [newCity, setNewCity] = useState('');
+  const [newRoute, setNewRoute] = useState('');
+  const [selectedCityForRoute, setSelectedCityForRoute] = useState('');
 
   const openCityModal = () => {
     setIsCityModalOpen(true);
@@ -149,7 +153,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
 
   const addCity = () => {
     if (newCity) {
-      setCityOptions([...cityOptions, { id: newCity.toLowerCase(), name: newCity }]);
+      setCityOptions([...cityOptions, { id: newCity.toLowerCase(), name: newCity, routes: [] }]);
       setNewCity('');
     }
   };
@@ -158,7 +162,32 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     setCityOptions(cityOptions.filter((_, i) => i !== index));
   };
 
-  
+  const addRoute = () => {
+    setCityOptions(cityOptions.map(city => {
+      if (city.id === selectedCityForRoute) {
+        return {
+          ...city,
+          routes: [...city.routes, newRoute]
+        };
+      }
+      return city;
+    }));
+    setNewRoute('');
+  };
+
+  const deleteRoute = (cityId: string, routeIndex: number) => {
+    setCityOptions(cityOptions.map(city => {
+      if (city.id === cityId) {
+        return {
+          ...city,
+          routes: city.routes.filter((_, index) => index !== routeIndex)
+        };
+      }
+      return city;
+    }));
+  };
+
+  const filteredRoutes = cityOptions.find(city => city.id === selectedCity)?.routes || [];
 
   return (
     <>
@@ -180,22 +209,48 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Manage Cities</DialogTitle>
-            <DialogDescription>You can manage cities here.</DialogDescription>
+            <DialogDescription>You can manage cities and their routes here.</DialogDescription>
           </DialogHeader>
           <div>
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Routes</th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {cityOptions.map((city, index) => (
-                  <tr key={index}>
+                {cityOptions.map((city, cityIndex) => (
+                  <tr key={cityIndex}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{city.name}</td>
-                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Trash onClick={() => deleteCity(index)} className="cursor-pointer text-red-500" />
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <ul>
+                      {city.routes.map((route, routeIndex) => (
+                          <li key={routeIndex} className="flex justify-between " style={{ listStyleType: "square" }}>
+                          {routeIndex+1}  <span>{route}</span>
+                            <Trash height={15} width={15} onClick={() => deleteRoute(city.id, routeIndex)} className="cursor-pointer mt-0 hover:scale-110 text-red-500" />
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex mt-2">
+                        <Input
+                          type="text"
+                          className="w-100"
+                          placeholder="Add new route"
+                          value={selectedCityForRoute === city.id ? newRoute : ''}
+                          onChange={(e) => {
+                            setSelectedCityForRoute(city.id);
+                            setNewRoute(e.target.value);
+                          }}
+                        />
+                        <Button onClick={addRoute} className="ml-2 ">
+                          Add
+                        </Button>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteCity(cityIndex)} className="cursor-pointer text-red-500" />
                     </td>
                   </tr>
                 ))}
@@ -282,7 +337,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-           <FormField
+            <FormField
               control={form.control}
               name="city"
               render={({ field }) => (
@@ -302,7 +357,10 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         getOptionLabel={(option) => option.name}
                         getOptionValue={(option) => option.id}
                         isDisabled={loading}
-                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        onChange={(selected) => {
+                          field.onChange(selected ? selected.id : '');
+                          setValue('route', ''); // Reset route when city changes
+                        }}
                         value={cityOptions.find(option => option.id === field.value)}
                       />
                     )}
@@ -311,20 +369,33 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="route"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Route</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Route" {...field} />
-                  </FormControl>
+                  <Controller
+                    control={control}
+                    name="route"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={filteredRoutes.map(route => ({ label: route, value: route }))}
+                        getOptionLabel={(option) => option.label}
+                        getOptionValue={(option) => option.value}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                        value={filteredRoutes.map(route => ({ label: route, value: route })).find(option => option.value === field.value)}
+                      />
+                    )}
+                  />
                   <FormMessage>{errors.route?.message}</FormMessage>
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="address1"
               render={({ field }) => (
@@ -340,7 +411,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   <FormMessage>{errors.address1?.message}</FormMessage>
                 </FormItem>
               )}
-            /> */}
+            />
             <FormField
               control={form.control}
               name="address2"
@@ -358,39 +429,37 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-       <FormField
-  control={form.control}
-  name="assignedEmployee"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Assign Employee</FormLabel>
-      <Controller
-        control={control}
-        name="assignedEmployee"
-        render={({ field }) => (
-          <ReactSelect
-            isClearable
-            isSearchable
-            options={employees}
-            getOptionLabel={(option) => option.name} // Only display the employee name
-            getOptionValue={(option) => option.id}
-            isDisabled={loading}
-            onChange={(selected) => field.onChange(selected ? selected.id : '')}
-            value={employees.find(option => option.id === field.value)}
-            filterOption={(candidate, input) => {
-              const employee = employees.find(emp => emp.id === candidate.value);
-              return candidate.label.toLowerCase().includes(input.toLowerCase()) ||
-                (employee?.phoneNumber.includes(input) ?? false);
-            }} // Custom filter logic to search by phone number
-          />
-        )}
-      />
-      <FormMessage>{errors.assignedEmployee?.message}</FormMessage>
-    </FormItem>
-  )}
-/>
-
-
+            <FormField
+              control={form.control}
+              name="assignedEmployee"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Assign Employee</FormLabel>
+                  <Controller
+                    control={control}
+                    name="assignedEmployee"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={employees}
+                        getOptionLabel={(option) => option.name} // Only display the employee name
+                        getOptionValue={(option) => option.id}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        value={employees.find(option => option.id === field.value)}
+                        filterOption={(candidate, input) => {
+                          const employee = employees.find(emp => emp.id === candidate.value);
+                          return candidate.label.toLowerCase().includes(input.toLowerCase()) ||
+                            (employee?.phoneNumber.includes(input) ?? false);
+                        }} // Custom filter logic to search by phone number
+                      />
+                    )}
+                  />
+                  <FormMessage>{errors.assignedEmployee?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="subscriptionType"
@@ -422,7 +491,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
               name="subscriptionStartDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Subscription Start Date</FormLabel>
+                  <FormLabel id="dateFormat" >Subscription Start Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -445,6 +514,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
+                        
                         selected={field.value}
                         onSelect={field.onChange}
                         disabled={(date) =>
@@ -492,7 +562,6 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            
           </div>
           <div className="mt-8 pt-5">
             <div className="flex justify-end">

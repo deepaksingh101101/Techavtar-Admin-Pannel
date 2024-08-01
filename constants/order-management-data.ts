@@ -37,18 +37,21 @@ export const OrderManagementData: OrderManagement[] = [
         deliveryDate: '2023-07-18',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
-        assignedEmployee:"Roshan singh",
+        assignedEmployee:"Deepak singh",
         assignedRoutes:"Route 1"
       },
       {
         deliveryDate: '2023-07-19',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Deepak singh",
+
       },
       {
         deliveryDate: '2023-07-20',
         deliveryTimeSlot: '9am - 11am',
         deliveryStatus: 'Pending',
+        assignedEmployee:"Deepak singh",
       },
     ],
     bagOrdered: ['Regular Veggie Bag'],
