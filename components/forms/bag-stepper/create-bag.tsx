@@ -14,6 +14,7 @@ import ReactSelect from 'react-select';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { Textarea } from '@/components/ui/textarea';
 
 export interface BagItem {
   itemName: string;
@@ -32,6 +33,8 @@ export interface Bag {
   updatedDate?: string;
   status: 'Active' | 'Inactive';
   visibility?: string;
+  bagImage?: File;
+  description: string;
 }
 
 const dummyItems = [
@@ -42,7 +45,9 @@ const dummyItems = [
 
 const bagFormSchema = z.object({
   bagName: z.string().min(1, 'Bag name is required'),
-  visibility: z.array(z.string()).min(1, 'Visibility is required'),
+  visibility: z.string().min(1, 'Visibility is required'),
+  bagImage: z.instanceof(File).optional(),
+  description: z.string().min(1, 'Description is required'),
   bagItems: z.array(
     z.object({
       itemName: z.string().min(1, 'Item name is required'),
@@ -66,6 +71,8 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     resolver: zodResolver(bagFormSchema),
     defaultValues: initialData || {
       bagName: '',
+      visibility: "Admin",
+      description: '',
       bagItems: [],
       totalPrice: 0,
       createdDate: '',
@@ -101,7 +108,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     {
       id: 'Step 1',
       name: 'Bag Details',
-      fields: ['bagName', 'status']
+      fields: ['bagName', 'status', 'description', 'bagImage']
     },
     {
       id: 'Step 2',
@@ -238,7 +245,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="visibility"
@@ -282,6 +289,48 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                     </FormItem>
                   )}
                 />
+
+                <Controller
+                  name="bagImage"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bag Image</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          disabled={form.formState.isSubmitting}
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files.length > 0) {
+                              field.onChange(e.target.files[0]);
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      {errors.bagImage && <FormMessage>{errors.bagImage.message}</FormMessage>}
+                    </FormItem>
+                  )}
+                />
+
+<FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Bag Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={loading}
+                    rows={5}
+                    
+                    placeholder="Enter Description"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
               </>
             )}
             {currentStep === 1 && (
@@ -311,7 +360,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                       Item Price
                     </th>
                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Unit Quantity
+                      Unit Quantity (GM)
                     </th>
                     <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Minimum Quantity
@@ -399,11 +448,6 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                       </td>
                     </tr>
                   ))}
-                  {/* <tr>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold">Total</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-semibold">₹{totalPrice.toFixed(2)}</td>
-                    <td colSpan={4}></td>
-                  </tr> */}
                 </tbody>
               </table>
             )}

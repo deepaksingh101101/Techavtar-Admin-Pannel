@@ -39,6 +39,15 @@ export const columns: ColumnDef<ProductManagement>[] = [
     header: 'Product Name'
   },
   {
+    accessorKey: 'image',
+    header: 'Image',
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <Image src={row.original.image} alt={row.original.productName} width={50} height={50} />
+      </div>
+    )
+  },
+  {
     accessorKey: 'type',
     header: 'Type',
     cell: ({ row }) => (
@@ -114,8 +123,8 @@ export const columns: ColumnDef<ProductManagement>[] = [
           'bg-red-400'
         }`}
       >
-<span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
-</div>
+        <span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
+      </div>
     )
   },
   {
@@ -131,16 +140,6 @@ export const columns: ColumnDef<ProductManagement>[] = [
       </div>
     )
   },
-  // {
-  //   accessorKey: 'unitQuantity',
-  //   header: 'Unit Quantity',
-  //   cell: ({ row }) => (
-  //     <div className="text-center">
-  //       {row.original.unitQuantity} gm
-  //     </div>
-  //   )
-    
-  // },
   {
     accessorKey: 'maxUnit',
     header: 'Max Unit',
@@ -149,7 +148,6 @@ export const columns: ColumnDef<ProductManagement>[] = [
         {row.original.maxUnit} 
       </div>
     )
-    
   },
   {
     accessorKey: 'minUnit',
@@ -159,7 +157,6 @@ export const columns: ColumnDef<ProductManagement>[] = [
         {row.original.minUnit} 
       </div>
     )
-    
   },
   {
     accessorKey: 'pieces',
@@ -167,6 +164,15 @@ export const columns: ColumnDef<ProductManagement>[] = [
     cell: ({ row }) => (
       <div className="text-center">
         {row.original.pieces}
+      </div>
+    )
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ row }) => (
+      <div className="text-start">
+        {row.original.description.split(' ').slice(0, 10).join(' ')}...
       </div>
     )
   },

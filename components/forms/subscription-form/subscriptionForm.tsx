@@ -33,9 +33,12 @@ import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { Edit, Trash, Weight } from 'lucide-react';
 import ReactSelect from 'react-select';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { Textarea } from '@/components/ui/textarea';
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.string(),
+  SubscriptionImage: z.instanceof(File).optional(),
+  description: z.string(),
   visibility: z.string().min(1, 'Visibility is required'),
   totalDelivery: z.number().positive('Total bags must be greater than zero'),
   frequency: z.string(),
@@ -403,7 +406,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
               name="visibility"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Visibility</FormLabel>
+                  <FormLabel>Subscription Visibility</FormLabel>
                   <FormControl>
                     <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
@@ -563,8 +566,48 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     </FormItem>
   )}
 />
+<Controller
+          name="productImage"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  disabled={form.formState.isSubmitting}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      field.onChange(e.target.files[0]);
+                    }
+                  }}
+                />
+              </FormControl>
+              {errors.productImage && <FormMessage>{errors.productImage.message}</FormMessage>}
+            </FormItem>
+          )}
+        />
 
           </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Subscription Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={loading}
+                    rows={5}
+                    
+                    placeholder="Enter Description"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+            />
           <Button disabled={loading || !isTotalWeightValid} type="submit">
             {action}
           </Button>

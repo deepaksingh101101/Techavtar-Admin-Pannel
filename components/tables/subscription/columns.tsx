@@ -6,6 +6,7 @@ import { Subscription } from '@/constants/subscription-data';
 import { Checkbox } from '@/components/ui/checkbox';
 import { SubscriptionCellAction } from './cell-action';
 import { Calendar, Check, X, IndianRupee } from 'lucide-react';
+import Image from 'next/image';
 
 export const columns: ColumnDef<Subscription>[] = [
   {
@@ -56,8 +57,8 @@ export const columns: ColumnDef<Subscription>[] = [
           'bg-red-400'
         }`}
       >
-<span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
-</div>
+        <span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
+      </div>
     )
   },
   {
@@ -122,6 +123,24 @@ export const columns: ColumnDef<Subscription>[] = [
         {row.original.netPrice}
       </div>
     )
+  },
+  {
+    accessorKey: 'image',
+    header: 'Image',
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        {row.original.image && <Image src={row.original.image} alt={row.original.subscriptionType} width={50} height={50} />}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ row }) => (
+      <div className="text-start">
+        {row.original.description?.split(' ').slice(0, 10).join(' ')}...
+      </div>
+    ),
   },
   {
     id: 'actions',

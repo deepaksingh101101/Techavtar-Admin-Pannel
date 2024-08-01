@@ -1,4 +1,6 @@
-'use client';
+import subscriptionImage1 from '@/public/assets/strawberry_13643533.png';
+import subscriptionImage2 from '@/public/assets/vegetables_862860.png';
+import { StaticImageData } from 'next/image';
 
 export interface Subscription {
   subscriptionType: string;
@@ -11,10 +13,11 @@ export interface Subscription {
   subscriptionEndDate: string;
   subscriptionStatus: 'Active' | 'Inactive'; // Subscription status
   paymentStatus?: string; // Example: paid, unpaid, etc.
-  bagName?:string,
-  netPrice?:number,
-  visibility?:string
-  // Add other fields as necessary
+  bagName?: string;
+  netPrice?: number;
+  visibility?: string;
+  image?: StaticImageData;
+  description?: string;
 }
 
 export const SubscriptionData: Subscription[] = [
@@ -29,11 +32,11 @@ export const SubscriptionData: Subscription[] = [
     subscriptionEndDate: '2023-12-31',
     subscriptionStatus: 'Active',
     paymentStatus: 'Paid',
-    bagName:"Regular Veggie Bag",
-    netPrice:15323,
+    bagName: "Regular Veggie Bag",
+    netPrice: 15323,
     visibility: 'Admin',
-
-    
+    image: subscriptionImage1,
+    description: 'This is an annual subscription with biweekly deliveries and a 25% discount.'
   },
   {
     subscriptionType: 'Monthly',
@@ -46,12 +49,11 @@ export const SubscriptionData: Subscription[] = [
     subscriptionEndDate: '2023-07-31',
     subscriptionStatus: 'Inactive',
     paymentStatus: 'Unpaid',
-    bagName:"Mini Veggie Bag",
-    netPrice:15323,
+    bagName: "Mini Veggie Bag",
+    netPrice: 15323,
     visibility: 'Admin',
-
-
-
+    image: subscriptionImage2,
+    description: 'This is a monthly subscription with fortnightly deliveries and a 31% discount.'
   },
   {
     subscriptionType: 'Quarterly',
@@ -64,11 +66,10 @@ export const SubscriptionData: Subscription[] = [
     subscriptionEndDate: '2023-06-30',
     subscriptionStatus: 'Active',
     paymentStatus: 'Paid',
-    bagName:"Regular Veggie Bag",
-    netPrice:15323,
+    bagName: "Regular Veggie Bag",
+    netPrice: 15323,
     visibility: 'Admin',
-
-
-  },
-  // Add more sample data as needed
+    image: subscriptionImage1,
+    description: 'This is a quarterly subscription with biweekly deliveries and a 44% discount.'
+  }
 ];

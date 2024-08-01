@@ -1,3 +1,7 @@
+import bagImage1 from '@/public/assets/strawberry_13643533.png';
+import bagImage2 from '@/public/assets/vegetables_862860.png';
+import { StaticImageData } from 'next/image';
+
 export interface BagItem {
   itemName: string;
   itemPrice: number;
@@ -22,6 +26,8 @@ export interface Bag {
   status: 'Active' | 'Inactive';
   createdBy: Creator;
   visibility?: string;
+  image: StaticImageData;
+  description: string;
 }
 
 export const BagData: Bag[] = [
@@ -38,7 +44,9 @@ export const BagData: Bag[] = [
     createdDate: '2023-01-01',
     status: 'Active',
     visibility: 'Admin',
-    createdBy: { role: 'Admin', name: 'Deepak Singh' }
+    createdBy: { role: 'Admin', name: 'Deepak Singh' },
+    image: bagImage2,
+    description: 'This is a regular veggie bag containing a variety of fresh vegetables ideal for daily use.'
   },
   {
     bagName: 'Mini Veggie Bag',
@@ -53,7 +61,9 @@ export const BagData: Bag[] = [
     createdDate: '2023-07-01',
     status: 'Inactive',
     visibility: 'Customer',
-    createdBy: { role: 'Customer', name: 'John Doe' }
+    createdBy: { role: 'Customer', name: 'John Doe' },
+    image: bagImage1,
+    description: 'This is a mini veggie bag perfect for smaller households or single individuals.'
   },
   {
     bagName: 'Veggie Bag',
@@ -68,6 +78,8 @@ export const BagData: Bag[] = [
     createdDate: '2023-07-01',
     status: 'Inactive',
     createdBy: { role: 'Employee', name: 'John Roy' },
-    visibility: 'Admin'
+    visibility: 'Admin',
+    image: bagImage2,
+    description: 'A well-balanced veggie bag that includes a selection of fresh, high-quality vegetables.'
   }
 ];

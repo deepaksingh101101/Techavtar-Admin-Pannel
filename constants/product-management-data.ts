@@ -1,3 +1,7 @@
+import productImage1 from '@/public/assets/strawberry_13643533.png';
+import productImage2 from '@/public/assets/vegetables_862860.png';
+import { StaticImageData } from 'next/image';
+
 export interface ProductManagement {
   sno: number;
   productName: string;
@@ -11,29 +15,31 @@ export interface ProductManagement {
   maxUnit?: number; // in grams
   minUnit?: number; // in grams
   pieces?: number;
-  price?:number;
-  available?:string;
-  visibility?:string;
-
+  price?: number;
+  available?: string;
+  visibility?: string;
+  image: StaticImageData;
+  description: string;
 }
-
 
 export const ProductManagementData: ProductManagement[] = [
   {
     sno: 1,
     productName: 'Arvi',
-    type: '	Regular Veggie',
+    type: 'Regular Veggie',
     group: 'Veggies',
     season: 'Monsoon',
     priority: 'High',
     roster: 'A',
-    price:200,
+    price: 200,
     veggieNameInHindi: 'अरबी',
     // unitQuantity: 1000,
     maxUnit: 5,
     minUnit: 2,
-    available:"Yes",
-    visibility:"Customer+Admin"
+    available: "Yes",
+    visibility: "Customer+Admin",
+    image: productImage1,
+    description: 'Arvi, also known as taro root, is a starchy root vegetable often used in Indian cuisine. It is high in dietary fiber and offers numerous health benefits.'
   },
   {
     sno: 2,
@@ -47,8 +53,10 @@ export const ProductManagementData: ProductManagement[] = [
     // unitQuantity: 1000,
     minUnit: 2,
     maxUnit: 4,
-    price:100,
-    available:"No",
-    visibility:"Admin"
+    price: 100,
+    available: "No",
+    visibility: "Admin",
+    image: productImage2,
+    description: 'Cucumber, known as Kheera in Hindi, is a refreshing and hydrating vegetable commonly used in salads. It is low in calories and high in vitamins and minerals.'
   }
 ];
