@@ -164,7 +164,7 @@ export const columns: ColumnDef<UserManagement>[] = [
   },
   {
     accessorKey: 'lastUpdateDate',
-    header: 'Last Update Date'
+    header: 'Last Profile Update'
   },
   {
     accessorKey: 'createdDate',

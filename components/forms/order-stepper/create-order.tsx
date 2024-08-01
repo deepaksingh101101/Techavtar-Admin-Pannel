@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Trash, CalendarIcon } from 'lucide-react';
+import { Trash, CalendarIcon, Edit } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
@@ -19,6 +19,7 @@ import ReactSelect from 'react-select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface OrderManagementFormType {
   initialData: any | null;
@@ -86,6 +87,9 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isTotalWeightValid, setIsTotalWeightValid] = useState(true);
+  const [isTimeSlotModalOpen, setIsTimeSlotModalOpen] = useState(false);
+  const [newTimeSlot, setNewTimeSlot] = useState('');
+  const [timeSlots, setTimeSlots] = useState(['9:00 AM - 11:00 AM', '12:00 PM - 2:00 PM', '3:00 PM - 5:00 PM']);
   const title = initialData ? 'Edit Order' : 'Create New Order';
   const description = initialData ? 'Edit the Order details.' : 'To create a new Order, fill in the required information.';
   const toastMessage = initialData ? 'Order updated.' : 'Order created.';
@@ -174,11 +178,12 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
   ];
 
   const customerOptions = [
-    { id: '1', name: 'Alice Johnson', phoneNumber: '123-456-7890' },
-    { id: '2', name: 'Bob Brown', phoneNumber: '098-765-4321' },
+    { id: '1', name: 'Alice Johnson', phoneNumber: '123-456-7890',assignedEmployee:{name:"John Doe",phoneNumber: '123-456-7890'} },
+    { id: '2', name: 'Bob Brown', phoneNumber: '098-765-4321',assignedEmployee:{name:"Jane Smith",phoneNumber: '098-765-4321'} },
   ];
 
   const selectedBags = watch('bagOrdered');
+  const selectedCustomer = watch('customerName');
 
   useEffect(() => {
     const totalWeight = selectedBags.reduce((acc, bagName) => {
@@ -194,6 +199,26 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
       setIsTotalWeightValid(false);
     }
   }, [selectedBags, setValue]);
+
+  useEffect(() => {
+    const customer = customerOptions.find(option => option.name === selectedCustomer);
+    if (customer) {
+      setValue('employeeName', customer.assignedEmployee.name);
+    } else {
+      setValue('employeeName', '');
+    }
+  }, [selectedCustomer, setValue]);
+
+  const addTimeSlot = () => {
+    if (newTimeSlot && !timeSlots.includes(newTimeSlot)) {
+      setTimeSlots([...timeSlots, newTimeSlot]);
+      setNewTimeSlot('');
+    }
+  };
+
+  const deleteTimeSlot = (index: number) => {
+    setTimeSlots(timeSlots.filter((_, i) => i !== index));
+  };
 
   return (
     <>
@@ -359,16 +384,38 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                   name="deliveryTimeSlot"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Delivery Time Slot</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          disabled={loading}
-                          placeholder="Enter Delivery Time Slot"
-                          {...field}
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Delivery Time Slot</FormLabel>
+                        <Edit
+                          onClick={() => setIsTimeSlotModalOpen(true)}
+                          className="cursor-pointer text-red-500"
+                          height={15}
+                          width={15}
                         />
-                      </FormControl>
-                      <FormMessage />
+                      </div>
+                      <Select
+                        disabled={loading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              defaultValue={field.value}
+                              placeholder="Select Delivery Time Slot"
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {timeSlots.map((slot, index) => (
+                            <SelectItem key={index} value={slot}>
+                              {slot}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage>{errors.deliveryTimeSlot?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
@@ -398,7 +445,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                           <SelectItem value="Cancelled">Cancelled</SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage>{errors.deliveryStatus?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
@@ -578,29 +625,68 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
             </svg>
           </button>
           <button
-  type="button"
-  onClick={next}
-  className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
-  disabled={!isTotalWeightValid}
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth="1.5"
-    stroke="currentColor"
-    className="h-6 w-6"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M8.25 4.5l7.5 7.5-7.5 7.5"
-    />
-  </svg>
-</button>
-
+            type="button"
+            onClick={next}
+            className="rounded bg-white px-2 py-1 text-sm font-semibold text-sky-900 shadow-sm ring-1 ring-inset ring-sky-300 hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!isTotalWeightValid}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
         </div>
       </div>
+
+      <Dialog open={isTimeSlotModalOpen} onOpenChange={(open) => !open && setIsTimeSlotModalOpen(false)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Delivery Time Slots</DialogTitle>
+            <DialogDescription>Add or remove delivery time slots</DialogDescription>
+          </DialogHeader>
+          <div>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Slot</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {timeSlots.map((slot, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{slot}</td>
+                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteTimeSlot(index)} className="cursor-pointer text-red-500" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex mt-4">
+              <Input
+                type="text"
+                placeholder="Add new time slot"
+                value={newTimeSlot}
+                onChange={(e) => setNewTimeSlot(e.target.value)}
+              />
+              <Button onClick={addTimeSlot} className="ml-2">
+                Add
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

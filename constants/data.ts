@@ -156,7 +156,7 @@ export const navItems: NavItem[] = [
     label: 'User Management'
   },
   {
-    title: 'Subscription Management',
+    title: 'Subscription/Order Management',
     href: '/order-management',
     icon: 'order',
     label: 'create-order'
