@@ -100,8 +100,8 @@ export function DataTable<TData, TValue>({
         </DropdownMenu>
       </div>
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
-        <UiTable className="relative">
+      <ScrollArea className="rounded-md border min-h-[70vh]">
+      <UiTable className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

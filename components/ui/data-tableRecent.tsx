@@ -79,7 +79,7 @@ export function DataTableRecent<TData, TValue>({
       
 
 
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <ScrollArea className="min-h-[70vh] rounded-md border">
         <UiTable className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
