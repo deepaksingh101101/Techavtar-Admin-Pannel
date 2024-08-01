@@ -33,6 +33,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm, SubmitHandler, FieldValues, Controller } from 'react-hook-form';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { Textarea } from "@/components/ui/textarea"
 
 interface ProductFormType {
   initialData: any | null;
@@ -41,6 +42,8 @@ interface ProductFormType {
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
+  description: z.string().min(1, 'Description  is required'),
+  productImage: z.instanceof(File).optional(),
   visibility: z.string().min(1, 'Visibility is required'),
   minUnit: z.number().min(1, 'Minimum Quantity  is required'),
   maxUnit: z.number().min(1, 'Maximum Quantity is required'),
@@ -422,24 +425,49 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                     </FormItem>
                   )}
                 />
-          {/* <FormField
+                 <Controller
+          name="productImage"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  disabled={form.formState.isSubmitting}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      field.onChange(e.target.files[0]);
+                    }
+                  }}
+                />
+              </FormControl>
+              {errors.productImage && <FormMessage>{errors.productImage.message}</FormMessage>}
+            </FormItem>
+          )}
+        />
+        
+         
+            </div>
+            <FormField
             control={form.control}
-            name="addons"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Add-ons</FormLabel>
+                <FormLabel>Product Description</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     disabled={loading}
-                    placeholder="Enter Add-ons (comma separated)"
+                    rows={5}
+                    
+                    placeholder="Enter Description"
                     {...field}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-            /> */}
-            </div>
+            />
           <Button type="submit" disabled={loading}>
             {action}
           </Button>
