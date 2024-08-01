@@ -16,8 +16,8 @@ export function DonutComp() {
   const totalItems = donutData.reduce((acc, item) => acc + item.value, 0);
 
   return (
-    <div className='w-[80%] max-w-2xl mx-auto p-6  rounded-lg  relative'>
-      <h5 className='text-center text-2xl font-semibold text-white mb-6'>ORDER TRACKING STATS</h5>
+<div className="w-full lg:w-[80%] max-w-2xl mx-auto p-6 rounded-lg relative">
+<h5 className='text-center text-2xl font-semibold text-white mb-6'>ORDER TRACKING STATS</h5>
       <ResponsiveContainer width="100%" height={350}>
         <PieChart>
           <Pie
