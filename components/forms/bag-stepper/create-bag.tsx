@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 import { Textarea } from '@/components/ui/textarea';
+import { StaticImageData } from 'next/image';
 
 export interface BagItem {
   itemName: string;
@@ -33,7 +34,7 @@ export interface Bag {
   updatedDate?: string;
   status: 'Active' | 'Inactive';
   visibility?: string;
-  bagImage?: File;
+  bagImage?: StaticImageData;
   description: string;
 }
 
