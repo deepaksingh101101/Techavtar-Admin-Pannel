@@ -567,7 +567,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
   )}
 />
 <Controller
-          name="productImage"
+          name="SubscriptionImage"
           control={control}
           render={({ field }) => (
             <FormItem>
@@ -583,7 +583,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                   }}
                 />
               </FormControl>
-              {errors.productImage && <FormMessage>{errors.productImage.message}</FormMessage>}
+              {errors.SubscriptionImage && <FormMessage>{errors.SubscriptionImage.message}</FormMessage>}
             </FormItem>
           )}
         />
