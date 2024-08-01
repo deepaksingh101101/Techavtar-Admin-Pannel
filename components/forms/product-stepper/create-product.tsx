@@ -43,7 +43,7 @@ const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
   description: z.string().min(1, 'Description  is required'),
-  productImage: z.instanceof(File).optional(),
+  productImage: z.string().optional(),
   visibility: z.string().min(1, 'Visibility is required'),
   minUnit: z.number().min(1, 'Minimum Quantity  is required'),
   maxUnit: z.number().min(1, 'Maximum Quantity is required'),
