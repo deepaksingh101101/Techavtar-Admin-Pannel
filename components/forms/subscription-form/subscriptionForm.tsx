@@ -37,7 +37,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.string(),
-  SubscriptionImage: z.string().optional(),
+  SubscriptionImage: z.object({}).optional(),
   description: z.string(),
   visibility: z.string().min(1, 'Visibility is required'),
   totalDelivery: z.number().positive('Total bags must be greater than zero'),
