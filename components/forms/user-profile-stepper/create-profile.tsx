@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon, Trash } from "lucide-react";
+import { CalendarIcon, Edit, Trash } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { useParams, useRouter } from "next/navigation";
@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/use-toast";
 import { profileSchema, type ProfileFormValues } from "@/lib/form-schema";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface ProfileFormType {
   initialData: any | null;
@@ -41,6 +42,7 @@ const FormSchema = z.object({
   lastname: z.string().min(1, "Last Name is required"),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   contactno: z.string().min(1, "Contact Number is required"),
+  city: z.string().min(1, "City  is required"),
   address1: z.string().min(1, "Address Line 1 is required"),
   address2: z.string().optional(),
   assignedEmployee: z.string().optional(),
@@ -122,6 +124,34 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     { id: "premium", name: "Premium" },
     { id: "vip", name: "VIP" },
   ];
+  const [cityOptions, setCityOptions] = useState([
+    { id: "delhi", name: "Delhi" },
+    { id: "kolkata", name: "Kolkata" },
+  ]);
+
+  const [isCityModalOpen, setIsCityModalOpen] = useState(false);
+  const [newCity, setNewCity] = useState('');
+
+  const openCityModal = () => {
+    setIsCityModalOpen(true);
+  };
+
+  const closeCityModal = () => {
+    setIsCityModalOpen(false);
+  };
+
+  const addCity = () => {
+    if (newCity) {
+      setCityOptions([...cityOptions, { id: newCity.toLowerCase(), name: newCity }]);
+      setNewCity('');
+    }
+  };
+
+  const deleteCity = (index: number) => {
+    setCityOptions(cityOptions.filter((_, i) => i !== index));
+  };
+
+  
 
   return (
     <>
@@ -139,6 +169,45 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
         )}
       </div>
       <Separator />
+      <Dialog open={isCityModalOpen} onOpenChange={(open) => !open && closeCityModal()}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Cities</DialogTitle>
+            <DialogDescription>You can manage cities here.</DialogDescription>
+          </DialogHeader>
+          <div>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {cityOptions.map((city, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{city.name}</td>
+                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteCity(index)} className="cursor-pointer text-red-500" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex mt-4">
+              <Input
+                type="text"
+                placeholder="Add new city"
+                value={newCity}
+                onChange={(e) => setNewCity(e.target.value)}
+              />
+              <Button onClick={addCity} className="ml-2">
+                Add
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(processForm)}
@@ -206,7 +275,36 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
+           <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex mt-2">
+                    <FormLabel>City</FormLabel>
+                    <Edit onClick={openCityModal} className="ms-3 cursor-pointer text-red-500" height={15} width={15} />
+                  </div>
+                  <Controller
+                    control={control}
+                    name="city"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={cityOptions}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        value={cityOptions.find(option => option.id === field.value)}
+                      />
+                    )}
+                  />
+                  <FormMessage>{errors.city?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            {/* <FormField
               control={form.control}
               name="address1"
               render={({ field }) => (
@@ -222,17 +320,17 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   <FormMessage>{errors.address1?.message}</FormMessage>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="address2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address Line 2</FormLabel>
+                  <FormLabel>Sector </FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Address Line 2"
+                      placeholder="Enter Sector"
                       {...field}
                     />
                   </FormControl>
@@ -374,6 +472,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
+            
           </div>
           <div className="mt-8 pt-5">
             <div className="flex justify-end">

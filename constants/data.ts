@@ -156,17 +156,17 @@ export const navItems: NavItem[] = [
     label: 'User Management'
   },
   {
-    title: 'Order Management',
+    title: 'Subscription Management',
     href: '/order-management',
     icon: 'order',
     label: 'create-order'
   },
-  // {
-  //   title: 'Delivery Management',
-  //   href: '/delivery-management',
-  //   icon: 'order',
-  //   label: 'create-order'
-  // },
+  {
+    title: 'Delivery Management',
+    href: '/delivery-management',
+    icon: 'order',
+    label: 'create-order'
+  },
  
   // {
   //   title: 'Profile',

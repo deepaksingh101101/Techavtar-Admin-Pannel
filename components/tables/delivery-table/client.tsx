@@ -78,16 +78,7 @@ export const DeliveryClient: React.FC = () => {
       <CalendarDateRangePicker />
       </div>
 
-      <DataTable
-        searchKey="subscriptionType"
-        columns={columns}
-        data={data}
-        onSearch={handleSearch}
-        meta={{ updateData, updateColumnData }}
-        filters={filters}
-
-      />
-      <Button onClick={handleSave}>Save Changes</Button>
+     
     </>
   );
 };
