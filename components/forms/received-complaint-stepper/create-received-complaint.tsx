@@ -34,6 +34,7 @@ const complaintFormSchema = z.object({
 
 export const ReceivedComplaintForm: React.FC<{ initialData?: ComplaintManagement }> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const form = useForm<ComplaintManagement>({
     resolver: zodResolver(complaintFormSchema),
     defaultValues: initialData || {
@@ -66,8 +67,60 @@ export const ReceivedComplaintForm: React.FC<{ initialData?: ComplaintManagement
   };
 
   const customerOptions = [
-    { id: '1', name: 'Alice Johnson', phoneNumber: '123-456-7890' },
-    { id: '2', name: 'Bob Brown', phoneNumber: '098-765-4321' },
+    {
+      id: '1',
+      orderId: '101',
+      empId: '1022',
+      name: 'Alice Johnson',
+      phoneNumber: '123-456-7890',
+      // deliveryDate: '2023-07-17',
+      // deliveryTimeSlot: '10am - 12pm',
+      // deliveryStatus: 'Delivered',
+      assignedEmployee: 'Deepak Singh',
+      assignedRoutes: 'Route 1',
+      bagOrdered: 'Regular Veggie Bag',
+      totalWeightKg: 10,
+      totalPriceInr: 779,
+      addOns: 'Lemons',
+      // paymentStatus: 'Paid',
+      specialInstructions: 'Leave the package at the front door.',
+    },
+    {
+      id: '2',
+      orderId: '102',
+      empId: '1023',
+      name: 'Bob Brown',
+      phoneNumber: '098-765-4321',
+      // deliveryDate: '2023-07-18',
+      // deliveryTimeSlot: '2pm - 4pm',
+      // deliveryStatus: 'Pending',
+      assignedEmployee: 'Jane Doe',
+      assignedRoutes: 'Route 2',
+      bagOrdered: 'Organic Fruit Bag',
+      totalWeightKg: 5,
+      totalPriceInr: 459,
+      addOns: 'Bananas',
+      // paymentStatus: 'Unpaid',
+      specialInstructions: 'Ring the bell upon arrival.',
+    },
+    {
+      id: '3',
+      orderId: '103',
+      empId: '1024',
+      name: 'Deepak Singh',
+      phoneNumber: '123-123-1234',
+      // deliveryDate: '2023-07-19',
+      // deliveryTimeSlot: '4pm - 6pm',
+      // deliveryStatus: 'In Progress',
+      assignedEmployee: 'John Smith',
+      assignedRoutes: 'Route 3',
+      bagOrdered: 'Mixed Greens Bag',
+      totalWeightKg: 7,
+      totalPriceInr: 569,
+      addOns: 'Cucumbers',
+      // paymentStatus: 'Paid',
+      specialInstructions: 'Call before delivery.',
+    }
   ];
 
   const complaintTypeOptions = [
@@ -98,7 +151,10 @@ export const ReceivedComplaintForm: React.FC<{ initialData?: ComplaintManagement
                       getOptionLabel={(option) => option.name}
                       getOptionValue={(option) => option.id}
                       isDisabled={loading}
-                      onChange={(selected) => field.onChange(selected ? selected.name : '')}
+                      onChange={(selected) => {
+                        field.onChange(selected ? selected.name : '');
+                        setSelectedCustomer(selected || null);
+                      }}
                       value={customerOptions.find(option => option.name === field.value)}
                       filterOption={(candidate, input) => {
                         const customer = customerOptions.find(cust => cust.id === candidate.value);
@@ -194,6 +250,79 @@ export const ReceivedComplaintForm: React.FC<{ initialData?: ComplaintManagement
           </Button>
         </form>
       </Form>
+
+      {selectedCustomer && (
+        <div className="mt-8">
+          <Heading title="Customer Details" description="Details of the selected customer" />
+          <Separator />
+          <table className="min-w-full bg-white border">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border">Field</th>
+                <th className="py-2 px-4 border">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="py-2 px-4 border">Order ID</td>
+                <td className="py-2 px-4 border">{selectedCustomer.orderId}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Employee ID</td>
+                <td className="py-2 px-4 border">{selectedCustomer.empId}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Phone Number</td>
+                <td className="py-2 px-4 border">{selectedCustomer.phoneNumber}</td>
+              </tr>
+              {/* <tr>
+                <td className="py-2 px-4 border">Delivery Date</td>
+                <td className="py-2 px-4 border">{selectedCustomer.deliveryDate}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Delivery Time Slot</td>
+                <td className="py-2 px-4 border">{selectedCustomer.deliveryTimeSlot}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Delivery Status</td>
+                <td className="py-2 px-4 border">{selectedCustomer.deliveryStatus}</td>
+              </tr> */}
+              <tr>
+                <td className="py-2 px-4 border">Assigned Employee</td>
+                <td className="py-2 px-4 border">{selectedCustomer.assignedEmployee}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Assigned Routes</td>
+                <td className="py-2 px-4 border">{selectedCustomer.assignedRoutes}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Bag Ordered</td>
+                <td className="py-2 px-4 border">{selectedCustomer.bagOrdered}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Total Weight (kg)</td>
+                <td className="py-2 px-4 border">{selectedCustomer.totalWeightKg}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Total Price (₹)</td>
+                <td className="py-2 px-4 border">{selectedCustomer.totalPriceInr}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 border">Add-ons</td>
+                <td className="py-2 px-4 border">{selectedCustomer.addOns}</td>
+              </tr>
+              {/* <tr>
+                <td className="py-2 px-4 border">Payment Status</td>
+                <td className="py-2 px-4 border">{selectedCustomer.paymentStatus}</td>
+              </tr> */}
+              <tr>
+                <td className="py-2 px-4 border">Special Instructions</td>
+                <td className="py-2 px-4 border">{selectedCustomer.specialInstructions}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
