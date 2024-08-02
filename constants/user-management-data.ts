@@ -7,6 +7,8 @@ export type UserManagement = {
   lastName: string;
   email: string;
   phoneNumber: string;
+  city?: string;
+  sector?: string;
   address: {
     houseNumber: string;
     addressLine1: string;
@@ -28,7 +30,6 @@ export type UserManagement = {
 const formatDate = (dateString: string) => {
   return format(parseISO(dateString), 'dd MMM yyyy');
 };
-
 export const userManagementData: UserManagement[] = [
   {
     sno: 1,
@@ -36,6 +37,8 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
+    city: 'Delhi',
+    sector: 'Sector 15',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -56,8 +59,10 @@ export const userManagementData: UserManagement[] = [
     sno: 2,
     firstName: 'Ridhi',
     lastName: 'Mishra',
-    email: 'john.doe@example.com',
+    email: 'ridhi.mishra@example.com',
     phoneNumber: '11111111',
+    city: 'Noida',
+    sector: 'Sector 18',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -78,8 +83,10 @@ export const userManagementData: UserManagement[] = [
     sno: 3,
     firstName: 'Deepak',
     lastName: 'Singh',
-    email: 'john.doe@example.com',
+    email: 'deepak.singh@example.com',
     phoneNumber: '123-456-7890',
+    city: 'Faridabad',
+    sector: 'Sector 12',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -100,15 +107,16 @@ export const userManagementData: UserManagement[] = [
     sno: 4,
     firstName: 'Shivam',
     lastName: 'Kumar',
-    email: 'john.doe@example.com',
+    email: 'shivam.kumar@example.com',
     phoneNumber: '123-456-7890',
+    city: 'Delhi',
+    sector: 'Sector 22',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
     assignedRoutes: ['Route 6'],
-
     subscriptionType: 'Annual',
     deliveryFrequency: 'Fortnightly',
     paymentType: 'Net Banking',
@@ -121,17 +129,18 @@ export const userManagementData: UserManagement[] = [
   },
   {
     sno: 5,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
+    firstName: 'Vikash',
+    lastName: 'Singh',
+    email: 'vikash.singh@example.com',
     phoneNumber: '123-456-7890',
+    city: 'Noida',
+    sector: 'Sector 15',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
     assignedRoutes: ['Route 6'],
-
     subscriptionType: 'Trial',
     deliveryFrequency: 'Biweekly',
     paymentType: 'Credit Card',
@@ -144,17 +153,18 @@ export const userManagementData: UserManagement[] = [
   },
   {
     sno: 6,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
+    firstName: 'Prashant',
+    lastName: 'Singh',
+    email: 'prashant.singh@example.com',
     phoneNumber: '123-456-7890',
+    city: 'Faridabad',
+    sector: 'Sector 19',
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
       addressLine2: 'Apt 4B',
     },
     assignedRoutes: ['Route 6'],
-
     subscriptionType: 'Quarterly',
     deliveryFrequency: 'Daily',
     paymentType: 'UPI',

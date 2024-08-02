@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
-import { UserManagement } from '@/constants/user-management-data';
+import { UserManagement, userManagementData } from '@/constants/user-management-data';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Check, X, Mail, Phone, MapPin } from 'lucide-react';
 import upi from '@/public/assets/icons/upi.png';
@@ -10,6 +10,7 @@ import credit from '@/public/assets/icons/credit.png';
 import net from '@/public/assets/icons/net.png';
 import Image from 'next/image';
 import AssignedRoutesCell from '@/components/AssignedRoutesCell';
+import { DataTable } from '@/components/ui/data-table';
 
 // Function to generate a random color in hex format
 const getRandomColor = () => {
@@ -39,23 +40,25 @@ export const columns: ColumnDef<UserManagement>[] = [
       />
     ),
     enableSorting: false,
-    enableHiding: false
+    enableHiding: false,
   },
   {
     accessorKey: 'sno',
     header: 'SNo',
     cell: ({ row }) => (
       <div className="flex justify-center">
-       <span className="  text-red-600 font-bold px-1" style={{borderRadius:"50%"}} > {row.original.sno}</span>
+        <span className="text-red-600 font-bold px-1" style={{ borderRadius: '50%' }}>
+          {row.original.sno}
+        </span>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'firstName',
     header: 'First Name',
     cell: ({ row }) => (
       <div className="flex items-center">
-        <div 
+        <div
           className="flex items-center justify-center w-8 h-8 rounded-full mr-2"
           style={{ backgroundColor: getRandomColor(), color: 'white' }}
         >
@@ -68,21 +71,31 @@ export const columns: ColumnDef<UserManagement>[] = [
   },
   {
     accessorKey: 'lastName',
-    header: 'Last Name'
+    header: 'Last Name',
+  },
+  {
+    accessorKey: 'city',
+    header: 'City',
+  },
+  {
+    accessorKey: 'sector',
+    header: 'Sector',
   },
   {
     accessorKey: 'assignedRoutes',
     header: 'Assigned Routes',
     cell: ({ row }) => (
-      <AssignedRoutesCell 
-        routes={row.original.assignedRoutes || []} 
-        onSave={(newRoutes) => { row.original.assignedRoutes = newRoutes }} 
+      <AssignedRoutesCell
+        routes={row.original.assignedRoutes || []}
+        onSave={(newRoutes) => {
+          row.original.assignedRoutes = newRoutes;
+        }}
       />
-    )
+    ),
   },
   {
     accessorKey: 'subscriptionType',
-    header: 'Subscription Type'
+    header: 'Subscription Type',
   },
   {
     accessorKey: 'contact',
@@ -98,7 +111,7 @@ export const columns: ColumnDef<UserManagement>[] = [
           <span className="text-[12px]">{row.original.phoneNumber}</span>
         </div>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'address',
@@ -106,29 +119,30 @@ export const columns: ColumnDef<UserManagement>[] = [
     cell: ({ row }) => (
       <div className="flex items-center mt-1 me-4">
         <MapPin className="text-red-500 mr-2" width={16} height={16} />
-        {row.original.address.houseNumber}, {row.original.address.addressLine1}, {row.original.address.addressLine2}
+        {row.original.address.houseNumber}, {row.original.address.addressLine1},{' '}
+        {row.original.address.addressLine2}
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'paymentType',
     header: 'Payment Type',
     cell: ({ row }) => (
-      <div className="flex items-center me-9 ">
+      <div className="flex items-center me-9">
         {row.original.paymentType === 'UPI' && <Image src={upi.src} alt="UPI" width={20} height={20} />}
         {row.original.paymentType === 'Credit Card' && <Image src={credit.src} alt="Credit Card" width={20} height={20} />}
         {row.original.paymentType === 'Net Banking' && <Image src={net.src} alt="Net Banking" width={20} height={20} />}
         <span className="ml-2">{row.original.paymentType}</span>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'accountStatus',
     header: 'Account Status',
     cell: ({ row }) => (
-      <div 
-        style={{ borderRadius: "20px" }}
-        className={`flex items-center px-2 py-1  ${
+      <div
+        style={{ borderRadius: '20px' }}
+        className={`flex items-center px-2 py-1 ${
           row.original.accountStatus === 'Active' ? 'bg-green-400' : 'bg-red-400'
         }`}
       >
@@ -137,26 +151,24 @@ export const columns: ColumnDef<UserManagement>[] = [
         ) : (
           <X width={16} height={16} className="text-red-900 mr-2" />
         )}
-        <span className='text-black bold'>{row.original.accountStatus}</span>
+        <span className="text-black bold">{row.original.accountStatus}</span>
       </div>
-    )
+    ),
   },
   {
     accessorKey: 'subscriptionStartDate',
-    header: 'Subscription Start Date'
+    header: 'Subscription Start Date',
   },
   {
     accessorKey: 'subscriptionEndDate',
-    header: 'Subscription End Date'
+    header: 'Subscription End Date',
   },
   {
     accessorKey: 'employeeName',
     header: 'Associated Employee ',
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.employeeName}
-      </div>
-    )
+      <div className="text-center">{row.original.employeeName}</div>
+    ),
   },
   {
     accessorKey: 'deliveryFrequency',
@@ -164,14 +176,14 @@ export const columns: ColumnDef<UserManagement>[] = [
   },
   {
     accessorKey: 'lastUpdateDate',
-    header: 'Last Profile Update'
+    header: 'Last Profile Update',
   },
   {
     accessorKey: 'createdDate',
-    header: 'Created Date'
+    header: 'Created Date',
   },
   {
     id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
-  }
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
 ];

@@ -5,56 +5,33 @@ import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
+
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { columns } from './columns';
-import { Subscription, SubscriptionData } from '@/constants/subscription-data';
+import { DeliveryManagement, DeliveryManagementData } from '@/constants/delivery-management-data';
 import { CalendarDateRangePicker } from '@/components/date-range-picker';
 
 export const DeliveryClient: React.FC = () => {
   const router = useRouter();
-  const initialData: Subscription[] = SubscriptionData;
-  const [data, setData] = useState<Subscription[]>(initialData);
-
-  const updateData = (rowIndex: number, columnId: string, value: any) => {
-    setData((old) =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...old[rowIndex],
-            [columnId]: value,
-          };
-        }
-        return row;
-      })
-    );
-  };
-
-  const updateColumnData = (columnId: string, value: any) => {
-    setData((old) =>
-      old.map((row) => ({
-        ...row,
-        [columnId]: value,
-      }))
-    );
-  };
+  const initialData: DeliveryManagement[] = DeliveryManagementData;
+  const [data, setData] = useState<DeliveryManagement[]>(initialData);
 
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.subscriptionType.toLowerCase().includes(searchValue.toLowerCase())
+      item.customerName.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
 
-  const handleSave = () => {
-    // Save the data to the server or localStorage or any persistence storage
-    console.log('Data saved:', data);
-    // Implement the logic to save the data
-  };
   const filters = [
     {
-      label: 'Subscription Type',
-      subOptions: ['Trial', 'Weekly', 'Monthly', 'Fortnightly', 'Bi Weekly'],
+      label: 'Payment Status',
+      subOptions: ['Paid', 'Unpaid'],
+    },
+    {
+      label: 'Delivery Status',
+      subOptions: ['Pending', 'Delivered', 'Cancelled'],
     },
   ];
 
@@ -62,23 +39,28 @@ export const DeliveryClient: React.FC = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Deliveries (${data.length})`}
-          description="Deliveries (Client side table functionalities.)"
+          title={`Today's Delivery (${data.length})`}
+          description="Manage Delivery (Client side table functionalities.)"
         />
-        {/* <Button
+        <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/subscription-form`)}
+          onClick={() => router.push(`/order`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button> */}
+        </Button>
       </div>
       <Separator />
+      
       <div className="flex justify-end">
-
-      <CalendarDateRangePicker />
+        <CalendarDateRangePicker />
       </div>
-
-     
+      <DataTable
+        searchKey="customerName"
+        columns={columns}
+        data={data}
+        filters={filters}
+        onSearch={handleSearch}
+      />
     </>
   );
 };

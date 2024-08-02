@@ -1,130 +1,137 @@
 'use client';
 
-import React from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Subscription } from '@/constants/subscription-data';
-import { Checkbox } from '@/components/ui/checkbox';
-import { SubscriptionCellAction } from './cell-action';
-import { Calendar, Check, X, IndianRupee } from 'lucide-react';
+import { DeliveryManagement } from '@/constants/delivery-management-data';
+import { CellAction } from './cell-action';
+import { Check, Edit, X } from 'lucide-react';
 
-export const columns: ColumnDef<Subscription>[] = [
+export const columns: ColumnDef<DeliveryManagement>[] = [
   {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
+    accessorKey: 'orderId',
+    header: 'Order ID',
+    cell: ({ row }) => <span>{row.original.orderId}</span>,
   },
   {
-    accessorKey: 'sno',
-    header: 'Sno',
+    accessorKey: 'empId',
+    header: 'Emp ID',
+    cell: ({ row }) => <span>{row.original.empId}</span>,
+  },
+  {
+    accessorKey: 'customerName',
+    header: 'Customer Name',
+    cell: ({ row }) => <span>{row.original.customerName}</span>,
+  },
+  {
+    accessorKey: 'delivery',
+    header: 'Delivery',
     cell: ({ row }) => (
-      <div className="flex items-center mt-1">
-        <span>{row.index + 1}</span>
+      <div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr className='bg-red-100'>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+              <th className="px-10 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time Slot</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned Employee</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned Routes</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            <tr className='bg-blue-100'>
+              <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{row.original.delivery.deliveryDate}</td>
+              <td className="ps-10 pe-8 py-2 whitespace-nowrap text-sm text-gray-900">{row.original.delivery.deliveryTimeSlot}</td>
+              <td className="px-1 py-2 whitespace-nowrap text-sm text-gray-900">
+                <div 
+                  style={{ borderRadius: "20px" }}
+                  className={`flex items-center ps-3 pe-2 py-1 ${
+                    row.original.delivery.deliveryStatus === 'Delivered' ? 'bg-green-400' :
+                    row.original.delivery.deliveryStatus === 'Pending' ? 'bg-yellow-400' :
+                    'bg-red-400'
+                  }`}
+                >
+                  <span className='text-black bold pe-7'>{row.original.delivery.deliveryStatus}</span>
+                </div>
+              </td>
+              <td className="px-8 py-2 whitespace-nowrap text-sm text-gray-900">{row.original.delivery.assignedEmployee}</td>
+              <td className="px-12 py-2 whitespace-nowrap text-sm text-gray-900">{row.original.delivery.assignedRoutes}</td>
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     ),
   },
   {
-    accessorKey: 'subscriptionType',
-    header: 'Subscription Type',
+    accessorKey: 'bagOrdered',
+    header: 'Bag Ordered',
+    cell: ({ row }) => (
+      <ul>
+        {row.original.bagOrdered?.map((product, index) => (
+          <li key={index}>{product}</li>
+        ))}
+      </ul>
+    ),
   },
   {
-    accessorKey: 'bagName',
-    header: 'Bags Name',
+    accessorKey: 'totalWeight',
+    header: 'Total Weight (kg)',
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        <span className='text-center'>{row.original.totalWeight}</span>
+      </div>
+    ),
   },
   {
-    accessorKey: 'visibility',
-    header: 'Visibility',
+    accessorKey: 'totalPrice',
+    header: 'Total Price (₹)',
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        <span className='text-center'>{row.original.totalPrice}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'addons',
+    header: 'Add-ons',
+    cell: ({ row }) => (
+      <ul>
+        {row.original.addons?.map((addon, index) => (
+          <li style={{ listStyleType: "square" }} key={index}>{addon}</li>
+        ))}
+      </ul>
+    ),
+  },
+  {
+    accessorKey: 'paymentStatus',
+    header: 'Payment Status',
     cell: ({ row }) => (
       <div 
         style={{ borderRadius: "20px" }}
         className={`flex items-center px-2 py-1 ${
-          row.original.visibility === 'Admin' ? 'bg-red-400' :
-          row.original.visibility === 'Customer' ? 'bg-green-400' :
-          'bg-red-400'
+          row.original.paymentStatus === 'Paid' ? 'bg-green-400' : 'bg-red-400'
         }`}
       >
-<span className='text-black bold'>{row.original.visibility === 'Admin' ? "Admin" : "Public"}</span>
-</div>
-    )
-  },
-  {
-    accessorKey: 'subscriptionStatus',
-    header: 'Subscription Status',
-    cell: ({ row }) => (
-      <div 
-        style={{ borderRadius: "20px" }}
-        className={`flex items-center px-2 py-1 me-5 ${
-          row.original.subscriptionStatus === 'Active' ? 'bg-green-400' : 'bg-red-400'
-        }`}
-      >
-        {row.original.subscriptionStatus === 'Active' ? (
+        {row.original.paymentStatus === 'Paid' ? (
           <Check width={16} height={16} className="text-green-500 mr-2" />
         ) : (
           <X width={16} height={16} className="text-red-900 mr-2" />
         )}
-        <span className="text-black bold">{row.original.subscriptionStatus}</span>
+        <span className='text-black bold'>{row.original.paymentStatus}</span>
       </div>
-    )
+    ),
   },
   {
-    accessorKey: 'deliveryDays',
-    header: 'Delivery Days',
+    accessorKey: 'specialInstructions',
+    header: 'Special Instructions',
     cell: ({ row }) => (
-      <ul>
-        {row.original.deliveryDays?.map((option, index) => (
-          <li key={index}>{option}</li>
-        ))}
-      </ul>
-    )
-  },
-  {
-    accessorKey: 'frequency',
-    header: 'Frequency',
-    cell: ({ row }) => (
-      <div>
-        {row.original.frequency}
+      <div className="flex">
+        <span className=''>{row.original.specialInstructions}</span>
       </div>
-    )
-  },
-  {
-    accessorKey: 'price',
-    header: 'Price',
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <IndianRupee className="mr-1" width={16} height={16} />
-        {row.original.price}
-      </div>
-    )
-  },
-  {
-    accessorKey: 'offers',
-    header: 'Offers',
-  },
-  {
-    accessorKey: 'netPrice',
-    header: 'Net Price',
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <IndianRupee className="mr-1" width={16} height={16} />
-        {row.original.netPrice}
-      </div>
-    )
+    ),
   },
   {
     id: 'actions',
-    cell: ({ row }) => <SubscriptionCellAction data={row.original} />,
-  },
+    cell: ({ row }) => <CellAction data={row.original} />
+  }
 ];

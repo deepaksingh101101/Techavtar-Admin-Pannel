@@ -1,9 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { OrderManagement } from '@/constants/order-management-data';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import Select from 'react-select';
 
 export const OrderData: OrderManagement[] = [
   {
@@ -34,22 +38,64 @@ export const OrderData: OrderManagement[] = [
     paymentStatus: 'Paid',
     specialInstructions: 'Leave the package at the front door.'
   }
-]
+];
+
+const timeSlots = [
+  { value: '8am - 10am', label: '8am - 10am' },
+  { value: '10am - 12pm', label: '10am - 12pm' },
+  { value: '12pm - 2pm', label: '12pm - 2pm' },
+];
+
+const deliveryStatuses = [
+  { value: 'Pending', label: 'Pending' },
+  { value: 'Delivered', label: 'Delivered' },
+  { value: 'Cancelled', label: 'Cancelled' },
+];
+
+const employees = [
+  { value: 'Shivam Singh', label: 'Shivam Singh', phoneNumber: '123-456-7890' },
+  { value: 'Aman Gupta', label: 'Aman Gupta', phoneNumber: '234-567-8901' },
+  { value: 'John Doe', label: 'John Doe', phoneNumber: '345-678-9012' },
+];
+
+const routes = [
+  { value: 'Route 1', label: 'Route 1' },
+  { value: 'Route 2', label: 'Route 2' },
+  { value: 'Route 3', label: 'Route 3' },
+];
 
 export const OrderView: React.FC = () => {
   const order = OrderData[0];
   const [darkMode, setDarkMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDelivery, setSelectedDelivery] = useState<any>(null);
 
+  const handleEditClick = (delivery: any) => {
+    setSelectedDelivery(delivery);
+    setIsModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedDelivery(null);
+  };
+
+  const handleSaveChanges = () => {
+    // Save changes logic here
+    setIsModalOpen(false);
+  };
+
+  const formatEmployeeOptionLabel = (employee: any) => (
+    <div className="flex justify-between">
+      <span>{employee.label}</span>
+      <span className="text-gray-500">{employee.phoneNumber}</span>
+    </div>
+  );
 
   return (
     <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-     
       <div className="flex items-start justify-between">
-        <Heading
-          title={`Order Details`}
-          description="View Order Details"
-        />
+        <Heading title="Order Details" description="View Order Details" />
       </div>
       <Separator />
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4">
@@ -98,12 +144,25 @@ export const OrderView: React.FC = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
-            <tr className='bg-red-100 dark:bg-red-900'>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Delivery Date</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Time Slot</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Status</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Assigned Employee</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Assigned Route</th>
+            <tr className="bg-red-100 dark:bg-red-900">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                Delivery Date
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                Time Slot
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                Status
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                Assigned Employee
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                Assigned Route
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -112,17 +171,103 @@ export const OrderView: React.FC = () => {
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{delivery.deliveryDate}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{delivery.deliveryTimeSlot}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${delivery.deliveryStatus === 'Delivered' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'}`}>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      delivery.deliveryStatus === 'Delivered'
+                        ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                        : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                    }`}
+                  >
                     {delivery.deliveryStatus}
                   </span>
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{delivery.assignedEmployee}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{delivery.assignedRoutes}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <Button variant="outline" size="sm" onClick={() => handleEditClick(delivery)}>
+                    Edit
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {selectedDelivery && (
+        <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Delivery</DialogTitle>
+              <DialogDescription>Update the delivery details below:</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Date</label>
+                <Input
+                  type="date"
+                  value={selectedDelivery?.deliveryDate}
+                  onChange={(e) => setSelectedDelivery({ ...selectedDelivery, deliveryDate: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Time Slot</label>
+                <Select
+                  options={timeSlots}
+                  value={timeSlots.find((option) => option.value === selectedDelivery?.deliveryTimeSlot)}
+                  onChange={(selectedOption) =>
+                    setSelectedDelivery({ ...selectedDelivery, deliveryTimeSlot: selectedOption?.value })
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Status</label>
+                <Select
+                  options={deliveryStatuses}
+                  value={deliveryStatuses.find((option) => option.value === selectedDelivery?.deliveryStatus)}
+                  onChange={(selectedOption) =>
+                    setSelectedDelivery({ ...selectedDelivery, deliveryStatus: selectedOption?.value })
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned Employee</label>
+                <Select
+                  options={employees}
+                  formatOptionLabel={formatEmployeeOptionLabel}
+                  value={employees.find((option) => option.value === selectedDelivery?.assignedEmployee)}
+                  onChange={(selectedOption) =>
+                    setSelectedDelivery({ ...selectedDelivery, assignedEmployee: selectedOption?.value })
+                  }
+                  isSearchable
+                  filterOption={(candidate, input) =>
+                    candidate.label.toLowerCase().includes(input.toLowerCase()) ||
+                    candidate.data.phoneNumber.includes(input)
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned Routes</label>
+                <Select
+                  options={routes}
+                  value={routes.find((option) => option.value === selectedDelivery?.assignedRoutes)}
+                  onChange={(selectedOption) =>
+                    setSelectedDelivery({ ...selectedDelivery, assignedRoutes: selectedOption?.value })
+                  }
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={handleCloseModal}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveChanges}>Save</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
+
+export default OrderView;

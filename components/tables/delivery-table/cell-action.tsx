@@ -9,33 +9,48 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Subscription } from '@/constants/subscription-data';
-import { Edit, MoreHorizontal, Trash, Eye, CheckSquare } from 'lucide-react';
+import { DeliveryManagement } from '@/constants/delivery-management-data';
+import { Edit, MoreHorizontal, Trash, Eye, UserPlus, UserCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-interface SubscriptionCellActionProps {
-  data: Subscription;
+interface CellActionProps {
+  data: DeliveryManagement;
 }
 
-export const SubscriptionCellAction: React.FC<SubscriptionCellActionProps> = ({ data }) => {
+export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const onConfirm = async () => {
-    // confirm logic here
+    // Your confirm logic here
   };
 
-  
-  const handleEditSubscription = () => {
-    router.push(`/subscriptions/edit/${data.subscriptionType}`);
-  };
-  const handleInactiveSubscription = () => {
-    router.push(`/subscriptions/view/${data.subscriptionType}`);
+  const updateDeliveryStatus = () => {
+    router.push(`/subscription-management/edit/${data.orderId}`); 
   };
 
- 
+  const handleViewAndManageOrder = () => {
+    router.push(`/subscription-management/view/${data.orderId}`); 
+  };
+
+  const viewOrderDetals = () => {
+    router.push(`/order/${data.orderId}`); 
+  };
+
+  const hanldeResheduleAndSkips = () => {
+    router.push(`/subscription-management/toggleDeliveryDays/${data.orderId}`); 
+  };
+
+  const generatePackingList = () => {
+    router.push(`/subscription-management/manageCustomizationOption/${data.orderId}`); 
+  };
+
+  const assignDeliveryRoutes = () => {
+    router.push(`/subscription-management/handleUpgradeAndRenewal/${data.orderId}`); 
+  };
+
   return (
     <>
       <AlertModal
@@ -53,13 +68,18 @@ export const SubscriptionCellAction: React.FC<SubscriptionCellActionProps> = ({ 
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={handleEditSubscription}>
-            <Edit className="mr-2 h-4 w-4" /> Edit 
+          <DropdownMenuItem onClick={updateDeliveryStatus}>
+            <Edit className="mr-2 h-4 w-4" /> Update Delivery Status
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleInactiveSubscription}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
+          <DropdownMenuItem onClick={viewOrderDetals}>
+            <Eye className="mr-2 h-4 w-4" /> View Order Details
           </DropdownMenuItem>
-         
+          <DropdownMenuItem onClick={hanldeResheduleAndSkips}>
+            <UserCheck className="mr-2 h-4 w-4" /> Reschedule and Skips
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={assignDeliveryRoutes}>
+            <UserCheck className="mr-2 h-4 w-4" /> Assign Employee
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
