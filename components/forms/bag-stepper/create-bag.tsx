@@ -319,7 +319,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
   name="totalWeight"
   render={({ field }) => (
     <FormItem>
-      <FormLabel>Total Weight(gms)</FormLabel>
+      <FormLabel>Total Maximum Weight(gms)</FormLabel>
       <FormControl>
         <Input
           name="totalWeight"

@@ -15,6 +15,7 @@ export interface ProductManagement {
   // unitQuantity?: number; // in grams
   maxUnit?: number; // in grams
   minUnit?: number; // in grams
+  unitQuantity?: number; // in grams
   pieces?: number;
   price?: number;
   available?: string;
@@ -38,6 +39,7 @@ export const ProductManagementData: ProductManagement[] = [
     // unitQuantity: 1000,
     maxUnit: 5,
     minUnit: 2,
+    unitQuantity: 200,
     available: "Yes",
     visibility: "Customer+Admin",
     image: productImage1,
@@ -54,7 +56,7 @@ export const ProductManagementData: ProductManagement[] = [
     priority: 'Medium',
     roster: 'A',
     veggieNameInHindi: 'खीरा',
-    // unitQuantity: 1000,
+    unitQuantity: 400,
     minUnit: 2,
     maxUnit: 4,
     price: 100,

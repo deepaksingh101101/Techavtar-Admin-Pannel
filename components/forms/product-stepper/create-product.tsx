@@ -91,8 +91,8 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   const [seasons, setSeasons] = useState([
     { value: 'Summer', label: 'Summer' },
     { value: 'Winter', label: 'Winter' },
-    { value: 'Spring', label: 'Spring' },
-    { value: 'Autumn', label: 'Autumn' },
+    { value: 'Monsoon', label: 'Monsoon' },
+    { value: 'All', label: 'All' },
   ]);
   const [rosters, setRosters] = useState([
     { value: 'Mandatory', label: 'Mandatory' },
@@ -405,7 +405,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="subtype"
               render={({ field }) => (
@@ -428,7 +428,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="group"

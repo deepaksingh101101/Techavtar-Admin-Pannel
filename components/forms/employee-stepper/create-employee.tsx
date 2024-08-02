@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
 import ReactSelect from 'react-select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface EmployeeFormType {
   initialData: any | null;
@@ -27,7 +28,10 @@ const employeeFormSchema = z.object({
     phone: z.string().min(1, 'Phone is required')
   }),
   city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
   address: z.string().min(1, 'Address is required'),
+  gender: z.string().min(1, 'Gender is required'),
+  age: z.string().min(1, 'Age is required'),
   assignedUsers: z.array(z.string()).optional(),
 });
 
@@ -87,7 +91,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
       <Separator />
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-3">
             <FormField
               control={control}
               name="firstName"
@@ -150,6 +154,54 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                     <Input type="text" disabled={loading} placeholder="Enter Phone" {...field} />
                   </FormControl>
                   <FormMessage>{renderErrorMessage(errors.contactInformation)}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="age"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Age</FormLabel>
+                  <FormControl>
+                    <Input type="text" disabled={loading} placeholder="Enter Age" {...field} />
+                  </FormControl>
+                  <FormMessage>{renderErrorMessage(errors.age)}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gender</FormLabel>
+                      <FormControl>
+                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Gender" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Male">Male</SelectItem>
+                            <SelectItem value="Female">Female</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      {/* <FormMessage>{errors.gender?.message}</FormMessage> */}
+                    </FormItem>
+                  )}
+                />
+            <FormField
+              control={control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <FormControl>
+                    <Input type="text" disabled={loading} placeholder="Enter State" {...field} />
+                  </FormControl>
+                  <FormMessage>{renderErrorMessage(errors.state)}</FormMessage>
                 </FormItem>
               )}
             />

@@ -62,9 +62,9 @@ export const columns: ColumnDef<ProductManagement>[] = [
       </div>
     )
   },
-  {
-    accessorKey: 'subType',
-    header: 'Sub Type'},
+  // {
+  //   accessorKey: 'subType',
+  //   header: 'Sub Type'},
   {
     accessorKey: 'group',
     header: 'Group'
@@ -140,6 +140,15 @@ export const columns: ColumnDef<ProductManagement>[] = [
     cell: ({ row }) => (
       <div className="text-center">
         {row.original.veggieNameInHindi}
+      </div>
+    )
+  },
+  {
+    accessorKey: 'unitQuantity',
+    header: 'Unit Quantity',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.unitQuantity} gms 
       </div>
     )
   },

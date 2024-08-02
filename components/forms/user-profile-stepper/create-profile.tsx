@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ProfileFormType {
   initialData: any | null;
@@ -42,8 +43,7 @@ const FormSchema = z.object({
   lastname: z.string().min(1, "Last Name is required"),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   contactno: z.string().min(1, "Contact Number is required"),
-  city: z.string().min(1, "City is required"),
-  address1: z.string().min(1, "Address Line 1 is required"),
+  // address1: z.string().min(1, "Address Line 1 is required"),
   address2: z.string().optional(),
   assignedEmployee: z.string().optional(),
   subscriptionType: z.string().min(1, "Subscription Type is required"),
@@ -51,6 +51,13 @@ const FormSchema = z.object({
     required_error: "Subscription Start Date is required.",
   }),
   paymentType: z.string().min(1, "Payment Type is required"),
+  gender: z.string().min(1, 'Gender is required'),
+  age: z.string().min(1, 'Age is required'),
+  street: z.string().min(1, "Street Address is required"),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, 'State is required'),
+  zipcode: z.string().min(1, 'Zipcode is required'),
+
 });
 
 export const CreateProfileOne: React.FC<ProfileFormType> = ({
@@ -124,9 +131,13 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   ];
 
   const subscriptionTypes = [
-    { id: "basic", name: "Basic" },
-    { id: "premium", name: "Premium" },
-    { id: "vip", name: "VIP" },
+    { id: "Staples", name: "Basic" },
+    { id: "Veggies", name: "Premium" },
+    { id: "Beans", name: "VIP" },
+    { id: "Gourds", name: "VIP" },
+    { id: "Beans", name: "VIP" },
+    { id: "Beans", name: "VIP" },
+    { id: "Beans", name: "VIP" },
   ];
 
   const [cityOptions, setCityOptions] = useState([
@@ -342,6 +353,28 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
+             <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gender</FormLabel>
+                      <FormControl>
+                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Gender" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Male">Male</SelectItem>
+                            <SelectItem value="Female">Female</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      {/* <FormMessage>{errors.gender?.message}</FormMessage> */}
+                    </FormItem>
+                  )}
+                />
             <FormField
               control={form.control}
               name="contactno"
@@ -418,24 +451,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="address1"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address Line 1</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Address Line 1"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>{errors.address1?.message}</FormMessage>
-                </FormItem>
-              )}
-            /> */}
-            <FormField
+             <FormField
               control={form.control}
               name="address2"
               render={({ field }) => (
@@ -452,6 +468,24 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="street"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="House Number,Building Name .."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.street?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+           
             <FormField
               control={form.control}
               name="assignedEmployee"
