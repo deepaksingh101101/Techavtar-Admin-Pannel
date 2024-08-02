@@ -36,6 +36,7 @@ export interface Bag {
   visibility?: string;
   bagImage?: StaticImageData;
   description: string;
+  totalWeight:number
 }
 
 const dummyItems = [
@@ -62,6 +63,7 @@ const bagFormSchema = z.object({
   totalPrice: z.number().nonnegative(),
   updatedDate: z.string().optional(),
   status: z.enum(['Active', 'Inactive']),
+  totalWeight: z.number().nonnegative().min(1, 'Total weight is required'), // Added field
 });
 
 export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
@@ -312,6 +314,28 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                     </FormItem>
                   )}
                 />
+               <FormField
+  control={form.control}
+  name="totalWeight"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Total Weight(gms)</FormLabel>
+      <FormControl>
+        <Input
+          name="totalWeight"
+          type="number"
+          disabled={loading}
+          placeholder="Enter Total Weight"
+          onChange={(e) => field.onChange(parseFloat(e.target.value))}
+          value={field.value || ''}
+        />
+      </FormControl>
+      <FormMessage>{errors.totalWeight?.message}</FormMessage>
+    </FormItem>
+  )}
+/>
+
+               
 
 <FormField
             control={form.control}
