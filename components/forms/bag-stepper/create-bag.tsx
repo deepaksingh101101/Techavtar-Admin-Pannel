@@ -49,7 +49,7 @@ const bagFormSchema = z.object({
   bagName: z.string().min(1, 'Bag name is required'),
   visibility: z.string().min(1, 'Visibility is required'),
   bagImage: z.object({}).optional(),
-  description: z.string().min(1, 'Description is required'),
+  // description: z.string().min(1, 'Description is required'),
   bagItems: z.array(
     z.object({
       itemName: z.string().min(1, 'Item name is required'),
