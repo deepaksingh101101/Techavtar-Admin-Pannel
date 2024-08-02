@@ -18,12 +18,16 @@ interface EmployeeFormType {
 
 const employeeFormSchema = z.object({
   employeeId: z.number().nonnegative().optional(),
-  fullName: z.string().min(1, 'Full Name is required'),
+  firstName: z.string().min(1, 'First Name is required'),
+  lastName: z.string().min(1, 'Last Name is required'),
   role: z.string().min(1, 'Role is required'),
+
   contactInformation: z.object({
     email: z.string().email('Invalid email format').min(1, 'Email is required'),
     phone: z.string().min(1, 'Phone is required')
   }),
+  city: z.string().min(1, 'City is required'),
+  address: z.string().min(1, 'Address is required'),
   assignedUsers: z.array(z.string()).optional(),
 });
 
@@ -33,7 +37,8 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
     resolver: zodResolver(employeeFormSchema),
     defaultValues: initialData || {
       employeeId: undefined,
-      fullName: '',
+      fistName: '',
+      lastName: '',
       role: '',
       contactInformation: {
         email: '',
@@ -85,14 +90,27 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
             <FormField
               control={control}
-              name="fullName"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="Enter Full Name" {...field} />
+                    <Input type="text" disabled={loading} placeholder="Enter First Name" {...field} />
                   </FormControl>
-                  <FormMessage>{renderErrorMessage(errors.fullName)}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.firstName)}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" disabled={loading} placeholder="Enter Last Name" {...field} />
+                  </FormControl>
+                  <FormMessage>{renderErrorMessage(errors.lastName)}</FormMessage>
                 </FormItem>
               )}
             />
@@ -135,7 +153,34 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                 </FormItem>
               )}
             />
-            <FormField
+
+<FormField
+              control={control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input type="text" disabled={loading} placeholder="Enter City" {...field} />
+                  </FormControl>
+                  <FormMessage>{renderErrorMessage(errors.city)}</FormMessage>
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input type="text" disabled={loading} placeholder="Enter Complete Address" {...field} />
+                  </FormControl>
+                  <FormMessage>{renderErrorMessage(errors.address)}</FormMessage>
+                </FormItem>
+              )}
+            />
+            {/* <FormField
               control={control}
               name="assignedUsers"
               render={({ field }) => (
@@ -170,7 +215,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                   <FormMessage>{renderErrorMessage(errors.assignedUsers)}</FormMessage>
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <Button type="submit" disabled={loading}>
             {initialData ? 'Save Changes' : 'Create Employee'}

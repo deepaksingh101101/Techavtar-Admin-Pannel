@@ -73,6 +73,10 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
     header: 'City'
   },
   {
+    accessorKey: 'address',
+    header: 'Address'
+  },
+  {
     accessorKey: 'assignedUsers',
     header: 'Assigned Customers',
     cell: ({ row }) => (

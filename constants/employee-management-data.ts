@@ -11,6 +11,7 @@ export interface EmployeeManagement {
   lastName: string;
   role: string;
   city?: string;
+  address?: string;
   assignedUsers: User[]; // Array of user objects assigned to the employee
   contactInformation: {
     email: string;
@@ -26,6 +27,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     lastName: 'Doe',
     role: 'Manager',
     city: "Delhi",
+    address:"Pro4living elite",
     assignedUsers: [
       { id: 1, name: 'Alice Johnson' },
       { id: 2, name: 'Bob Williams' },
@@ -49,7 +51,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     contactInformation: {
       email: 'jane.smith@example.com',
       phone: '987-654-3210'
-    }
+    },
+    address:"Pro2living elite",
+
   },
   {
     sno: 3,
@@ -65,7 +69,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     contactInformation: {
       email: 'robert.brown@example.com',
       phone: '555-123-4567'
-    }
+    },
+    address:"Pro1living elite",
+
   },
   {
     sno: 4,
@@ -80,6 +86,8 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     contactInformation: {
       email: 'emily.davis@example.com',
       phone: '444-555-6666'
-    }
+    },
+    address:"Pro5living elite",
+
   }
 ];
