@@ -30,7 +30,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { Edit, Trash, Weight } from 'lucide-react';
+import { Edit, Trash } from 'lucide-react';
 import ReactSelect from 'react-select';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 import { Textarea } from '@/components/ui/textarea';
@@ -102,7 +102,6 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isTotalWeightValid, setIsTotalWeightValid] = useState(true);
   const title = initialData ? 'Edit Subscription' : 'Create New Subscription';
   const description = initialData
     ? 'Edit the subscription details below.'
@@ -219,19 +218,6 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
       subscriptionTypeNumbers[subscriptionType] * frequencyTypeNumbers[frequency];
     setValue('totalDelivery', totalDelivery);
   }, [subscriptionType, frequency, setValue]);
-
-  useEffect(() => {
-    const totalWeight = selectedBags.reduce((acc, bagName) => {
-      const bag = dummyBags.find((bag) => bag.value === bagName);
-      return acc + (bag ? bag.weight : 0);
-    }, 0);
-
-    if (totalWeight >= 5000 && totalWeight <= 10000) {
-      setIsTotalWeightValid(true);
-    } else {
-      setIsTotalWeightValid(false);
-    }
-  }, [selectedBags]);
 
   return (
     <>
@@ -558,11 +544,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
           isMulti
         />
       </FormControl>
-      {!isTotalWeightValid && (
-        <FormMessage>
-          <span className="text-red-500">Total weight must be between 5000 to 10000 grams</span>
-        </FormMessage>
-      )}
+      <FormMessage />
     </FormItem>
   )}
 />
@@ -608,7 +590,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
               </FormItem>
             )}
             />
-          <Button disabled={loading || !isTotalWeightValid} type="submit">
+          <Button disabled={loading} type="submit">
             {action}
           </Button>
         </form>

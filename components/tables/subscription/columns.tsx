@@ -101,6 +101,15 @@ export const columns: ColumnDef<Subscription>[] = [
     )
   },
   {
+    accessorKey: 'totalDelivery',
+    header: 'Total Delivery',
+    cell: ({ row }) => (
+      <div>
+        {row.original.totalDelivery}
+      </div>
+    )
+  },
+  {
     accessorKey: 'price',
     header: 'Price',
     cell: ({ row }) => (

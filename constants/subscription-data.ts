@@ -8,6 +8,7 @@ export interface Subscription {
   frequency: string;
   price: number;
   offers: string; 
+  totalDelivery?:number;
   deliveryDays: string[];
   subscriptionStartDate: string;
   subscriptionEndDate: string;
@@ -34,6 +35,7 @@ export const SubscriptionData: Subscription[] = [
     paymentStatus: 'Paid',
     bagName: "Regular Veggie Bag",
     netPrice: 15323,
+    totalDelivery:24,
     visibility: 'Admin',
     image: subscriptionImage1,
     description: 'This is an annual subscription with biweekly deliveries and a 25% discount.'
@@ -51,6 +53,7 @@ export const SubscriptionData: Subscription[] = [
     paymentStatus: 'Unpaid',
     bagName: "Mini Veggie Bag",
     netPrice: 15323,
+    totalDelivery:4,
     visibility: 'Admin',
     image: subscriptionImage2,
     description: 'This is a monthly subscription with fortnightly deliveries and a 31% discount.'
@@ -69,6 +72,7 @@ export const SubscriptionData: Subscription[] = [
     bagName: "Regular Veggie Bag",
     netPrice: 15323,
     visibility: 'Admin',
+    totalDelivery:24,
     image: subscriptionImage1,
     description: 'This is a quarterly subscription with biweekly deliveries and a 44% discount.'
   }
