@@ -112,22 +112,19 @@ export const OrderView: React.FC = () => {
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Customer Name:</p>
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.customerName}</p>
           </div>
+       
           <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Bag Ordered:</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.bagOrdered.join(', ')}</p>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Weight (kg):</p>
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Maximum Weight (kg):</p>
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.totalWeight}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Price (₹):</p>
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.totalPrice}</p>
           </div>
-          <div>
+          {/* <div>
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Add-ons:</p>
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.addons?.join(', ') || 'None'}</p>
-          </div>
+          </div> */}
           <div>
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Payment Status:</p>
             <p className={`text-lg ${order.paymentStatus === 'Paid' ? 'text-green-600' : 'text-red-600'}`}>

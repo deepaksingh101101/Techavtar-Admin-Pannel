@@ -11,7 +11,8 @@ export interface OrderManagement {
   empId?: number;
   customerName: string;
   deliveries: DeliveryInfo[];
-  bagOrdered: string[]; // Array of product names or IDs
+  bagOrdered?: string[]; // Array of product names or IDs
+  subscriptionType?: string; // Array of product names or IDs
   totalWeight: number; // Total weight in kg
   addons?: string[]; // Array of add-ons
   paymentStatus: 'Paid' | 'Unpaid' | 'Pending'; // Example: paid, unpaid, pending
@@ -55,7 +56,8 @@ export const OrderManagementData: OrderManagement[] = [
       },
     ],
     bagOrdered: ['Regular Veggie Bag'],
-    totalWeight: 10,
+    subscriptionType: 'Regular Veggie Bag',
+    totalWeight: 10000,
     totalPrice: 779,
     addons: ['Lemons'],
     paymentStatus: 'Paid',
@@ -76,7 +78,8 @@ export const OrderManagementData: OrderManagement[] = [
       }
     ],
     bagOrdered: ['Mini Veggie Bag'],
-    totalWeight: 8,
+    subscriptionType: 'Mini Veggie Bag',
+    totalWeight: 80000,
     totalPrice: 733,
     addons: ['Lady Finger'],
     paymentStatus: 'Unpaid',
@@ -98,7 +101,8 @@ export const OrderManagementData: OrderManagement[] = [
       }
     ],
     bagOrdered: ['Brinjal'],
-    totalWeight: 5,
+    subscriptionType: 'Mini Veggie Bag',
+    totalWeight: 50000,
     totalPrice: 567,
     addons: [],
     paymentStatus: 'Unpaid',
@@ -128,7 +132,8 @@ export const OrderManagementData: OrderManagement[] = [
       }
     ],
     bagOrdered: ['Regular Veggie Bag'],
-    totalWeight: 5,
+    subscriptionType: 'Mini Veggie Bag',
+    totalWeight: 50000,
     totalPrice: 986,
     addons: ['Tomato', 'Potato'],
     paymentStatus: 'Paid',
@@ -138,6 +143,7 @@ export const OrderManagementData: OrderManagement[] = [
     orderId: 105,
     empId: 1022,
     customerName: "Arya Singh",
+    subscriptionType: 'Mini Veggie Bag',
     deliveries: [
       {
         deliveryDate: '2023-07-27',
@@ -150,7 +156,7 @@ export const OrderManagementData: OrderManagement[] = [
       }
     ],
     bagOrdered: ['Regular Veggie Bag'],
-    totalWeight: 7,
+    totalWeight: 70000,
     totalPrice: 999,
     addons: ['Carrots'],
     paymentStatus: 'Paid',

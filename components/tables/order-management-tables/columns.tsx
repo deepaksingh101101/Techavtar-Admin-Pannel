@@ -35,7 +35,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned Employee</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned Routes</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+              {/* <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th> */}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -69,7 +69,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
                           </td>
                 <td className="px-8 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedEmployee}</td>
                 <td className="px-12 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedRoutes}</td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
+                {/* <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td> */}
               </tr>
             ))}
           </tbody>
@@ -99,7 +99,7 @@ export const columns: ColumnDef<OrderManagement>[] = [
                         </td>
                         <td className="ps-10 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedEmployee}</td>
                         <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{delivery.assignedRoutes}</td>
-                        <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
+                        {/* <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td> */}
                       </tr>
                     ))}
                   </tbody>
@@ -112,19 +112,12 @@ export const columns: ColumnDef<OrderManagement>[] = [
     ),
   },
   {
-    accessorKey: 'bagOrdered',
-    header: 'Bag Ordered',
-    cell: ({ row }) => (
-      <ul>
-        {row.original.bagOrdered?.map((product, index) => (
-          <li key={index}>{product}</li>
-        ))}
-      </ul>
-    ),
+    accessorKey: 'subscriptionType',
+    header: 'Subscription Type',
   },
   {
     accessorKey: 'totalWeight',
-    header: 'Total Weight (kg)',
+    header: 'Total Maximum Bag Weight (gms)',
     cell: ({ row }) => (
       <div className="flex justify-center">
         <span className='text-center'>{row.original.totalWeight}</span>
@@ -140,17 +133,17 @@ export const columns: ColumnDef<OrderManagement>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: 'addons',
-    header: 'Add-ons',
-    cell: ({ row }) => (
-      <ul>
-        {row.original.addons?.map((addon, index) => (
-          <li style={{ listStyleType: "square" }} key={index}>{addon}</li>
-        ))}
-      </ul>
-    ),
-  },
+  // {
+  //   accessorKey: 'addons',
+  //   header: 'Add-ons',
+  //   cell: ({ row }) => (
+  //     <ul>
+  //       {row.original.addons?.map((addon, index) => (
+  //         <li style={{ listStyleType: "square" }} key={index}>{addon}</li>
+  //       ))}
+  //     </ul>
+  //   ),
+  // },
   {
     accessorKey: 'paymentStatus',
     header: 'Payment Status',
