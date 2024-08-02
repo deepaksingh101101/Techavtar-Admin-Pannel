@@ -9,6 +9,10 @@ export type UserManagement = {
   phoneNumber: string;
   city?: string;
   sector?: string;
+  society?:string;
+  houseNumber?: string;
+  dob?:string;
+  gender?:string;
   address: {
     houseNumber: string;
     addressLine1: string;
@@ -37,8 +41,12 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Doe',
     email: 'john.doe@example.com',
     phoneNumber: '123-456-7890',
-    city: 'Delhi',
-    sector: 'Sector 15',
+    city: "Delhi",
+    sector: "sector 68",
+    society:"m3m Marina",
+    houseNumber: "s4 1404",
+    dob:"11/JUL/2024",
+    gender:"Male",
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -61,8 +69,12 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Mishra',
     email: 'ridhi.mishra@example.com',
     phoneNumber: '11111111',
-    city: 'Noida',
-    sector: 'Sector 18',
+    city: "Delhi",
+    sector: "sector 68",
+    society:"m3m Marina",
+    houseNumber: "s4 1404",
+    dob:"11/JUL/2024",
+    gender:"Male",
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -85,8 +97,12 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Singh',
     email: 'deepak.singh@example.com',
     phoneNumber: '123-456-7890',
-    city: 'Faridabad',
-    sector: 'Sector 12',
+    city: "Delhi",
+    sector: "sector 68",
+    society:"m3m Marina",
+    houseNumber: "s4 1404",
+    dob:"11/JUL/2024",
+    gender:"Male",
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -109,8 +125,12 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Kumar',
     email: 'shivam.kumar@example.com',
     phoneNumber: '123-456-7890',
-    city: 'Delhi',
-    sector: 'Sector 22',
+    city: "Delhi",
+    sector: "sector 68",
+    society:"m3m Marina",
+    houseNumber: "s4 1404",
+    dob:"11/JUL/2024",
+    gender:"Male",
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -133,8 +153,12 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Singh',
     email: 'vikash.singh@example.com',
     phoneNumber: '123-456-7890',
-    city: 'Noida',
-    sector: 'Sector 15',
+    city: "Delhi",
+    sector: "sector 68",
+    society:"m3m Marina",
+    houseNumber: "s4 1404",
+    dob:"11/JUL/2024",
+    gender:"Male",
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',
@@ -157,8 +181,12 @@ export const userManagementData: UserManagement[] = [
     lastName: 'Singh',
     email: 'prashant.singh@example.com',
     phoneNumber: '123-456-7890',
-    city: 'Faridabad',
-    sector: 'Sector 19',
+    city: "Delhi",
+    sector: "sector 68",
+    society:"m3m Marina",
+    houseNumber: "s4 1404",
+    dob:"11/JUL/2024",
+    gender:"Male",
     address: {
       houseNumber: '123',
       addressLine1: 'Main St',

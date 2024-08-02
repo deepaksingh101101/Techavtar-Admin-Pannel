@@ -39,11 +39,9 @@ interface ProfileFormType {
 
 const FormSchema = z.object({
   firstname: z.string().min(1, "First Name is required"),
-  route: z.string().min(1, "Route is required"),
   lastname: z.string().min(1, "Last Name is required"),
   email: z.string().email("Invalid email format").min(1, "Email is required"),
   contactno: z.string().min(1, "Contact Number is required"),
-  // address1: z.string().min(1, "Address Line 1 is required"),
   address2: z.string().optional(),
   assignedEmployee: z.string().optional(),
   subscriptionType: z.string().min(1, "Subscription Type is required"),
@@ -57,7 +55,8 @@ const FormSchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, 'State is required'),
   zipcode: z.string().min(1, 'Zipcode is required'),
-
+  houseNumber: z.string().min(1, 'House Number is required'),
+  society: z.string().min(1, 'Society is required'),
 });
 
 export const CreateProfileOne: React.FC<ProfileFormType> = ({
@@ -86,8 +85,6 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     setValue,
     watch,
   } = form;
-
-  const selectedCity = watch('city');
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
@@ -141,18 +138,16 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   ];
 
   const [cityOptions, setCityOptions] = useState([
-    { id: "Gurgaon", name: "Gurgaon", routes: ["route 1", "route 2", "route 3"] },
-    { id: "Delhi", name: "Delhi", routes: ["route 4", "route 5", "route 6"] },
-    { id: "Noida", name: "Noida", routes: ["route 7", "route 8", "route 9"] },
-    { id: "Faridabad", name: "Faridabad", routes: ["route 1", "route 2", "route 3"] },
-    { id: "Ghaziabad", name: "Ghaziabad", routes: ["route 1", "route 2", "route 3"] },
-    { id: "Sahibabad", name: "Sahibabad", routes: ["route 1", "route 2", "route 3"] },
+    { id: "Gurgaon", name: "Gurgaon" },
+    { id: "Delhi", name: "Delhi" },
+    { id: "Noida", name: "Noida" },
+    { id: "Faridabad", name: "Faridabad" },
+    { id: "Ghaziabad", name: "Ghaziabad" },
+    { id: "Sahibabad", name: "Sahibabad" },
   ]);
 
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
   const [newCity, setNewCity] = useState('');
-  const [newRoute, setNewRoute] = useState('');
-  const [selectedCityForRoute, setSelectedCityForRoute] = useState('');
 
   const openCityModal = () => {
     setIsCityModalOpen(true);
@@ -164,7 +159,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
 
   const addCity = () => {
     if (newCity) {
-      setCityOptions([...cityOptions, { id: newCity.toLowerCase(), name: newCity, routes: [] }]);
+      setCityOptions([...cityOptions, { id: newCity.toLowerCase(), name: newCity }]);
       setNewCity('');
     }
   };
@@ -172,33 +167,6 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   const deleteCity = (index: number) => {
     setCityOptions(cityOptions.filter((_, i) => i !== index));
   };
-
-  const addRoute = () => {
-    setCityOptions(cityOptions.map(city => {
-      if (city.id === selectedCityForRoute) {
-        return {
-          ...city,
-          routes: [...city.routes, newRoute]
-        };
-      }
-      return city;
-    }));
-    setNewRoute('');
-  };
-
-  const deleteRoute = (cityId: string, routeIndex: number) => {
-    setCityOptions(cityOptions.map(city => {
-      if (city.id === cityId) {
-        return {
-          ...city,
-          routes: city.routes.filter((_, index) => index !== routeIndex)
-        };
-      }
-      return city;
-    }));
-  };
-
-  const filteredRoutes = cityOptions.find(city => city.id === selectedCity)?.routes || [];
 
   return (
     <>
@@ -217,92 +185,50 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
       </div>
       <Separator />
       <Dialog open={isCityModalOpen} onOpenChange={(open) => !open && closeCityModal()}>
-      <DialogContent >
-  <DialogHeader>
-    <DialogTitle>Manage Cities</DialogTitle>
-    <DialogDescription>You can manage cities and their routes here.</DialogDescription>
-  </DialogHeader>
-  <div>
-    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-      <thead className="bg-red-200">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-            City
-          </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-            Routes
-          </th>
-          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-        {cityOptions.map((city, cityIndex) => (
-          <tr key={cityIndex}>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-              {city.name}
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-              <ul>
-                {city.routes.map((route, routeIndex) => (
-                  <li
-                    key={routeIndex}
-                    className={`flex justify-between px-2 ${
-                      routeIndex % 2 === 0
-                        ? 'bg-blue-100 dark:bg-gray-700'
-                        : 'bg-green-100 dark:bg-gray-800'
-                    }`}
-                    style={{ listStyleType: 'square' }}
-                  >
-                    {routeIndex + 1} <span>{route}</span>
-                    <Trash
-                      height={15}
-                      width={15}
-                      onClick={() => deleteRoute(city.id, routeIndex)}
-                      className="cursor-pointer mt-0 hover:scale-110 text-red-500"
-                    />
-                  </li>
+        <DialogContent >
+          <DialogHeader>
+            <DialogTitle>Manage Cities</DialogTitle>
+            <DialogDescription>You can manage cities here.</DialogDescription>
+          </DialogHeader>
+          <div>
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-red-200">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                    City
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                {cityOptions.map((city, cityIndex) => (
+                  <tr key={cityIndex}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {city.name}
+                    </td>
+                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteCity(cityIndex)} className="cursor-pointer text-red-500" />
+                    </td>
+                  </tr>
                 ))}
-              </ul>
-              <div className="flex mt-2">
-                <Input
-                  type="text"
-                  className="w-full"
-                  placeholder="Add new route"
-                  value={selectedCityForRoute === city.id ? newRoute : ''}
-                  onChange={(e) => {
-                    setSelectedCityForRoute(city.id);
-                    setNewRoute(e.target.value);
-                  }}
-                />
-                <Button onClick={addRoute} className="ml-2">
-                  Add
-                </Button>
-              </div>
-            </td>
-            <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
-              <Trash onClick={() => deleteCity(cityIndex)} className="cursor-pointer text-red-500" />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    <div className="flex mt-4">
-      <Input
-        type="text"
-        placeholder="Add new city"
-        value={newCity}
-        onChange={(e) => setNewCity(e.target.value)}
-      />
-      <Button onClick={addCity} className="ml-2">
-        Add
-      </Button>
-    </div>
-  </div>
-</DialogContent>
-
-    </Dialog>
+              </tbody>
+            </table>
+            <div className="flex mt-4">
+              <Input
+                type="text"
+                placeholder="Add new city"
+                value={newCity}
+                onChange={(e) => setNewCity(e.target.value)}
+              />
+              <Button onClick={addCity} className="ml-2">
+                Add
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Form {...form}>
         <form
@@ -353,28 +279,28 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-             <FormField
-                  control={form.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gender</FormLabel>
-                      <FormControl>
-                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Gender" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Male">Male</SelectItem>
-                            <SelectItem value="Female">Female</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      {/* <FormMessage>{errors.gender?.message}</FormMessage> */}
-                    </FormItem>
-                  )}
-                />
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <FormControl>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage>{errors.gender?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="contactno"
@@ -413,10 +339,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         getOptionLabel={(option) => option.name}
                         getOptionValue={(option) => option.id}
                         isDisabled={loading}
-                        onChange={(selected) => {
-                          field.onChange(selected ? selected.id : '');
-                          setValue('route', ''); // Reset route when city changes
-                        }}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
                         value={cityOptions.find(option => option.id === field.value)}
                       />
                     )}
@@ -425,33 +348,59 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
+          
+            {/* <FormField
               control={form.control}
-              name="route"
+              name="street"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Route</FormLabel>
-                  <Controller
-                    control={control}
-                    name="route"
-                    render={({ field }) => (
-                      <ReactSelect
-                        isClearable
-                        isSearchable
-                        options={filteredRoutes.map(route => ({ label: route, value: route }))}
-                        getOptionLabel={(option) => option.label}
-                        getOptionValue={(option) => option.value}
-                        isDisabled={loading}
-                        onChange={(selected) => field.onChange(selected ? selected.value : '')}
-                        value={filteredRoutes.map(route => ({ label: route, value: route })).find(option => option.value === field.value)}
-                      />
-                    )}
-                  />
-                  <FormMessage>{errors.route?.message}</FormMessage>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="House Number, Building Name .."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.street?.message}</FormMessage>
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="houseNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>House Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter House Number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.houseNumber?.message}</FormMessage>
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
+              control={form.control}
+              name="society"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Society</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter Society"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.society?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+              <FormField
               control={form.control}
               name="address2"
               render={({ field }) => (
@@ -468,24 +417,6 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="street"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Street Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="House Number,Building Name .."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>{errors.street?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-           
             <FormField
               control={form.control}
               name="assignedEmployee"
@@ -517,7 +448,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="subscriptionType"
               render={({ field }) => (
@@ -542,8 +473,8 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   <FormMessage>{errors.subscriptionType?.message}</FormMessage>
                 </FormItem>
               )}
-            />
-            <FormField
+            /> */}
+            {/* <FormField
               control={form.control}
               name="subscriptionStartDate"
               render={({ field }) => (
@@ -618,7 +549,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   <FormMessage>{errors.paymentType?.message}</FormMessage>
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <div className="mt-8 pt-5">
             <div className="flex justify-end">
@@ -636,3 +567,4 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     </>
   );
 };
+

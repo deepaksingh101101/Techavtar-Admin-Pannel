@@ -82,17 +82,41 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'Sector',
   },
   {
-    accessorKey: 'assignedRoutes',
-    header: 'Assigned Routes',
+    accessorKey: 'society',
+    header: 'Society',
     cell: ({ row }) => (
-      <AssignedRoutesCell
-        routes={row.original.assignedRoutes || []}
-        onSave={(newRoutes) => {
-          row.original.assignedRoutes = newRoutes;
-        }}
-      />
+      <div className="flex items-center mt-1 me-4">
+        <MapPin className="text-red-500 mr-2" width={16} height={16} />
+        {row.original.society}
+      </div>
     ),
   },
+  {
+    accessorKey: 'houseNumber',
+    header: 'House Number',
+  },
+  {
+    accessorKey: 'dob',
+    header: 'DATE OF BIRTH',
+  },
+  {
+    accessorKey: 'gender',
+    header: 'Gender',
+  },
+
+
+  // {
+  //   accessorKey: 'assignedRoutes',
+  //   header: 'Assigned Routes',
+  //   cell: ({ row }) => (
+  //     <AssignedRoutesCell
+  //       routes={row.original.assignedRoutes || []}
+  //       onSave={(newRoutes) => {
+  //         row.original.assignedRoutes = newRoutes;
+  //       }}
+  //     />
+  //   ),
+  // },
   {
     accessorKey: 'subscriptionType',
     header: 'Subscription Type',
@@ -113,17 +137,17 @@ export const columns: ColumnDef<UserManagement>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: 'address',
-    header: 'Address',
-    cell: ({ row }) => (
-      <div className="flex items-center mt-1 me-4">
-        <MapPin className="text-red-500 mr-2" width={16} height={16} />
-        {row.original.address.houseNumber}, {row.original.address.addressLine1},{' '}
-        {row.original.address.addressLine2}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: 'address',
+  //   header: 'Address',
+  //   cell: ({ row }) => (
+  //     <div className="flex items-center mt-1 me-4">
+  //       <MapPin className="text-red-500 mr-2" width={16} height={16} />
+  //       {row.original.address.houseNumber}, {row.original.address.addressLine1},{' '}
+  //       {row.original.address.addressLine2}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: 'paymentType',
     header: 'Payment Type',
