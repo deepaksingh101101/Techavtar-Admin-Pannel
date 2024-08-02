@@ -63,6 +63,9 @@ export const columns: ColumnDef<ProductManagement>[] = [
     )
   },
   {
+    accessorKey: 'subType',
+    header: 'Sub Type'},
+  {
     accessorKey: 'group',
     header: 'Group'
   },

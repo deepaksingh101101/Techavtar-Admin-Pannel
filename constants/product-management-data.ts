@@ -6,6 +6,7 @@ export interface ProductManagement {
   sno: number;
   productName: string;
   type: string; // Assuming two types for simplicity
+  subType: string; // Assuming two types for simplicity
   group: string;
   season: string;
   priority: string;
@@ -27,6 +28,7 @@ export const ProductManagementData: ProductManagement[] = [
     sno: 1,
     productName: 'Arvi',
     type: 'Regular Veggie',
+    subType: 'Veggie',
     group: 'Veggies',
     season: 'Monsoon',
     priority: 'High',
@@ -45,6 +47,8 @@ export const ProductManagementData: ProductManagement[] = [
     sno: 2,
     productName: 'Cucumber (Kheera)',
     type: 'Salads',
+    subType: 'Veggie',
+
     group: 'Salads',
     season: 'All',
     priority: 'Medium',

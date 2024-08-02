@@ -26,14 +26,14 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { z } from 'zod';
-import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Trash } from 'lucide-react';
+import { Trash, Edit } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm, SubmitHandler, FieldValues, Controller } from 'react-hook-form';
-import { MultiSelect } from '@/components/ui/MultiSelect';
-import { Textarea } from "@/components/ui/textarea"
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import ReactSelect from 'react-select';
 
 interface ProductFormType {
   initialData: any | null;
@@ -42,14 +42,15 @@ interface ProductFormType {
 const productFormSchema = z.object({
   productId: z.number().nonnegative().optional(),
   productName: z.string().min(1, 'Product Name is required'),
-  description: z.string().min(1, 'Description  is required'),
+  description: z.string().min(1, 'Description is required'),
   productImage: z.object({}).optional(),
   visibility: z.string().min(1, 'Visibility is required'),
-  minUnit: z.number().min(1, 'Minimum Quantity  is required'),
+  minUnit: z.number().min(1, 'Minimum Quantity is required'),
   maxUnit: z.number().min(1, 'Maximum Quantity is required'),
   available: z.string().min(1, 'Please Enter availability'),
   productPrice: z.number().min(1, 'Product Price is required'),
   type: z.string().min(1, 'Type is required'),
+  subtype: z.string().min(1, 'Subtype is required'),
   group: z.string().min(1, 'Group is required'),
   season: z.string().min(1, 'Season is required'),
   priority: z.string().min(1, 'Priority is required'),
@@ -57,7 +58,6 @@ const productFormSchema = z.object({
   veggieNameInHindi: z.string().min(1, 'Veggie Name in Hindi is required'),
   unitQuantity: z.number().positive('Unit Quantity must be greater than zero'),
   pieces: z.number().positive('Pieces must be greater than zero'),
-  // addons: z.string().optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
@@ -67,6 +67,47 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [typeModalOpen, setTypeModalOpen] = useState(false);
+  const [subtypeModalOpen, setSubtypeModalOpen] = useState(false);
+  const [seasonModalOpen, setSeasonModalOpen] = useState(false);
+  const [rosterModalOpen, setRosterModalOpen] = useState(false);
+  const [types, setTypes] = useState([
+    { value: 'Staples', label: 'Staples' },
+    { value: 'Regular Veggie', label: 'Regular Veggie' },
+    { value: 'Exotics Veggies', label: 'Exotics Veggies' },
+    { value: 'Salads', label: 'Salads' },
+    { value: 'Exotic Salads', label: 'Exotic Salads' },
+    { value: 'Add Ons', label: 'Add Ons' },
+  ]);
+  const [subtypes, setSubtypes] = useState([
+    { value: 'Staples', label: 'Staples' },
+    { value: 'Regular Veggie', label: 'Regular Veggie' },
+    { value: 'Exotics Veggies', label: 'Exotics Veggies' },
+    { value: 'Salads', label: 'Salads' },
+    { value: 'Exotic Salads', label: 'Exotic Salads' },
+    { value: 'Add Ons', label: 'Add Ons' },
+  ]);
+
+  const [seasons, setSeasons] = useState([
+    { value: 'Summer', label: 'Summer' },
+    { value: 'Winter', label: 'Winter' },
+    { value: 'Spring', label: 'Spring' },
+    { value: 'Autumn', label: 'Autumn' },
+  ]);
+  const [rosters, setRosters] = useState([
+    { value: 'Mandatory', label: 'Mandatory' },
+    { value: 'Recommended Veggie', label: 'Recommended Veggie' },
+    { value: 'optional Veggies', label: 'optional Veggies' },
+    { value: 'Herbs', label: 'Herbs' },
+    { value: 'Add on', label: 'Add on' },
+    { value: 'Trial', label: 'Trial' },
+    { value: 'Inactive', label: 'Inactive' },
+  ]);
+  const [newType, setNewType] = useState('');
+  const [newSubtype, setNewSubtype] = useState('');
+  const [newSeason, setNewSeason] = useState('');
+  const [newRoster, setNewRoster] = useState('');
+
   const title = initialData ? 'Edit Product' : 'Create New Product';
   const description = initialData
     ? 'Edit product details.'
@@ -84,7 +125,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     formState: { errors },
     handleSubmit,
     setValue,
-    watch,
   } = form;
 
   const onSubmit = async (data: ProductFormValues) => {
@@ -117,14 +157,172 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
     }
   };
 
-  const visibilityOption = [
-    { id: '1', name: 'Admin' },
-    { id: '2', name: 'Customer' }
-  ];
-  
+  const addType = () => {
+    if (newType.trim()) {
+      setTypes([...types, { value: newType, label: newType }]);
+      setNewType('');
+    }
+  };
+
+  const addSubtype = () => {
+    if (newSubtype.trim()) {
+      setSubtypes([...subtypes, { value: newSubtype, label: newSubtype }]);
+      setNewSubtype('');
+    }
+  };
+
+  const addSeason = () => {
+    if (newSeason.trim()) {
+      setSeasons([...seasons, { value: newSeason, label: newSeason }]);
+      setNewSeason('');
+    }
+  };
+
+  const addRoster = () => {
+    if (newRoster.trim()) {
+      setRosters([...rosters, { value: newRoster, label: newRoster }]);
+      setNewRoster('');
+    }
+  };
+
+  const deleteType = (typeToDelete: string) => {
+    setTypes(types.filter(type => type.value !== typeToDelete));
+  };
+
+  const deleteSubtype = (subtypeToDelete: string) => {
+    setSubtypes(subtypes.filter(subtype => subtype.value !== subtypeToDelete));
+  };
+
+  const deleteSeason = (seasonToDelete: string) => {
+    setSeasons(seasons.filter(season => season.value !== seasonToDelete));
+  };
+
+  const deleteRoster = (rosterToDelete: string) => {
+    setRosters(rosters.filter(roster => roster.value !== rosterToDelete));
+  };
 
   return (
     <>
+      <Dialog open={typeModalOpen} onOpenChange={setTypeModalOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Manage Types</DialogTitle>
+            <DialogDescription>Add or remove product types.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Input
+              placeholder="New Type"
+              value={newType}
+              onChange={(e) => setNewType(e.target.value)}
+            />
+            <Button onClick={addType}>Add Type</Button>
+            <div className="space-y-2">
+              {types.map((type) => (
+                <div key={type.value} className="flex justify-between items-center">
+                  <span>{type.label}</span>
+                  <Button variant="destructive" onClick={() => deleteType(type.value)}>
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setTypeModalOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={subtypeModalOpen} onOpenChange={setSubtypeModalOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Manage Subtypes</DialogTitle>
+            <DialogDescription>Add or remove product subtypes.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Input
+              placeholder="New Subtype"
+              value={newSubtype}
+              onChange={(e) => setNewSubtype(e.target.value)}
+            />
+            <Button onClick={addSubtype}>Add Subtype</Button>
+            <div className="space-y-2">
+              {subtypes.map((subtype) => (
+                <div key={subtype.value} className="flex justify-between items-center">
+                  <span>{subtype.label}</span>
+                  <Button variant="destructive" onClick={() => deleteSubtype(subtype.value)}>
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setSubtypeModalOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={seasonModalOpen} onOpenChange={setSeasonModalOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Manage Seasons</DialogTitle>
+            <DialogDescription>Add or remove product seasons.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Input
+              placeholder="New Season"
+              value={newSeason}
+              onChange={(e) => setNewSeason(e.target.value)}
+            />
+            <Button onClick={addSeason}>Add Season</Button>
+            <div className="space-y-2">
+              {seasons.map((season) => (
+                <div key={season.value} className="flex justify-between items-center">
+                  <span>{season.label}</span>
+                  <Button variant="destructive" onClick={() => deleteSeason(season.value)}>
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setSeasonModalOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={rosterModalOpen} onOpenChange={setRosterModalOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Manage Rosters</DialogTitle>
+            <DialogDescription>Add or remove product rosters.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Input
+              placeholder="New Roster"
+              value={newRoster}
+              onChange={(e) => setNewRoster(e.target.value)}
+            />
+            <Button onClick={addRoster}>Add Roster</Button>
+            <div className="space-y-2">
+              {rosters.map((roster) => (
+                <div key={roster.value} className="flex justify-between items-center">
+                  <span>{roster.label}</span>
+                  <Button variant="destructive" onClick={() => deleteRoster(roster.value)}>
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setRosterModalOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (
@@ -145,311 +343,315 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
           className="w-full space-y-8"
         >
 
-<div className="relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3">
+          <div className="relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3">
 
-          <FormField
-            control={form.control}
-            name="productName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Product Name</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Product Name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
             <FormField
-            control={form.control}
-            name="productPrice"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Product Price</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="Enter Prodcut Price"
-                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Type</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Type"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="group"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Group</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Group"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="season"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Season</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Season"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="priority"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Priority</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Priority"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="roster"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Roster</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Roster"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="veggieNameInHindi"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Veggie Name in Hindi</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Enter Veggie Name in Hindi"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="unitQuantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Unit Quantity (gms)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="Enter Unit Quantity"
-                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-           <FormField
-            control={form.control}
-            name="minUnit"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Minimum Units</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="Enter Minimum Units"
-                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-           <FormField
-            control={form.control}
-            name="maxUnit"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Maximum Units</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="Enter Maximum Unit "
-                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={form.control}
-            name="pieces"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Pieces</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="Enter Pieces"
-                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-           <FormField
-                  control={control}
-                  name="available"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Availability</FormLabel>
-                      <FormControl>
-                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Available">Available</SelectItem>
-                            <SelectItem value="Unavailable">Unavailable</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage>{errors.available?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-                
-                      {/* <Controller
               control={form.control}
-              name="visibility"
+              name="productName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Visibility</FormLabel>
+                  <FormLabel>Product Name</FormLabel>
                   <FormControl>
-                    <MultiSelect
-                      value={field.value || []}
-                      onChange={(value) => field.onChange(value)}
-                      options={visibilityOption}
+                    <Input
                       disabled={loading}
-                      placeholder="Select Visibility"
+                      placeholder="Enter Product Name"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
-
+            />
             <FormField
-                  control={form.control}
-                  name="visibility"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Visibility</FormLabel>
-                      <FormControl>
-                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Visibility" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Admin">Admin</SelectItem>
-                            <SelectItem value="Public">Public</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage>{errors.visibility?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-                 <Controller
-          name="productImage"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  disabled={form.formState.isSubmitting}
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      field.onChange(e.target.files[0]);
-                    }
-                  }}
-                />
-              </FormControl>
-              {errors.productImage && <FormMessage>{errors.productImage.message}</FormMessage>}
-            </FormItem>
-          )}
-        />
-        
-         
-            </div>
+              control={form.control}
+              name="productPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Product Price"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center">
+                    <FormLabel>Type</FormLabel>
+                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setTypeModalOpen(true)}/>
+                  </div>
+                  <FormControl>
+                    <ReactSelect
+                      isSearchable
+                      options={types}
+                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
+                      isDisabled={loading}
+                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                      value={types.find(option => option.value === field.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subtype"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center">
+                    <FormLabel>Subtype</FormLabel>
+                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setSubtypeModalOpen(true)}/>
+                  </div>
+                  <FormControl>
+                    <ReactSelect
+                      isSearchable
+                      options={subtypes}
+                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
+                      isDisabled={loading}
+                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                      value={subtypes.find(option => option.value === field.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="group"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Group</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter Group"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="season"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center">
+                    <FormLabel>Season</FormLabel>
+                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setSeasonModalOpen(true)}/>
+                  </div>
+                  <FormControl>
+                    <ReactSelect
+                      isSearchable
+                      options={seasons}
+                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
+                      isDisabled={loading}
+                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                      value={seasons.find(option => option.value === field.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="roster"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center">
+                    <FormLabel>Roster</FormLabel>
+                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setRosterModalOpen(true)}/>
+                  </div>
+                  <FormControl>
+                    <ReactSelect
+                      isSearchable
+                      options={rosters}
+                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
+                      isDisabled={loading}
+                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                      value={rosters.find(option => option.value === field.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="veggieNameInHindi"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Veggie Name in Hindi</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter Veggie Name in Hindi"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="unitQuantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Unit Quantity (gms)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Unit Quantity"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="minUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Minimum Units</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Minimum Units"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Units</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Maximum Unit "
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="pieces"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pieces</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Pieces"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="available"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Availability</FormLabel>
+                  <FormControl>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Available">Available</SelectItem>
+                        <SelectItem value="Unavailable">Unavailable</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage>{errors.available?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="visibility"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Visibility</FormLabel>
+                  <FormControl>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Visibility" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Admin">Admin</SelectItem>
+                        <SelectItem value="Public">Public</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage>{errors.visibility?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <Controller
+              name="productImage"
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      disabled={form.formState.isSubmitting}
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          field.onChange(e.target.files[0]);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  {errors.productImage && <FormMessage>{errors.productImage.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
@@ -459,7 +661,6 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                   <Textarea
                     disabled={loading}
                     rows={5}
-                    
                     placeholder="Enter Description"
                     {...field}
                   />
@@ -467,7 +668,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                 <FormMessage />
               </FormItem>
             )}
-            />
+          />
           <Button type="submit" disabled={loading}>
             {action}
           </Button>
