@@ -9,8 +9,11 @@ export interface EmployeeManagement {
   sno: number;
   firstName: string;
   lastName: string;
+  gender?:string;
+  age?:number;
   role: string;
   city?: string;
+  state?: string;
   address?: string;
   assignedUsers: User[]; // Array of user objects assigned to the employee
   contactInformation: {
@@ -27,7 +30,10 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     lastName: 'Doe',
     role: 'Manager',
     city: "Delhi",
-    address:"Pro4living elite",
+    state: "Delhi",
+    age:21,
+    gender:"Male",
+    address:"D1 Pro4living elite",
     assignedUsers: [
       { id: 1, name: 'Alice Johnson' },
       { id: 2, name: 'Bob Williams' },
@@ -44,6 +50,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     lastName: 'Smith',
     role: 'Support Staff',
     city: "Delhi",
+    gender:"Male",
+    state: "Delhi",
+    age:21,
     assignedUsers: [
       { id: 4, name: 'David Miller' },
       { id: 5, name: 'Eva Green' }
@@ -60,7 +69,10 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     firstName: 'Robert',
     lastName: 'Brown',
     role: 'Technician',
-    city: "Kolkata",
+    city: "Delhi",
+    state: "Delhi",
+    age:21,
+    gender:"Male",
     assignedUsers: [
       { id: 6, name: 'Fiona White' },
       { id: 7, name: 'George Black' },
@@ -79,6 +91,9 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     lastName: 'Davis',
     role: 'Customer Service',
     city: "Delhi",
+    state: "Delhi",
+    age:21,
+    gender:"Male",
     assignedUsers: [
       { id: 9, name: 'Ian Yellow' },
       { id: 10, name: 'Jack Purple' }

@@ -73,8 +73,18 @@ export const columns: ColumnDef<EmployeeManagement>[] = [
     header: 'City'
   },
   {
+    accessorKey: 'state',
+    header: 'State'
+  },
+
+  {
     accessorKey: 'address',
     header: 'Address'
+  },
+
+  {
+    accessorKey: 'gender',
+    header: 'Gender'
   },
   {
     accessorKey: 'assignedUsers',
