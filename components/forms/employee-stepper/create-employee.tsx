@@ -140,7 +140,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
               name="assignedUsers"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assigned Users<span>Can be searched by phone number</span></FormLabel>
+                  <FormLabel>Assigned Users<span className='ms-1 text-red-500' style={{fontSize:"14px"}} >(Can be searched by phone number)</span></FormLabel>
                   <FormControl>
                     <Controller
                       control={control}

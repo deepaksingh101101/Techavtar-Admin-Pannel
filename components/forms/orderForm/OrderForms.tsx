@@ -196,7 +196,7 @@ export const OrderView: React.FC = () => {
 
       {selectedDelivery && (
         <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
-          <DialogContent>
+          <DialogContent className="max-w-lg">
             <DialogHeader>
               <DialogTitle>Edit Delivery</DialogTitle>
               <DialogDescription>Update the delivery details below:</DialogDescription>

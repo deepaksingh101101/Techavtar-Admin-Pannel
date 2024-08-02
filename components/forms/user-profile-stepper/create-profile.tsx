@@ -206,70 +206,93 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
       </div>
       <Separator />
       <Dialog open={isCityModalOpen} onOpenChange={(open) => !open && closeCityModal()}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Manage Cities</DialogTitle>
-            <DialogDescription>You can manage cities and their routes here.</DialogDescription>
-          </DialogHeader>
-          <div>
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Routes</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {cityOptions.map((city, cityIndex) => (
-                  <tr key={cityIndex}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{city.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <ul>
-                      {city.routes.map((route, routeIndex) => (
-                          <li key={routeIndex} className="flex justify-between " style={{ listStyleType: "square" }}>
-                          {routeIndex+1}  <span>{route}</span>
-                            <Trash height={15} width={15} onClick={() => deleteRoute(city.id, routeIndex)} className="cursor-pointer mt-0 hover:scale-110 text-red-500" />
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex mt-2">
-                        <Input
-                          type="text"
-                          className="w-100"
-                          placeholder="Add new route"
-                          value={selectedCityForRoute === city.id ? newRoute : ''}
-                          onChange={(e) => {
-                            setSelectedCityForRoute(city.id);
-                            setNewRoute(e.target.value);
-                          }}
-                        />
-                        <Button onClick={addRoute} className="ml-2 ">
-                          Add
-                        </Button>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Trash onClick={() => deleteCity(cityIndex)} className="cursor-pointer text-red-500" />
-                    </td>
-                  </tr>
+      <DialogContent >
+  <DialogHeader>
+    <DialogTitle>Manage Cities</DialogTitle>
+    <DialogDescription>You can manage cities and their routes here.</DialogDescription>
+  </DialogHeader>
+  <div>
+    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead className="bg-red-200">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+            City
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+            Routes
+          </th>
+          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+        {cityOptions.map((city, cityIndex) => (
+          <tr key={cityIndex}>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+              {city.name}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+              <ul>
+                {city.routes.map((route, routeIndex) => (
+                  <li
+                    key={routeIndex}
+                    className={`flex justify-between px-2 ${
+                      routeIndex % 2 === 0
+                        ? 'bg-blue-100 dark:bg-gray-700'
+                        : 'bg-green-100 dark:bg-gray-800'
+                    }`}
+                    style={{ listStyleType: 'square' }}
+                  >
+                    {routeIndex + 1} <span>{route}</span>
+                    <Trash
+                      height={15}
+                      width={15}
+                      onClick={() => deleteRoute(city.id, routeIndex)}
+                      className="cursor-pointer mt-0 hover:scale-110 text-red-500"
+                    />
+                  </li>
                 ))}
-              </tbody>
-            </table>
-            <div className="flex mt-4">
-              <Input
-                type="text"
-                placeholder="Add new city"
-                value={newCity}
-                onChange={(e) => setNewCity(e.target.value)}
-              />
-              <Button onClick={addCity} className="ml-2">
-                Add
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+              </ul>
+              <div className="flex mt-2">
+                <Input
+                  type="text"
+                  className="w-full"
+                  placeholder="Add new route"
+                  value={selectedCityForRoute === city.id ? newRoute : ''}
+                  onChange={(e) => {
+                    setSelectedCityForRoute(city.id);
+                    setNewRoute(e.target.value);
+                  }}
+                />
+                <Button onClick={addRoute} className="ml-2">
+                  Add
+                </Button>
+              </div>
+            </td>
+            <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
+              <Trash onClick={() => deleteCity(cityIndex)} className="cursor-pointer text-red-500" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <div className="flex mt-4">
+      <Input
+        type="text"
+        placeholder="Add new city"
+        value={newCity}
+        onChange={(e) => setNewCity(e.target.value)}
+      />
+      <Button onClick={addCity} className="ml-2">
+        Add
+      </Button>
+    </div>
+  </div>
+</DialogContent>
+
+    </Dialog>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(processForm)}

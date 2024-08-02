@@ -240,7 +240,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
       </div>
       <Separator />
       <Dialog open={isSubscriptionTypeModalOpen} onOpenChange={(open) => !open && closeSubscriptionTypeModal()}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Manage Subscription Types</DialogTitle>
             <DialogDescription>You can manage subscription types here.</DialogDescription>
@@ -279,7 +279,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
         </DialogContent>
       </Dialog>
       <Dialog open={isFrequencyModalOpen} onOpenChange={(open) => !open && closeFrequencyModal()}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Manage Frequencies</DialogTitle>
             <DialogDescription>You can manage frequencies here.</DialogDescription>
@@ -571,7 +571,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
           control={control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Image</FormLabel>
+              <FormLabel>Subscription Image</FormLabel>
               <FormControl>
                 <Input
                   type="file"

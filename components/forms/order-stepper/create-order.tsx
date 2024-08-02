@@ -649,7 +649,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
       </div>
 
       <Dialog open={isTimeSlotModalOpen} onOpenChange={(open) => !open && setIsTimeSlotModalOpen(false)}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Manage Delivery Time Slots</DialogTitle>
             <DialogDescription>Add or remove delivery time slots</DialogDescription>

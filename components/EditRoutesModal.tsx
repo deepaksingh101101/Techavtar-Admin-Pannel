@@ -27,7 +27,7 @@ const EditRoutesModal: React.FC<EditRoutesModalProps> = ({ isOpen, onClose, rout
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent>
+      <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Edit Routes</DialogTitle>
           <DialogDescription>Manage the routes assigned to the user.</DialogDescription>
