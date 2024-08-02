@@ -210,12 +210,14 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
             <DialogDescription>Add or remove product types.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
+            <div className="flex justify-between">
             <Input
               placeholder="New Type"
               value={newType}
               onChange={(e) => setNewType(e.target.value)}
             />
-            <Button onClick={addType}>Add Type</Button>
+            <Button className='ms-3' onClick={addType}>Add</Button>
+            </div>
             <div className="space-y-2">
               {types.map((type) => (
                 <div key={type.value} className="flex justify-between items-center">
@@ -240,12 +242,15 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
             <DialogDescription>Add or remove product subtypes.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
+          <div className="flex justify-between">
+
             <Input
               placeholder="New Subtype"
               value={newSubtype}
               onChange={(e) => setNewSubtype(e.target.value)}
             />
-            <Button onClick={addSubtype}>Add Subtype</Button>
+            <Button  className='ms-3' onClick={addSubtype}>Add</Button>
+            </div>
             <div className="space-y-2">
               {subtypes.map((subtype) => (
                 <div key={subtype.value} className="flex justify-between items-center">
@@ -270,12 +275,15 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
             <DialogDescription>Add or remove product seasons.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
+          <div className="flex justify-between">
+
             <Input
               placeholder="New Season"
               value={newSeason}
               onChange={(e) => setNewSeason(e.target.value)}
             />
-            <Button onClick={addSeason}>Add Season</Button>
+            <Button className='ms-2' onClick={addSeason}>Add</Button>
+            </div>
             <div className="space-y-2">
               {seasons.map((season) => (
                 <div key={season.value} className="flex justify-between items-center">
@@ -300,12 +308,15 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
             <DialogDescription>Add or remove product rosters.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
+          <div className="flex justify-between">
+
             <Input
               placeholder="New Roster"
               value={newRoster}
               onChange={(e) => setNewRoster(e.target.value)}
             />
-            <Button onClick={addRoster}>Add Roster</Button>
+            <Button  className='ms-3' onClick={addRoster}>Add</Button>
+            </div>
             <div className="space-y-2">
               {rosters.map((roster) => (
                 <div key={roster.value} className="flex justify-between items-center">
