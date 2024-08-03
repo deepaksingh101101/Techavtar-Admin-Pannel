@@ -157,58 +157,55 @@ export const ModifyDelivery: React.FC = () => {
         <Heading title="Order Details" description="View Order Details" />
       </div>
       <Separator />
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Order ID:</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.orderId}</p>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Employee ID:</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.empId}</p>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Customer Name:</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.customerName}</p>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Subscription Type:</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.subscriptionType}</p>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Maximum Weight (g):</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.totalWeight}</p>
-          </div>
-        </div>
-      </div>
+     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg mt-4 shadow-lg">
+  <div className="grid grid-cols-2 gap-4">
+    <div>
+      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Order ID:</p>
+      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">{order.orderId}</p>
+    </div>
+    <div>
+      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Customer Name:</p>
+      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">{order.customerName}</p>
+    </div>
+    <div>
+      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Subscription Type:</p>
+      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">{order.subscriptionType}</p>
+    </div>
+    <div>
+      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Maximum Weight (g):</p>
+      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">{order.totalWeight}</p>
+    </div>
+  </div>
+</div>
+
       <Separator className="my-4" />
-      <Button onClick={handleAddNewItem} className="mb-4">
+      <Button onClick={handleAddNewItem} className="mb-4 bg-green-600">
         Add New Item
       </Button>
       {fields.length > 0 && (
         <form onSubmit={handleSubmit(handleSaveChanges)}>
           <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <thead className='bg-red-300 text-white'>
+              <tr className='bg-red-300'>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black   uppercase tracking-wider">
                   Item Name
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-black   uppercase tracking-wider">
                   Item Price (₹)
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-black  uppercase tracking-wider">
                   Unit Quantity (g)
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3  text-left text-xs font-bold text-black  uppercase tracking-wider">
                   Minimum Units
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3  text-left text-xs font-bold text-black  uppercase tracking-wider">
                   Maximum Units
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3  text-left text-xs font-bold text-black  uppercase tracking-wider">
                   Required Units
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3  text-right text-xs font-bold text-black   uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -320,8 +317,8 @@ export const ModifyDelivery: React.FC = () => {
         </form>
       )}
       <Separator className="my-4" />
-      <Heading title="Add-ons" description="Add more items to the order" />
-      <Button  onClick={handleAddNewAddOn} className="mb-4">
+      <Heading title="Add-ons" description="Add more items to the Bag" />
+      <Button  onClick={handleAddNewAddOn} className="mb-4 mt-2 bg-green-600">
         Add New Add-on
       </Button>
       {addOnFields.length > 0 && (
@@ -438,7 +435,7 @@ export const ModifyDelivery: React.FC = () => {
           name="city"
           render={({ field }) => (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
+              <label className="block my-2 text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
               <Select
                 isClearable
                 isSearchable
@@ -457,7 +454,7 @@ export const ModifyDelivery: React.FC = () => {
           name="route"
           render={({ field }) => (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Route</label>
+              <label className="block my-2 text-sm font-medium text-gray-700 dark:text-gray-300">Route</label>
               <Select
                 isClearable
                 isSearchable
@@ -471,15 +468,15 @@ export const ModifyDelivery: React.FC = () => {
         />
       </div>
 
-      <Separator className="my-4" />
+      <Separator className="my-4 " />
       <Heading title="Delivery Time Slot" description="Select or add delivery time slots" />
       <Controller
         control={control}
         name="deliveryTimeSlot"
         render={({ field }) => (
-          <div className="mb-4">
+          <div className=" mb-56">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Time Slot</label>
+              <label className="block text-sm font-medium my-2 text-gray-700 dark:text-gray-300">Delivery Time Slot</label>
               <Edit
                 onClick={() => setIsTimeSlotModalOpen(true)}
                 className="cursor-pointer text-red-500"
