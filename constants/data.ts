@@ -162,8 +162,8 @@ export const navItems: NavItem[] = [
     label: 'create-order'
   },
   {
-    title: 'Create Routes',
-    href: '/routes-management',
+    title: 'Routes Management',
+    href: '/routes-',
     icon: 'order',
     label: 'create-order'
   },
