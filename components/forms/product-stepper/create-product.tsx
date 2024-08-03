@@ -108,11 +108,11 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
   const [newSeason, setNewSeason] = useState('');
   const [newRoster, setNewRoster] = useState('');
 
-  const title = initialData ? 'Edit Product' : 'Create New Product';
+  const title = initialData ? 'Edit Item' : 'Create New Item';
   const description = initialData
-    ? 'Edit product details.'
-    : 'To create a new product, fill in the required information.';
-  const toastMessage = initialData ? 'Product updated.' : 'Product created.';
+    ? 'Edit Item details.'
+    : 'To create a new Items, fill in the required information.';
+  const toastMessage = initialData ? 'Item updated.' : 'Item created.';
   const action = initialData ? 'Save changes' : 'Create';
 
   const form = useForm<ProductFormValues>({
@@ -361,11 +361,11 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               name="productName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Name</FormLabel>
+                  <FormLabel>Item Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Enter Product Name"
+                      placeholder="Enter Item Name"
                       {...field}
                     />
                   </FormControl>
@@ -373,26 +373,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="productPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Price</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      disabled={loading}
-                      placeholder="Enter Product Price"
-                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+              <FormField
               control={form.control}
               name="type"
               render={({ field }) => (
@@ -416,6 +397,179 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                 </FormItem>
               )}
             />
+             <FormField
+              control={form.control}
+              name="season"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center">
+                    <FormLabel>Season</FormLabel>
+                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setSeasonModalOpen(true)}/>
+                  </div>
+                  <FormControl>
+                    <ReactSelect
+                      isSearchable
+                      options={seasons}
+                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
+                      isDisabled={loading}
+                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                      value={seasons.find(option => option.value === field.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+  <FormField
+              control={form.control}
+              name="priority"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Priority</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter priority"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+<FormField
+              control={form.control}
+              name="roster"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center">
+                    <FormLabel>Roster</FormLabel>
+                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setRosterModalOpen(true)}/>
+                  </div>
+                  <FormControl>
+                    <ReactSelect
+                      isSearchable
+                      options={rosters}
+                      getOptionLabel={(option) => option.label}
+                      getOptionValue={(option) => option.value}
+                      isDisabled={loading}
+                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
+                      value={rosters.find(option => option.value === field.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+<FormField
+              control={form.control}
+              name="veggieNameInHindi"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Veggie Name in Hindi</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Enter Veggie Name in Hindi"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+<FormField
+              control={form.control}
+              name="unitQuantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Unit Quantity (gms)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Unit Quantity"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
+
+
+
+
+
+
+
+            <FormField
+              control={form.control}
+              name="productPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Item Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Item Price"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
+ <FormField
+              control={form.control}
+              name="minUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Minimum Units</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Minimum Units"
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Units</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="Enter Maximum Unit "
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          
             {/* <FormField
               control={form.control}
               name="subtype"
@@ -457,153 +611,19 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="season"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center">
-                    <FormLabel>Season</FormLabel>
-                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setSeasonModalOpen(true)}/>
-                  </div>
-                  <FormControl>
-                    <ReactSelect
-                      isSearchable
-                      options={seasons}
-                      getOptionLabel={(option) => option.label}
-                      getOptionValue={(option) => option.value}
-                      isDisabled={loading}
-                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
-                      value={seasons.find(option => option.value === field.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="roster"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center">
-                    <FormLabel>Roster</FormLabel>
-                    <Edit className="text-red-500 ms-1" height={15} width={15} onClick={() => setRosterModalOpen(true)}/>
-                  </div>
-                  <FormControl>
-                    <ReactSelect
-                      isSearchable
-                      options={rosters}
-                      getOptionLabel={(option) => option.label}
-                      getOptionValue={(option) => option.value}
-                      isDisabled={loading}
-                      onChange={(selected) => field.onChange(selected ? selected.value : '')}
-                      value={rosters.find(option => option.value === field.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="veggieNameInHindi"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Veggie Name in Hindi</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Enter Veggie Name in Hindi"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="unitQuantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Unit Quantity (gms)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      disabled={loading}
-                      placeholder="Enter Unit Quantity"
-                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="minUnit"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Minimum Units</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      disabled={loading}
-                      placeholder="Enter Minimum Units"
-                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="maxUnit"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Maximum Units</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      disabled={loading}
-                      placeholder="Enter Maximum Unit "
-                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="pieces"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pieces</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      disabled={loading}
-                      placeholder="Enter Pieces"
-                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+           
+           
+
+           
+         
+           
+           
             <FormField
               control={control}
               name="available"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Availability</FormLabel>
+                  <FormLabel>Item Availability</FormLabel>
                   <FormControl>
                     <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
@@ -624,7 +644,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               name="visibility"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Visibility</FormLabel>
+                  <FormLabel>Item Visibility</FormLabel>
                   <FormControl>
                     <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
@@ -645,7 +665,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
               control={control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Image</FormLabel>
+                  <FormLabel>Item Image</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
@@ -667,7 +687,7 @@ export const CreateProductForm: React.FC<ProductFormType> = ({ initialData }) =>
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product Description</FormLabel>
+                <FormLabel>Item Description</FormLabel>
                 <FormControl>
                   <Textarea
                     disabled={loading}

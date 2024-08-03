@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { DeliveryManagement } from '@/constants/delivery-management-data';
 import { CellAction } from './cell-action';
 import { Check, Edit, X } from 'lucide-react';
+import Link from 'next/link';
 
 export const columns: ColumnDef<DeliveryManagement>[] = [
   {
@@ -55,7 +56,7 @@ export const columns: ColumnDef<DeliveryManagement>[] = [
               </td>
               <td className="px-8 py-2 whitespace-nowrap text-sm text-gray-900">{row.original.delivery.assignedEmployee}</td>
               <td className="px-12 py-2 whitespace-nowrap text-sm text-gray-900">{row.original.delivery.assignedRoutes}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-red-600"><Edit height="16" width="16" /></td>
+              <td className="px-4 py-2 cursor-pointer whitespace-nowrap text-sm text-red-600"><Link href='/order/assignOrder/'><Edit height="16" width="16" /></Link></td>
             </tr>
           </tbody>
         </table>

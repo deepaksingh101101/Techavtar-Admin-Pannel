@@ -39,7 +39,7 @@ export const DeliveryClient: React.FC = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Today's Delivery (${data.length})`}
+          title={`Delivery (${data.length})`}
           description="Manage Delivery (Client side table functionalities.)"
         />
         {/* <Button

@@ -4,7 +4,7 @@ import { StaticImageData } from 'next/image';
 
 export interface ProductManagement {
   sno: number;
-  productName: string;
+  itemName: string;
   type: string; // Assuming two types for simplicity
   subType: string; // Assuming two types for simplicity
   group: string;
@@ -27,12 +27,12 @@ export interface ProductManagement {
 export const ProductManagementData: ProductManagement[] = [
   {
     sno: 1,
-    productName: 'Arvi',
+    itemName: 'Arvi',
     type: 'Regular Veggie',
     subType: 'Veggie',
     group: 'Veggies',
     season: 'Monsoon',
-    priority: 'High',
+    priority: '2',
     roster: 'A',
     price: 200,
     veggieNameInHindi: 'अरबी',
@@ -47,13 +47,13 @@ export const ProductManagementData: ProductManagement[] = [
   },
   {
     sno: 2,
-    productName: 'Cucumber (Kheera)',
+    itemName: 'Cucumber (Kheera)',
     type: 'Salads',
     subType: 'Veggie',
 
     group: 'Salads',
     season: 'All',
-    priority: 'Medium',
+    priority: '1',
     roster: 'A',
     veggieNameInHindi: 'खीरा',
     unitQuantity: 400,

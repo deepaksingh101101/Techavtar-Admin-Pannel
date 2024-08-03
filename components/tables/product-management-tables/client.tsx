@@ -52,8 +52,8 @@ export const ProductManagementClient: React.FC = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Product (${data.length})`}
-          description="Manage Product (Client side table functionalities.)"
+          title={`Items (${data.length})`}
+          description="Manage Items (Client side table functionalities.)"
         />
         <Button
           className="text-xs md:text-sm"
@@ -64,7 +64,7 @@ export const ProductManagementClient: React.FC = () => {
       </div>
       <Separator />
       <DataTable
-        searchKey="productName"
+        searchKey="itemName"
         columns={columns}
         data={data}
         onSearch={handleSearch} 

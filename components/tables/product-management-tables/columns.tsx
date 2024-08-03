@@ -35,17 +35,8 @@ export const columns: ColumnDef<ProductManagement>[] = [
     cell: ({ row }) => row.index + 1,
   },
   {
-    accessorKey: 'productName',
-    header: 'Product Name'
-  },
-  {
-    accessorKey: 'image',
-    header: 'Image',
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <Image src={row.original.image} alt={row.original.productName} width={50} height={50} />
-      </div>
-    )
+    accessorKey: 'itemName',
+    header: 'Item Name'
   },
   {
     accessorKey: 'type',
@@ -62,17 +53,11 @@ export const columns: ColumnDef<ProductManagement>[] = [
       </div>
     )
   },
-  // {
-  //   accessorKey: 'subType',
-  //   header: 'Sub Type'},
-  {
-    accessorKey: 'group',
-    header: 'Group'
-  },
   {
     accessorKey: 'season',
     header: 'Season'
   },
+
   {
     accessorKey: 'priority',
     header: 'Priority',
@@ -86,19 +71,71 @@ export const columns: ColumnDef<ProductManagement>[] = [
           'bg-red-400'
         }`}
       >
-        <span className='text-black bold'>{row.original.priority}</span>
+        <span className='text-black bold text-center ms-2'>{row.original.priority}</span>
       </div>
     )
   },
   {
+    accessorKey: 'roster',
+    header: 'Roster'
+  },
+  {
+    accessorKey: 'veggieNameInHindi',
+    header: 'Veggie Name in Hindi',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.veggieNameInHindi}
+      </div>
+    )
+  },
+  
+  {
+    accessorKey: 'unitQuantity',
+    header: 'Unit Quantity',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.unitQuantity} gms 
+      </div>
+    )
+  },
+
+ 
+  {
     accessorKey: 'price',
-    header: 'Product Price',
+    header: 'Item Price',
     cell: ({ row }) => (
       <div className="text-center">
        ₹{row.original.price}
       </div>
     )
   },
+  {
+    accessorKey: 'minUnit',
+    header: 'Min Unit',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.minUnit} 
+      </div>
+    )
+  },
+  {
+    accessorKey: 'maxUnit',
+    header: 'Max Unit',
+    cell: ({ row }) => (
+      <div className="text-center">
+        {row.original.maxUnit} 
+      </div>
+    )
+  },
+
+    // {
+  //   accessorKey: 'subType',
+  //   header: 'Sub Type'},
+  {
+    accessorKey: 'group',
+    header: 'Group'
+  },
+
   {
     accessorKey: 'available',
     header: 'Available',
@@ -131,54 +168,15 @@ export const columns: ColumnDef<ProductManagement>[] = [
     )
   },
   {
-    accessorKey: 'roster',
-    header: 'Roster'
-  },
-  {
-    accessorKey: 'veggieNameInHindi',
-    header: 'Veggie Name in Hindi',
+    accessorKey: 'image',
+    header: 'Image',
     cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.veggieNameInHindi}
+      <div className="flex items-center">
+        <Image src={row.original.image} alt={row.original.productName} width={50} height={50} />
       </div>
     )
   },
-  {
-    accessorKey: 'unitQuantity',
-    header: 'Unit Quantity',
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.unitQuantity} gms 
-      </div>
-    )
-  },
-  {
-    accessorKey: 'maxUnit',
-    header: 'Max Unit',
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.maxUnit} 
-      </div>
-    )
-  },
-  {
-    accessorKey: 'minUnit',
-    header: 'Min Unit',
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.minUnit} 
-      </div>
-    )
-  },
-  {
-    accessorKey: 'pieces',
-    header: 'Pieces',
-    cell: ({ row }) => (
-      <div className="text-center">
-        {row.original.pieces}
-      </div>
-    )
-  },
+
   {
     accessorKey: 'description',
     header: 'Description',
