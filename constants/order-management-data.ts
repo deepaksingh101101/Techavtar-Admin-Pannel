@@ -10,6 +10,7 @@ export interface OrderManagement {
   orderId: number;
   empId?: number;
   customerName: string;
+  employeeName?: string;
   deliveries: DeliveryInfo[];
   bagOrdered?: string[]; // Array of product names or IDs
   subscriptionType?: string; // Array of product names or IDs

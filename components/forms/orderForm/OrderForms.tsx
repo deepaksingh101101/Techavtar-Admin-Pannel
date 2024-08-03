@@ -13,6 +13,7 @@ export const OrderData: OrderManagement[] = [
   {
     orderId: 101,
     empId: 1022,
+    employeeName: "Shivam Singh",
     customerName: "Deepak Singh",
     deliveries: [
       {
@@ -105,8 +106,8 @@ export const OrderView: React.FC = () => {
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.orderId}</p>
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Employee ID:</p>
-            <p className="text-lg text-gray-900 dark:text-gray-100">{order.empId}</p>
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Associated Employee Name(ID):</p>
+            <p className="text-lg text-gray-900 dark:text-gray-100">{order.employeeName}({order.empId})</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Customer Name:</p>
@@ -118,7 +119,7 @@ export const OrderView: React.FC = () => {
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.totalWeight}</p>
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Price (₹):</p>
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Total Price(₹):</p>
             <p className="text-lg text-gray-900 dark:text-gray-100">{order.totalPrice}</p>
           </div>
           {/* <div>
