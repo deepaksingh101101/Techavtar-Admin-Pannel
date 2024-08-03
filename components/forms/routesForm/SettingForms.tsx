@@ -6,6 +6,7 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { v4 as uuidv4 } from 'uuid';
+import { Trash, Trash2Icon } from 'lucide-react';
 
 const initialData = [
   { id: uuidv4(), city: 'City A', routes: ['Route 1', 'Route 2', 'Route 3'] },
@@ -66,32 +67,49 @@ export const RoutesForm: React.FC = () => {
         />
         <Button className='min-w-32' onClick={handleAddCity}>Add City</Button>
       </div>
-      <div className="grid grid-cols-1 gap-4">
-        {data.map(city => (
-          <div key={city.id} className="bg-white p-4 rounded-lg shadow">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-semibold">{city.city}</h3>
-              <Button variant="destructive" onClick={() => handleDeleteCity(city.id)}>Delete City</Button>
-            </div>
-            <div className='flex justify-between ' >
-              <Input
-                value={newRoutes[city.id] || ''}
-                onChange={(e) => setNewRoutes({ ...newRoutes, [city.id]: e.target.value })}
-                placeholder={`Add new route to ${city.city}`}
-                className="mr-2"
-              />
-              <Button className='min-w-32' onClick={() => handleAddRoute(city.id)} disabled={!newRoutes[city.id]}>Add Route</Button>
-            </div>
-            <ul className="mt-2">
-              {city.routes.map(route => (
-                <li key={route} className="flex justify-between items-center py-1">
-                  <span>{route}</span>
-                  <Button variant="destructive" size="sm" onClick={() => handleDeleteRoute(city.id, route)}>Delete</Button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border">
+          <thead className="bg-green-200">
+            <tr>
+              <th className="px-4 py-2 border text-left">City</th>
+              <th className="px-4 py-2 border text-left">Routes</th>
+              <th className="px-4 py-2 border text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((city, index) => (
+              <tr key={city.id} className={index % 2 === 0 ? 'bg-blue-100' : 'bg-green-100'}>
+                <td className="px-4 py-2 border">
+                  <div className="flex justify-between items-center">
+                    {city.city}
+                    <Button variant="destructive" size="sm" onClick={() => handleDeleteCity(city.id)}>Delete City</Button>
+                  </div>
+                </td>
+                <td className="px-4 py-2 border">
+                  <ul>
+                    {city.routes.map(route => (
+                      <li key={route} className="flex justify-between items-center py-1">
+                        {route}
+                        <Trash2Icon className='text-red-500' onClick={() => handleDeleteRoute(city.id, route)}>Delete</Trash2Icon>
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="px-4 py-2 border">
+                  <div className='flex flex-col space-y-2'>
+                    <Input
+                      value={newRoutes[city.id] || ''}
+                      onChange={(e) => setNewRoutes({ ...newRoutes, [city.id]: e.target.value })}
+                      placeholder={`Add new route to ${city.city}`}
+                      className="mr-2"
+                    />
+                    <Button className='min-w-32' onClick={() => handleAddRoute(city.id)} disabled={!newRoutes[city.id]}>Add Route</Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );
