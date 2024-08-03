@@ -46,15 +46,15 @@ export const columns: ColumnDef<Bag>[] = [
       </table>
     ),
   },
-  {
-    accessorKey: 'totalPrice',
-    header: 'Total Price (₹)',
-    cell: ({ row }) => (
-      <div className="flex justify-center">
-        <span className='text-center'>{row.original.totalPrice}</span>
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: 'totalPrice',
+  //   header: 'Total Price (₹)',
+  //   cell: ({ row }) => (
+  //     <div className="flex justify-center">
+  //       <span className='text-center'>{row.original.totalPrice}</span>
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: 'totalWeight',
     header: 'Total Maximum Weight (gms)',
@@ -64,15 +64,15 @@ export const columns: ColumnDef<Bag>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: 'totalPieces',
-    header: 'Total Pieces',
-    cell: ({ row }) => (
-      <div className="flex justify-center">
-        <span className='text-center'>{row.original.totalPieces ?? '-'}</span>
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: 'totalPieces',
+  //   header: 'Total Pieces',
+  //   cell: ({ row }) => (
+  //     <div className="flex justify-center">
+  //       <span className='text-center'>{row.original.totalPieces ?? '-'}</span>
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: 'createdBy',
     header: 'Created By',

@@ -248,13 +248,33 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                     </FormItem>
                   )}
                 />
+                  <FormField
+  control={form.control}
+  name="totalWeight"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Total Maximum Weight(gms)</FormLabel>
+      <FormControl>
+        <Input
+          name="totalWeight"
+          type="number"
+          disabled={loading}
+          placeholder="Enter Total Weight"
+          onChange={(e) => field.onChange(parseFloat(e.target.value))}
+          value={field.value || ''}
+        />
+      </FormControl>
+      <FormMessage>{errors.totalWeight?.message}</FormMessage>
+    </FormItem>
+  )}
+/>
 
                 <FormField
                   control={form.control}
                   name="visibility"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Visibility</FormLabel>
+                      <FormLabel>Bag Visibility</FormLabel>
                       <FormControl>
                         <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                           <SelectTrigger>
@@ -314,26 +334,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
                     </FormItem>
                   )}
                 />
-               <FormField
-  control={form.control}
-  name="totalWeight"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Total Maximum Weight(gms)</FormLabel>
-      <FormControl>
-        <Input
-          name="totalWeight"
-          type="number"
-          disabled={loading}
-          placeholder="Enter Total Weight"
-          onChange={(e) => field.onChange(parseFloat(e.target.value))}
-          value={field.value || ''}
-        />
-      </FormControl>
-      <FormMessage>{errors.totalWeight?.message}</FormMessage>
-    </FormItem>
-  )}
-/>
+             
 
                
 
