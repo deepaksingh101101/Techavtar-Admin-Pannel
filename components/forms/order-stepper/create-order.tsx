@@ -268,7 +268,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="deliveryTimeSlot"
                 render={({ field }) => (
@@ -307,7 +307,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                     <FormMessage>{errors.deliveryTimeSlot?.message}</FormMessage>
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}

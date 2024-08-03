@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Select from 'react-select';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Trash, Edit } from 'lucide-react';
 
 interface BagItem {
   itemName: string;
@@ -29,6 +31,7 @@ interface FormValues {
   addOns: AddOn[];
   city: string;
   route: string;
+  deliveryTimeSlot: string;
 }
 
 const order = {
@@ -71,9 +74,14 @@ const cityRoutes = [
   { city: 'City C', routes: ['Route 7', 'Route 8', 'Route 9'] },
 ];
 
+const timeSlotsDefault = ['9:00 AM - 11:00 AM', '12:00 PM - 2:00 PM', '3:00 PM - 5:00 PM'];
+
 export const ModifyDelivery: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedCity, setSelectedCity] = useState<{ value: string; label: string } | null>(null);
+  const [isTimeSlotModalOpen, setIsTimeSlotModalOpen] = useState(false);
+  const [newTimeSlot, setNewTimeSlot] = useState('');
+  const [timeSlots, setTimeSlots] = useState(timeSlotsDefault);
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -81,6 +89,7 @@ export const ModifyDelivery: React.FC = () => {
       addOns: [],
       city: '',
       route: '',
+      deliveryTimeSlot: '',
     }
   });
 
@@ -129,6 +138,17 @@ export const ModifyDelivery: React.FC = () => {
     setSelectedCity(selectedOption);
     setValue('city', selectedOption?.value || '');
     setValue('route', ''); // Reset route selection when city changes
+  };
+
+  const addTimeSlot = () => {
+    if (newTimeSlot && !timeSlots.includes(newTimeSlot)) {
+      setTimeSlots([...timeSlots, newTimeSlot]);
+      setNewTimeSlot('');
+    }
+  };
+
+  const deleteTimeSlot = (index: number) => {
+    setTimeSlots(timeSlots.filter((_, i) => i !== index));
   };
 
   return (
@@ -450,6 +470,73 @@ export const ModifyDelivery: React.FC = () => {
           )}
         />
       </div>
+
+      <Separator className="my-4" />
+      <Heading title="Delivery Time Slot" description="Select or add delivery time slots" />
+      <Controller
+        control={control}
+        name="deliveryTimeSlot"
+        render={({ field }) => (
+          <div className="mb-4">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Delivery Time Slot</label>
+              <Edit
+                onClick={() => setIsTimeSlotModalOpen(true)}
+                className="cursor-pointer text-red-500"
+                height={15}
+                width={15}
+              />
+            </div>
+            <Select
+              isClearable
+              isSearchable
+              options={timeSlots.map((slot) => ({ value: slot, label: slot }))}
+              onChange={(selected) => field.onChange(selected?.value)}
+              value={timeSlots.find((slot) => slot === field.value) ? { value: field.value, label: field.value } : null}
+            />
+          </div>
+        )}
+      />
+      
+      <Dialog open={isTimeSlotModalOpen} onOpenChange={(open) => !open && setIsTimeSlotModalOpen(false)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Manage Delivery Time Slots</DialogTitle>
+            <DialogDescription>Add or remove delivery time slots</DialogDescription>
+          </DialogHeader>
+          <div>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Slot</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {timeSlots.map((slot, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{slot}</td>
+                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Trash onClick={() => deleteTimeSlot(index)} className="cursor-pointer text-red-500" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex mt-4">
+              <Input
+                type="text"
+                placeholder="Add new time slot"
+                value={newTimeSlot}
+                onChange={(e) => setNewTimeSlot(e.target.value)}
+              />
+              <Button onClick={addTimeSlot} className="ml-2">
+                Add
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
