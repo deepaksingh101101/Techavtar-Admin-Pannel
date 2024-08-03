@@ -63,19 +63,12 @@ export const columns: ColumnDef<DeliveryManagement>[] = [
     ),
   },
   {
-    accessorKey: 'bagOrdered',
-    header: 'Bag Ordered',
-    cell: ({ row }) => (
-      <ul>
-        {row.original.bagOrdered?.map((product, index) => (
-          <li key={index}>{product}</li>
-        ))}
-      </ul>
-    ),
+    accessorKey: 'subscriptionType',
+    header: 'Subscription Type',
   },
   {
     accessorKey: 'totalWeight',
-    header: 'Total Weight (kg)',
+    header: 'Total Weight (gms)',
     cell: ({ row }) => (
       <div className="flex justify-center">
         <span className='text-center'>{row.original.totalWeight}</span>
@@ -94,13 +87,37 @@ export const columns: ColumnDef<DeliveryManagement>[] = [
   {
     accessorKey: 'addons',
     header: 'Add-ons',
-    cell: ({ row }) => (
-      <ul>
-        {row.original.addons?.map((addon, index) => (
-          <li style={{ listStyleType: "square" }} key={index}>{addon}</li>
-        ))}
-      </ul>
-    ),
+    cell: ({ row }) => {
+      const totalAddonPrice = row.original.addons?.reduce((total, addon) => total + (addon.price * addon.orderedUnits), 0) || 0;
+      return (
+        <div>
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className='bg-red-100' >
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Price (₹)</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Units</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {row.original.addons?.map((addon, index) => (
+                <tr key={index} className={index % 2 === 0 ? 'bg-blue-100' : 'bg-blue-200'}>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{addon.name}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{addon.price}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{addon.orderedUnits}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{addon.price * addon.orderedUnits}</td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan={3} className="px-4 py-2 text-right text-sm font-medium text-gray-900">Total Add-ons Price:</td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{totalAddonPrice}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'paymentStatus',

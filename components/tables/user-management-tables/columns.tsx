@@ -74,12 +74,8 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'Last Name',
   },
   {
-    accessorKey: 'city',
-    header: 'City',
-  },
-  {
-    accessorKey: 'sector',
-    header: 'Sector',
+    accessorKey: 'houseNumber',
+    header: 'House Number',
   },
   {
     accessorKey: 'society',
@@ -92,9 +88,16 @@ export const columns: ColumnDef<UserManagement>[] = [
     ),
   },
   {
-    accessorKey: 'houseNumber',
-    header: 'House Number',
+    accessorKey: 'sector',
+    header: 'Sector',
   },
+  {
+    accessorKey: 'city',
+    header: 'City',
+  },
+
+  
+ 
   {
     accessorKey: 'dob',
     header: 'DATE OF BIRTH',

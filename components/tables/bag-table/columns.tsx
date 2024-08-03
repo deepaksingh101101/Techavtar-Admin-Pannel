@@ -57,7 +57,7 @@ export const columns: ColumnDef<Bag>[] = [
   },
   {
     accessorKey: 'totalWeight',
-    header: 'Total Weight (gms)',
+    header: 'Total Maximum Weight (gms)',
     cell: ({ row }) => (
       <div className="flex justify-center">
         <span className='text-center'>{row.original.totalWeight ?? '-'}</span>

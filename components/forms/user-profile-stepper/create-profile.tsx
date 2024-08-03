@@ -319,35 +319,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex mt-2">
-                    <FormLabel>City</FormLabel>
-                    <Edit onClick={openCityModal} className="ms-3 cursor-pointer text-red-500" height={15} width={15} />
-                  </div>
-                  <Controller
-                    control={control}
-                    name="city"
-                    render={({ field }) => (
-                      <ReactSelect
-                        isClearable
-                        isSearchable
-                        options={cityOptions}
-                        getOptionLabel={(option) => option.name}
-                        getOptionValue={(option) => option.id}
-                        isDisabled={loading}
-                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
-                        value={cityOptions.find(option => option.id === field.value)}
-                      />
-                    )}
-                  />
-                  <FormMessage>{errors.city?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
+           
           
             {/* <FormField
               control={form.control}
@@ -414,6 +386,35 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     />
                   </FormControl>
                   <FormMessage>{errors.address2?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex mt-2">
+                    <FormLabel>City</FormLabel>
+                    <Edit onClick={openCityModal} className="ms-3 cursor-pointer text-red-500" height={15} width={15} />
+                  </div>
+                  <Controller
+                    control={control}
+                    name="city"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={cityOptions}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        value={cityOptions.find(option => option.id === field.value)}
+                      />
+                    )}
+                  />
+                  <FormMessage>{errors.city?.message}</FormMessage>
                 </FormItem>
               )}
             />

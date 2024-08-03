@@ -37,6 +37,7 @@ const orderFormSchema = z.object({
   bagOrdered: z.array(z.string()).min(1, 'Products Ordered is required'),
   totalWeight: z.number().positive('Total Weight must be greater than zero'),
   paymentStatus: z.string(),
+  paymentType: z.string(),
   specialInstructions: z.string().optional(),
 });
 
@@ -73,6 +74,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
       bagOrdered: [] as string[],
       totalWeight: 0,
       paymentStatus: 'Pending',
+      paymentType: '',
       specialInstructions: ''
     }
   });
@@ -230,7 +232,7 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                 name="deliveryStartDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Delivery Start Date</FormLabel>
+                    <FormLabel>Subscription Start Date</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -338,6 +340,42 @@ export const CreateOrder: React.FC<OrderManagementFormType> = ({ initialData }) 
                 )}
               />
              
+
+             <FormField
+              control={form.control}
+              name="paymentType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Payment Type</FormLabel>
+                  <Controller
+                    control={control}
+                    name="paymentType"
+                    render={({ field }) => (
+                      <ReactSelect
+                        isClearable
+                        isSearchable
+                        options={[
+                          { id: 'Upi', name: 'UPI' },
+                          { id: 'Netbanking', name: 'Net Banking' },
+                          { id: 'Credit/Debit', name: 'Credit/Debit' }
+                        ]}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        isDisabled={loading}
+                        onChange={(selected) => field.onChange(selected ? selected.id : '')}
+                        value={[
+                          { id: 'Upi', name: 'UPI' },
+                          { id: 'Netbanking', name: 'Net Banking' },
+                          { id: 'Credit/Debit', name: 'Credit/Debit' }
+                        ].find(option => option.id === field.value)}
+                      />
+                    )}
+                  />
+                  <FormMessage>{errors.paymentType?.message}</FormMessage>
+                </FormItem>
+              )}
+            /> 
+
             </>
           </div>
           <FormField

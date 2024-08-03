@@ -48,7 +48,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   };
 
   const assignDeliveryRoutes = () => {
-    router.push(`/subscription-management/handleUpgradeAndRenewal/${data.orderId}`); 
+    router.push(`/order/assignOrder`); 
   };
 
   return (
@@ -79,6 +79,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={assignDeliveryRoutes}>
             <UserCheck className="mr-2 h-4 w-4" /> Assign Employee
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={assignDeliveryRoutes}>
+            <UserCheck className="mr-2 h-4 w-4" /> Modify This Delivery
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
