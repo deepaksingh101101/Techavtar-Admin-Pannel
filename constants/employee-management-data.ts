@@ -12,6 +12,7 @@ export interface EmployeeManagement {
   gender?:string;
   age?:number;
   role: string;
+  dob?: string;
   city?: string;
   state?: string;
   address?: string;
@@ -32,6 +33,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     city: "Delhi",
     state: "Delhi",
     age:21,
+    dob:"24/MAR/2024",
     gender:"Male",
     address:"D1 Pro4living elite",
     assignedUsers: [
@@ -51,6 +53,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     role: 'Support Staff',
     city: "Delhi",
     gender:"Male",
+    dob:"24/MAR/2024",
     state: "Delhi",
     age:21,
     assignedUsers: [
@@ -68,6 +71,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     sno: 3,
     firstName: 'Robert',
     lastName: 'Brown',
+    dob:"24/MAR/2024",
     role: 'Technician',
     city: "Delhi",
     state: "Delhi",
@@ -90,6 +94,7 @@ export const EmployeeManagementData: EmployeeManagement[] = [
     firstName: 'Emily',
     lastName: 'Davis',
     role: 'Customer Service',
+    dob:"24/MAR/2024",
     city: "Delhi",
     state: "Delhi",
     age:21,

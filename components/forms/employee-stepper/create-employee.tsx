@@ -125,16 +125,16 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                 </FormItem>
               )}
             />
-            <FormField
+               <FormField
               control={control}
-              name="role"
+              name="contactInformation.phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="Enter Role" {...field} />
+                    <Input type="text" disabled={loading} placeholder="Enter Phone" {...field} />
                   </FormControl>
-                  <FormMessage>{renderErrorMessage(errors.role)}</FormMessage>
+                  <FormMessage>{renderErrorMessage(errors.contactInformation)}</FormMessage>
                 </FormItem>
               )}
             />
@@ -151,19 +151,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                 </FormItem>
               )}
             />
-            <FormField
-              control={control}
-              name="contactInformation.phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone</FormLabel>
-                  <FormControl>
-                    <Input type="text" disabled={loading} placeholder="Enter Phone" {...field} />
-                  </FormControl>
-                  <FormMessage>{renderErrorMessage(errors.contactInformation)}</FormMessage>
-                </FormItem>
-              )}
-            />
+         
             <FormField
               control={control}
               name="dob"
@@ -302,6 +290,19 @@ export const CreateEmployeeForm: React.FC<EmployeeFormType> = ({ initialData, us
                 </FormItem>
               )}
             /> */}
+            <FormField
+              control={control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <FormControl>
+                    <Input type="text" disabled={loading} placeholder="Enter Role" {...field} />
+                  </FormControl>
+                  <FormMessage>{renderErrorMessage(errors.role)}</FormMessage>
+                </FormItem>
+              )}
+            />
           </div>
           <Button type="submit" disabled={loading}>
             {initialData ? 'Save Changes' : 'Create Employee'}
