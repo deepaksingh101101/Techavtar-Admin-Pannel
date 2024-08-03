@@ -163,7 +163,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Routes Management',
-    href: '/routes-',
+    href: '/routes-management',
     icon: 'order',
     label: 'create-order'
   },
