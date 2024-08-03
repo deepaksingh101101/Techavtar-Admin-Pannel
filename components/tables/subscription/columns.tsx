@@ -42,6 +42,24 @@ export const columns: ColumnDef<Subscription>[] = [
     header: 'Subscription Type',
   },
   {
+    accessorKey: 'frequency',
+    header: 'Frequency',
+    cell: ({ row }) => (
+      <div>
+        {row.original.frequency}
+      </div>
+    )
+  },
+  {
+    accessorKey: 'totalDelivery',
+    header: 'Total Delivery',
+    cell: ({ row }) => (
+      <div>
+        {row.original.totalDelivery}
+      </div>
+    )
+  },
+  {
     accessorKey: 'bagName',
     header: 'Bags Name',
   },
@@ -91,24 +109,8 @@ export const columns: ColumnDef<Subscription>[] = [
       </ul>
     )
   },
-  {
-    accessorKey: 'frequency',
-    header: 'Frequency',
-    cell: ({ row }) => (
-      <div>
-        {row.original.frequency}
-      </div>
-    )
-  },
-  {
-    accessorKey: 'totalDelivery',
-    header: 'Total Delivery',
-    cell: ({ row }) => (
-      <div>
-        {row.original.totalDelivery}
-      </div>
-    )
-  },
+
+ 
   {
     accessorKey: 'price',
     header: 'Price',

@@ -441,6 +441,34 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
+                  <Controller
+  control={form.control}
+  name="bagName"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Select Bags</FormLabel>
+      <FormControl>
+        <ReactSelect
+          isClearable
+          isSearchable
+          options={dummyBags}
+          formatOptionLabel={(option) => (
+            <div className="flex justify-between items-center">
+              <span>{option.label}</span>
+              <span className=" ms-4 text-green-700">{option.weight}g</span>
+            </div>
+          )}
+          onChange={(selected) => {
+            field.onChange(selected ? selected.map(option => option.value) : []);
+          }}
+          value={dummyBags.filter(option => field.value.includes(option.value))}
+          isMulti
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
             <Controller
               control={form.control}
               name="deliveryDays"
@@ -520,34 +548,7 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
-           <Controller
-  control={form.control}
-  name="bagName"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Select Bags</FormLabel>
-      <FormControl>
-        <ReactSelect
-          isClearable
-          isSearchable
-          options={dummyBags}
-          formatOptionLabel={(option) => (
-            <div className="flex justify-between items-center">
-              <span>{option.label}</span>
-              <span className=" ms-4 text-green-700">{option.weight}g</span>
-            </div>
-          )}
-          onChange={(selected) => {
-            field.onChange(selected ? selected.map(option => option.value) : []);
-          }}
-          value={dummyBags.filter(option => field.value.includes(option.value))}
-          isMulti
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+     
 <Controller
           name="SubscriptionImage"
           control={control}
