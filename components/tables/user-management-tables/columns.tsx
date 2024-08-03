@@ -74,6 +74,31 @@ export const columns: ColumnDef<UserManagement>[] = [
     header: 'Last Name',
   },
   {
+    accessorKey: 'contact',
+    header: 'Contact',
+    cell: ({ row }) => (
+      <div className="flex flex-col me-5">
+        <div className="flex items-center mt-1">
+          <Mail className="text-blue-500 mr-2" width={10} height={10} />
+          <span className="text-[12px]">{row.original.email}</span>
+        </div>
+        <div className="flex items-center mt-2">
+          <Phone className="text-green-500 mr-2" width={10} height={10} />
+          <span className="text-[12px]">{row.original.phoneNumber}</span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'dob',
+    header: 'DATE OF BIRTH',
+  },
+  
+  {
+    accessorKey: 'gender',
+    header: 'Gender',
+  },
+  {
     accessorKey: 'houseNumber',
     header: 'House Number',
   },
@@ -98,14 +123,7 @@ export const columns: ColumnDef<UserManagement>[] = [
 
   
  
-  {
-    accessorKey: 'dob',
-    header: 'DATE OF BIRTH',
-  },
-  {
-    accessorKey: 'gender',
-    header: 'Gender',
-  },
+
 
 
   // {
@@ -124,22 +142,7 @@ export const columns: ColumnDef<UserManagement>[] = [
     accessorKey: 'subscriptionType',
     header: 'Subscription Type',
   },
-  {
-    accessorKey: 'contact',
-    header: 'Contact',
-    cell: ({ row }) => (
-      <div className="flex flex-col me-5">
-        <div className="flex items-center mt-1">
-          <Mail className="text-blue-500 mr-2" width={10} height={10} />
-          <span className="text-[12px]">{row.original.email}</span>
-        </div>
-        <div className="flex items-center mt-2">
-          <Phone className="text-green-500 mr-2" width={10} height={10} />
-          <span className="text-[12px]">{row.original.phoneNumber}</span>
-        </div>
-      </div>
-    ),
-  },
+
   // {
   //   accessorKey: 'address',
   //   header: 'Address',

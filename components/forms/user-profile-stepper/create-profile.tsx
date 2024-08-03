@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon, Cross, Edit, Trash } from "lucide-react";
+import { CalendarIcon, Edit, Trash } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { useParams, useRouter } from "next/navigation";
@@ -28,7 +28,6 @@ import {
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -57,6 +56,9 @@ const FormSchema = z.object({
   zipcode: z.string().min(1, 'Zipcode is required'),
   houseNumber: z.string().min(1, 'House Number is required'),
   society: z.string().min(1, 'Society is required'),
+  dob: z.date({
+    required_error: "Date of Birth is required."
+  }),
 });
 
 export const CreateProfileOne: React.FC<ProfileFormType> = ({
@@ -262,6 +264,24 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
+             <FormField
+              control={form.control}
+              name="contactno"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter your contact number"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>{errors.contactno?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -276,6 +296,43 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     />
                   </FormControl>
                   <FormMessage>{errors.email?.message}</FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="dob"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date of Birth</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? format(field.value, "dd MMM yyyy") : <span>Pick a date</span>}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage>{errors.dob?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -301,43 +358,10 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="contactno"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contact Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter your contact number"
-                      disabled={loading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>{errors.contactno?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
+           
            
           
-            {/* <FormField
-              control={form.control}
-              name="street"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Street Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="House Number, Building Name .."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>{errors.street?.message}</FormMessage>
-                </FormItem>
-              )}
-            /> */}
+            
             <FormField
               control={form.control}
               name="houseNumber"
@@ -568,4 +592,3 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     </>
   );
 };
-
