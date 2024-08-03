@@ -20,7 +20,7 @@ export const ProductManagementClient: React.FC = () => {
 
   const handleSearch = (searchValue: string) => {
     const filteredData = initialData.filter(item =>
-      item.productName.toLowerCase().includes(searchValue.toLowerCase())
+      item.itemName.toLowerCase().includes(searchValue.toLowerCase())
     );
     setData(filteredData);
   };
@@ -29,9 +29,9 @@ export const ProductManagementClient: React.FC = () => {
     // Example: Sorting by first name
     const sortedData = [...data].sort((a, b) => {
       if (sortOrder === 'asc') {
-        return a.productName.localeCompare(b.productName);
+        return a.itemName.localeCompare(b.itemName);
       } else {
-        return b.productName.localeCompare(a.productName);
+        return b.itemName.localeCompare(a.itemName);
       }
     });
     setData(sortedData);

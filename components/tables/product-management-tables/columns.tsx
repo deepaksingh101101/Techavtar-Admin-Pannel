@@ -172,7 +172,7 @@ export const columns: ColumnDef<ProductManagement>[] = [
     header: 'Image',
     cell: ({ row }) => (
       <div className="flex items-center">
-        <Image src={row.original.image} alt={row.original.productName} width={50} height={50} />
+        <Image src={row.original.image} alt={row.original.itemName} width={50} height={50} />
       </div>
     )
   },
