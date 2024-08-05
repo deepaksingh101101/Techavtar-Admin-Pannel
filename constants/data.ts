@@ -130,18 +130,18 @@ export const navItems: NavItem[] = [
     icon: 'product',
     label: 'create-product'
   },
-  {
-    title: 'Bag Management',
-    href: '/bag',
-    icon: 'order',
-    label: 'create-order'
-  },
-  {
-    title: 'Subscription',
-    href: '/subscriptions',
-    icon: 'createSubscription',
-    label: 'subscription'
-  },
+  // {
+  //   title: 'Bag Management',
+  //   href: '/bag',
+  //   icon: 'order',
+  //   label: 'create-order'
+  // },
+  // {
+  //   title: 'Subscription',
+  //   href: '/subscriptions',
+  //   icon: 'createSubscription',
+  //   label: 'subscription'
+  // },
   {
     title: 'Employee Management',
     href: '/employee-management',
@@ -155,24 +155,24 @@ export const navItems: NavItem[] = [
     icon: 'management',
     label: 'User Management'
   },
-  {
-    title: 'Subscription/Order Management',
-    href: '/order-management',
-    icon: 'order',
-    label: 'create-order'
-  },
-  {
-    title: 'Routes Management',
-    href: '/routes-management',
-    icon: 'order',
-    label: 'create-order'
-  },
-  {
-    title: 'Delivery Management',
-    href: '/delivery-management',
-    icon: 'order',
-    label: 'create-order'
-  },
+  // {
+  //   title: 'Subscription/Order Management',
+  //   href: '/order-management',
+  //   icon: 'order',
+  //   label: 'create-order'
+  // },
+  // {
+  //   title: 'Routes Management',
+  //   href: '/routes-management',
+  //   icon: 'order',
+  //   label: 'create-order'
+  // },
+  // {
+  //   title: 'Delivery Management',
+  //   href: '/delivery-management',
+  //   icon: 'order',
+  //   label: 'create-order'
+  // },
  
   // {
   //   title: 'Profile',
@@ -296,12 +296,12 @@ export const navItems: NavItem[] = [
         icon: 'notificationSetting',
         label: 'notification-settings'
       },
-      {
-        title: 'API Settings',
-        href: '/settings-management/API',
-        icon: 'api',
-        label: 'api-settings'
-      }
+      // {
+      //   title: 'API Settings',
+      //   href: '/settings-management/API',
+      //   icon: 'api',
+      //   label: 'api-settings'
+      // }
     ]
   },
  
