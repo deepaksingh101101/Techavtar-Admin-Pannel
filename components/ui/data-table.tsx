@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button style={{ background: "#04894d", color: 'white' }} className="text-xs md:text-sm ms-4">
+            <Button style={{ background: "", color: 'white' }} className="text-xs md:text-sm ms-4">
               Filter <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

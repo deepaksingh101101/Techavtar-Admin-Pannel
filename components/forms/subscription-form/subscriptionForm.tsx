@@ -1,11 +1,5 @@
 'use client';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
+
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -17,13 +11,7 @@ import {
 } from '@/components/ui/form';
 import { Heading } from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+
 import { Separator } from '@/components/ui/separator';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,7 +21,6 @@ import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { Edit, Trash } from 'lucide-react';
 import ReactSelect from 'react-select';
 import { MultiSelect } from '@/components/ui/MultiSelect';
-import { Textarea } from '@/components/ui/textarea';
 
 const subscriptionFormSchema = z.object({
   subscriptionType: z.string(),
@@ -145,79 +132,12 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
     }
   };
 
-  const [isSubscriptionTypeModalOpen, setIsSubscriptionTypeModalOpen] = useState(false);
-  const [isFrequencyModalOpen, setIsFrequencyModalOpen] = useState(false);
-  const [subscriptionTypes, setSubscriptionTypes] = useState([
-    'Trial',
-    'Monthly',
-    'Quarterly',
-    'Semi-Annual',
-    'Annually'
-  ]);
-  const [frequencies, setFrequencies] = useState([
-    'Daily',
-    'Weekly',
-    'Monthly',
-    'Fortnightly',
-    'Biweekly'
-  ]);
-  const [newSubscriptionType, setNewSubscriptionType] = useState('');
-  const [newFrequency, setNewFrequency] = useState('');
-
-  const openSubscriptionTypeModal = () => {
-    setIsSubscriptionTypeModalOpen(true);
-  };
-
-  const closeSubscriptionTypeModal = () => {
-    setIsSubscriptionTypeModalOpen(false);
-  };
-
-  const openFrequencyModal = () => {
-    setIsFrequencyModalOpen(true);
-  };
-
-  const closeFrequencyModal = () => {
-    setIsFrequencyModalOpen(false);
-  };
-
-  const addSubscriptionType = () => {
-    if (newSubscriptionType) {
-      setSubscriptionTypes([...subscriptionTypes, newSubscriptionType]);
-      setNewSubscriptionType('');
-    }
-  };
-
-  const deleteSubscriptionType = (index: number) => {
-    setSubscriptionTypes(subscriptionTypes.filter((_, i) => i !== index));
-  };
-
-  const addFrequency = () => {
-    if (newFrequency) {
-      setFrequencies([...frequencies, newFrequency]);
-      setNewFrequency('');
-    }
-  };
-
-  const deleteFrequency = (index: number) => {
-    setFrequencies(frequencies.filter((_, i) => i !== index));
-  };
 
   const price = watch('price');
-  const offers = watch('offers');
-  const subscriptionType = watch('subscriptionType');
-  const frequency = watch('frequency');
-  const selectedBags = watch('bagName');
-
-  useEffect(() => {
-    const netPrice = price - (price * (offers / 100));
-    setValue('netPrice', parseFloat(netPrice.toFixed(2)));
-  }, [price, offers, setValue]);
-
-  useEffect(() => {
-    const totalDelivery =
-      subscriptionTypeNumbers[subscriptionType] * frequencyTypeNumbers[frequency];
-    setValue('totalDelivery', totalDelivery);
-  }, [subscriptionType, frequency, setValue]);
+  // useEffect(() => {
+  //   const netPrice = price - (price * (offers / 100));
+  //   setValue('netPrice', parseFloat(netPrice.toFixed(2)));
+  // }, [price, offers, setValue]);
 
   return (
     <>
@@ -225,222 +145,12 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
         <Heading title={title} description={description} />
       </div>
       <Separator />
-      <Dialog open={isSubscriptionTypeModalOpen} onOpenChange={(open) => !open && closeSubscriptionTypeModal()}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Manage Subscription Types</DialogTitle>
-            <DialogDescription>You can manage subscription types here.</DialogDescription>
-          </DialogHeader>
-          <div>
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscription Type</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {subscriptionTypes.map((type, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{type}</td>
-                    <td className="px-6 flex justify-end py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Trash onClick={() => deleteSubscriptionType(index)} className="cursor-pointer text-red-500" />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex mt-4">
-              <Input
-                type="text"
-                placeholder="Add new subscription type"
-                value={newSubscriptionType}
-                onChange={(e) => setNewSubscriptionType(e.target.value)}
-              />
-              <Button onClick={addSubscriptionType} className="ml-2">
-                Add
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={isFrequencyModalOpen} onOpenChange={(open) => !open && closeFrequencyModal()}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Manage Frequencies</DialogTitle>
-            <DialogDescription>You can manage frequencies here.</DialogDescription>
-          </DialogHeader>
-          <div>
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Frequency</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {frequencies.map((freq, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{freq}</td>
-                    <td className="px-6 py-4 flex justify-end whitespace-nowrap text-right text-sm font-medium">
-                      <Trash onClick={() => deleteFrequency(index)} className="cursor-pointer text-red-500" />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex mt-4">
-              <Input
-                type="text"
-                placeholder="Add new frequency"
-                value={newFrequency}
-                onChange={(e) => setNewFrequency(e.target.value)}
-              />
-              <Button onClick={addFrequency} className="ml-2">
-                Add
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+     
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-8">
           <div className="gap-8 md:grid md:grid-cols-3">
-            <FormField
-              control={control}
-              name="subscriptionType"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex">
-                    <FormLabel>Subscription Type</FormLabel>
-                    <Edit onClick={openSubscriptionTypeModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
-                  </div>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Subscription Type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {subscriptionTypes.map((type, index) => (
-                        <SelectItem key={index} value={type}>{type}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="frequency"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex">
-                    <div className="flex items-center">
-                      <FormLabel>Frequency</FormLabel>
-                      <Edit onClick={openFrequencyModal} className='ms-3 cursor-pointer text-red-500' height={15} width={15} />
-                    </div>
-                  </div>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Frequency" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {frequencies.map((freq, index) => (
-                        <SelectItem key={index} value={freq}>{freq}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="totalDelivery"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Total Delivery</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter Bags"
-                      className='mt-0'
-                      min={1}
-                      {...field}
-                      value={field.value}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="visibility"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subscription Visibility</FormLabel>
-                  <FormControl>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Visibility" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {visibilityOption.map((option) => (
-                          <SelectItem key={option.id} value={option.name}>
-                            {option.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage>{errors.visibility?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-           
-            <FormField
-              control={form.control}
-              name="subscriptionStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subscription Status</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select Subscription Status"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="Inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        
+        
                   <Controller
   control={form.control}
   name="bagName"
@@ -488,109 +198,10 @@ export const CreateSubscriptionForm: React.FC<SubscriptionFormType> = ({
                 </FormItem>
               )}
             />
-            <FormField
-              control={control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter Price"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value ? Number(value) : '');
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="offers"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Offers (%)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter Offer in Percentage"
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value ? Number(value) : '');
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="netPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Net Price</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      disabled
-                      placeholder="Net Price"
-                      {...field}
-                      readOnly
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-     
-<Controller
-          name="SubscriptionImage"
-          control={control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Subscription Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  disabled={form.formState.isSubmitting}
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      field.onChange(e.target.files[0]);
-                    }
-                  }}
-                />
-              </FormControl>
-              {errors.SubscriptionImage && <FormMessage>{errors.SubscriptionImage.message}</FormMessage>}
-            </FormItem>
-          )}
-        />
+
+    
 
           </div>
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Subscription Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    disabled={loading}
-                    rows={5}
-                    
-                    placeholder="Enter Description"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-            />
           <Button disabled={loading} type="submit">
             {action}
           </Button>

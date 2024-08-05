@@ -49,7 +49,7 @@ const bagFormSchema = z.object({
   bagName: z.string().min(1, 'Bag name is required'),
   visibility: z.string().min(1, 'Visibility is required'),
   bagImage: z.object({}).optional(),
-  // description: z.string().min(1, 'Description is required'),
+  description: z.string().min(1, 'Description is required'),
   bagItems: z.array(
     z.object({
       itemName: z.string().min(1, 'Item name is required'),
@@ -111,7 +111,7 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     {
       id: 'Step 1',
       name: 'Bag Details',
-      fields: ['bagName', 'status', 'description', 'bagImage']
+      fields: [ 'description']
     },
     {
       id: 'Step 2',
@@ -123,6 +123,9 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     { id: '1', name: 'Admin' },
     { id: '2', name: 'Customer' }
   ];
+
+
+
 
   type FieldName = keyof Bag;
 
@@ -149,6 +152,12 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     }
   };
 
+
+
+
+
+
+
   const handleAddItem = () => {
     setBagItems([...bagItems, { itemName: '', itemPrice: 0, unitQuantity: 0, maximumQuantity: 0, minimumQuantity: 0 }]);
   };
@@ -158,17 +167,9 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
     setBagItems(updatedBagItems);
   };
 
-  const handleItemChange = (index: number, field: string, value: any) => {
-    const updatedBagItems = [...bagItems];
-    updatedBagItems[index] = { ...updatedBagItems[index], [field]: value };
-
-    setBagItems(updatedBagItems);
-  };
-
   const handleItemChanges = (index: number, changes: Partial<BagItem>) => {
     const updatedBagItems = [...bagItems];
     updatedBagItems[index] = { ...updatedBagItems[index], ...changes };
-
     setBagItems(updatedBagItems);
   };
 
@@ -228,112 +229,9 @@ export const BagForm: React.FC<{ initialData?: Bag }> = ({ initialData }) => {
           >
             {currentStep === 0 && (
               <>
-                <FormField
-                  control={form.control}
-                  name="bagName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bag Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          name="bagName"
-                          type='text'
-                          disabled={loading}
-                          placeholder="Enter Bag Name"
-                          onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.value)}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage>{errors.bagName?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-                  <FormField
-  control={form.control}
-  name="totalWeight"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Total Maximum Weight(gms)</FormLabel>
-      <FormControl>
-        <Input
-          name="totalWeight"
-          type="number"
-          disabled={loading}
-          placeholder="Enter Total Weight"
-          onChange={(e) => field.onChange(parseFloat(e.target.value))}
-          value={field.value || ''}
-        />
-      </FormControl>
-      <FormMessage>{errors.totalWeight?.message}</FormMessage>
-    </FormItem>
-  )}
-/>
+               
+  
 
-                <FormField
-                  control={form.control}
-                  name="visibility"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bag Visibility</FormLabel>
-                      <FormControl>
-                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Visibility" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Admin">Admin</SelectItem>
-                            <SelectItem value="Public">Public</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage>{errors.visibility?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <FormControl>
-                        <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Active">Active</SelectItem>
-                            <SelectItem value="Inactive">Inactive</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage>{errors.status?.message}</FormMessage>
-                    </FormItem>
-                  )}
-                />
-
-                <Controller
-                  name="bagImage"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bag Image</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          disabled={form.formState.isSubmitting}
-                          onChange={(e) => {
-                            if (e.target.files && e.target.files.length > 0) {
-                              field.onChange(e.target.files[0]);
-                            }
-                          }}
-                        />
-                      </FormControl>
-                      {errors.bagImage && <FormMessage>{errors.bagImage.message}</FormMessage>}
-                    </FormItem>
-                  )}
-                />
              
 
                
